@@ -1376,7 +1376,7 @@ export default function App() {
           </div>
           <div style={{maxWidth:1200,margin:"0 auto",padding:"0 20px",display:"flex",overflowX:"auto"}}>
             {tabNames.map((n,i) => (
-              <button key={i} onClick={() => setTab(i)} style={{padding:"9px 13px",fontSize:11,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",borderBottom:tab===i?`2px solid ${t.accent}`:"2px solid transparent",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
+              <button key={i} onClick={() => setTab(i)} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",borderBottom:tab===i?`2px solid ${t.accent}`:"2px solid transparent",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
             ))}
           </div>
         </div>
