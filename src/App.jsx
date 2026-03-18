@@ -288,7 +288,7 @@ function Gauge({ score }) {
   const nx = 100 + 55 * Math.cos((angle * Math.PI) / 180);
   const ny = 100 - 55 * Math.sin((angle * Math.PI) / 180);
   return (
-    <svg viewBox="0 0 200 120" style={{width:"100%",maxWidth:180}}>
+    <svg viewBox="0 0 200 120" style={{width:"100%",maxWidth:180,display:"block",margin:"0 auto"}}>
       <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={t.riskBarBg} strokeWidth="12" strokeLinecap="round" />
       <path className="gauge-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={c} strokeWidth="12" strokeLinecap="round"
         strokeDasharray={`${score * 2.51} 251`} />
@@ -303,6 +303,10 @@ function Gauge({ score }) {
 /* ══════════════ AREA CHART HELPER ══════════════ */
 function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY }) {
   const t = useT();
+  const years = data.map(d => d.y);
+  const hasDotCom = years.includes("2000");
+  const hasGFC = years.includes("2008") || years.includes("2007") || years.includes("2009");
+  const gfcYear = years.includes("2008") ? "2008" : years.includes("2007") ? "2007" : years.includes("2009") ? "2009" : null;
   return (
     <ResponsiveContainer>
       <AreaChart data={data}>
@@ -316,7 +320,9 @@ function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY }) 
         <XAxis dataKey="y" tick={{fontSize:10,fill:t.textDim}} />
         <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={yFmt} domain={domainY} />
         <Tooltip content={<ChartTip />} />
-        {refY != null && <ReferenceLine y={refY} stroke={refColor || t.refLabel} strokeDasharray="6 3" label={{value:refLabel,fill:refColor || t.refLabel,fontSize:10}} />}
+        {hasDotCom && <ReferenceLine x="2000" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />}
+        {hasGFC && gfcYear && <ReferenceLine x={gfcYear} stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />}
+        {refY != null && <ReferenceLine y={refY} stroke={refColor || t.refLabel} strokeDasharray="6 3" label={{value:refLabel,fill:refColor || t.refLabel,fontSize:10,position:"insideTopLeft",dy:-8}} />}
         <Area type="monotone" dataKey="v" stroke={color} fill={`url(#${id})`} strokeWidth={2.5} name={name} dot={false} />
       </AreaChart>
     </ResponsiveContainer>
@@ -498,6 +504,8 @@ function TabMktStr() {
             <XAxis dataKey="y" tick={{fontSize:10,fill:t.textDim}} />
             <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={v => `$${v}B`} />
             <Tooltip content={<ChartTip />} />
+            <ReferenceLine x="2000" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
+            <ReferenceLine x="2007" stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
             <Bar dataKey="v" name="Margin ($B)" radius={[6,6,0,0]}>
               {mDebt.map((d,i) => <Cell key={i} fill={d.v > 900 ? t.red : d.v > 500 ? t.yellow : t.blue} fillOpacity={0.7} />)}
             </Bar>
@@ -531,7 +539,9 @@ function TabCredit() {
             <XAxis dataKey="y" tick={{fontSize:10,fill:t.textDim}} />
             <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={v => `${v}%`} />
             <Tooltip content={<ChartTip />} />
-            <ReferenceLine y={0} stroke={t.red} strokeWidth={2} label={{value:"Inversion",fill:t.red,fontSize:10}} />
+            <ReferenceLine x="2000" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
+            <ReferenceLine x="2007" stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
+            <ReferenceLine y={0} stroke={t.red} strokeWidth={2} label={{value:"Inversion",fill:t.red,fontSize:10,position:"insideTopLeft",dy:-8}} />
             <Area type="monotone" dataKey="v" fill={t.blue} fillOpacity={0.06} stroke="none" />
             <Line type="monotone" dataKey="v" stroke={t.cyan} strokeWidth={2.5} dot={{r:3,fill:t.cyan}} name="10Y-2Y %" />
           </ComposedChart>
@@ -802,26 +812,13 @@ function TabReport() {
     <div>
       {/* ═══════ SECTION 1: COVER / HEADER ═══════ */}
       <div style={{borderBottom:`2px solid ${t.accent}`,paddingBottom:28,marginBottom:0}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:40,height:40,borderRadius:8,background:`linear-gradient(135deg, ${t.accent}, ${t.purple})`,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:18,fontWeight:900}}>D</div>
-            <div>
-              <div style={{fontSize:13,fontWeight:800,color:t.text,letterSpacing:-0.3}}>Dachi's Research</div>
-              <div style={{fontSize:10,color:t.textDim}}>Independent Market Analysis</div>
-            </div>
-          </div>
-          <div style={{textAlign:"right"}}>
-            <div style={{display:"inline-block",padding:"3px 10px",borderRadius:4,background:t.redBg,border:`1px solid ${t.redBorder}`,fontSize:9,fontWeight:700,letterSpacing:1.5,color:t.red,textTransform:"uppercase",marginBottom:4}}>Confidential — For Institutional Use Only</div>
-            <div style={{fontSize:10,color:t.textDim}}>Distribution restricted per MiFID II / Reg FD</div>
-          </div>
-        </div>
         <div style={{textAlign:"center",padding:"24px 0 8px"}}>
           <div style={{fontSize:10,color:t.accent,letterSpacing:4,textTransform:"uppercase",fontWeight:700,marginBottom:6}}>Equity Strategy Research — Thematic Deep Dive</div>
           <h1 style={{fontSize:34,fontWeight:900,color:t.text,margin:"6px 0 4px",letterSpacing:-1.5,lineHeight:1.1}}>U.S. Equity Market Bubble Risk Assessment</h1>
           <h2 style={{fontSize:16,fontWeight:400,color:t.textMuted,margin:"8px 0 0",fontStyle:"italic"}}>A Comprehensive Multi-Factor Quantitative and Qualitative Framework for Systemic Market Risk Evaluation</h2>
         </div>
         <div style={{display:"flex",justifyContent:"center",gap:32,marginTop:20,flexWrap:"wrap"}}>
-          {[{l:"Date",v:"March 18, 2026"},{l:"Lead Analyst",v:"Dachi"},{l:"Classification",v:"OVERWEIGHT CAUTION"},{l:"Composite Score",v:`${OS}/100`},{l:"Prior Rating",v:"N/A (Initiation)"}].map((x,i)=>(
+          {[{l:"Date",v:"March 18, 2026"},{l:"Lead Analyst",v:"Dachi Gubadze"},{l:"Classification",v:"ELEVATED BUT SUPPORTED"},{l:"Composite Score",v:`${OS}/100`},{l:"Prior Rating",v:"N/A (Initiation)"}].map((x,i)=>(
             <div key={i} style={{textAlign:"center"}}>
               <div style={{fontSize:9,color:t.textDim,textTransform:"uppercase",letterSpacing:1.5,fontWeight:600}}>{x.l}</div>
               <div style={{fontSize:12,fontWeight:700,color:i===3?t.yellow:t.text,marginTop:2}}>{x.v}</div>
@@ -1035,7 +1032,7 @@ function TabReport() {
                       <XAxis dataKey="y" tick={{fontSize:10,fill:t.textDim}} />
                       <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={cat.yFmt} />
                       <Tooltip content={<ChartTip />} />
-                      {cat.refY != null && <ReferenceLine y={cat.refY} stroke={t.refLabel} strokeDasharray="6 3" label={{value:cat.refLabel,fill:t.refLabel,fontSize:10}} />}
+                      {cat.refY != null && <ReferenceLine y={cat.refY} stroke={t.refLabel} strokeDasharray="6 3" label={{value:cat.refLabel,fill:t.refLabel,fontSize:10,position:"insideTopLeft",dy:-8}} />}
                       <Area type="monotone" dataKey="v" stroke={cat.color} fill={`url(#${cat.id})`} strokeWidth={2.5} name={cat.dataName} dot={false} />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -1372,7 +1369,7 @@ function TabReport() {
             <p style={{margin:"0 0 8px"}}>This report is prepared for educational and informational purposes only. It does not constitute investment advice, a solicitation, or an offer to buy or sell any securities. The views expressed herein represent the analytical conclusions of the author and are based on publicly available data.</p>
             <p style={{margin:"0 0 8px"}}>Past performance is not indicative of future results. All investments involve risk, including the potential loss of principal. The analytical framework presented herein is subject to inherent limitations including data availability, model assumptions, and the fundamental unpredictability of complex adaptive systems. Scenario probabilities are subjective estimates based on historical analogues and current conditions; actual outcomes may differ materially.</p>
             <p style={{margin:"0 0 8px"}}>The metrics and thresholds presented in this report should not be interpreted as precise predictive indicators. Financial markets are complex adaptive systems in which structural relationships can shift without warning. No quantitative framework, however sophisticated, can fully capture the range of potential outcomes in such a system.</p>
-            <p style={{margin:0}}>Data sources are believed to be reliable but are not independently verified. Any errors or omissions are unintentional. This report may be updated periodically as new data becomes available. Distribution restricted to authorized recipients per applicable securities regulations including MiFID II and Regulation FD.</p>
+            <p style={{margin:0}}>Data sources are believed to be reliable but are not independently verified. Any errors or omissions are unintentional. This report may be updated periodically as new data becomes available.</p>
           </div>
         </Card>
 
@@ -1380,18 +1377,10 @@ function TabReport() {
 
         {/* ═══════ SECTION 13: FOOTER ═══════ */}
         <div style={{textAlign:"center",padding:"24px 0 10px"}}>
-          <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:10,marginBottom:12}}>
-            <div style={{width:32,height:32,borderRadius:6,background:`linear-gradient(135deg, ${t.accent}, ${t.purple})`,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:15,fontWeight:900}}>D</div>
-            <div style={{textAlign:"left"}}>
-              <div style={{fontSize:12,fontWeight:800,color:t.text}}>Dachi's Research</div>
-              <div style={{fontSize:10,color:t.textDim}}>Independent Market Analysis</div>
-            </div>
-          </div>
           <div className="gradient-divider" style={{height:1,background:`linear-gradient(90deg, transparent, ${t.accent}, transparent)`,margin:"12px 0"}} />
           <div style={{fontSize:10,color:t.textDim,lineHeight:1.7}}>
-            <p style={{margin:"0 0 4px"}}>Lead Analyst: Dachi | Research Date: March 18, 2026 | Composite Score: {OS}/100</p>
+            <p style={{margin:"0 0 4px"}}>Lead Analyst: Dachi Gubadze | Research Date: March 18, 2026 | Composite Score: {OS}/100</p>
             <p style={{margin:"0 0 4px"}}>Data: FRED, FactSet, Shiller, S&P Global, FINRA, ICE BofA, CBOE, Case-Shiller, IIF</p>
-            <p style={{margin:"0 0 8px"}}>Confidential — For Institutional Use Only — Do Not Redistribute</p>
           </div>
           <div style={{display:"inline-block",padding:"6px 16px",borderRadius:20,background:t.accentBg,border:`1px solid ${t.accent}33`}}>
             <span style={{fontSize:10,fontWeight:700,color:t.accent,letterSpacing:1}}>END OF REPORT</span>
@@ -1429,7 +1418,6 @@ export default function App() {
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <div style={{width:8,height:8,borderRadius:"50%",background:t.yellow,boxShadow:`0 0 10px ${t.yellow}55`}} />
               <span style={{fontSize:14,fontWeight:800,letterSpacing:-0.5}}>BUBBLE RISK MONITOR</span>
-              <span style={{fontSize:10,color:t.textDim,padding:"2px 6px",borderRadius:4,background:t.bgCardAlt,border:`1px solid ${t.border}`}}>v3</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
               <span style={{fontSize:11,color:t.textDim}}>Mar 18, 2026</span>
