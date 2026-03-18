@@ -1,9 +1,15 @@
+@import "tailwindcss";
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html, body, #root {
@@ -16,21 +22,154 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
-  height: 4px;
-  width: 5px;
+  height: 6px;
+  width: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.5);
 }
 
-/* Recharts overrides */
+/* ─── Animations ─── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(129, 140, 248, 0); }
+  50%      { box-shadow: 0 0 20px 4px rgba(129, 140, 248, 0.15); }
+}
+@keyframes gauge-fill {
+  from { stroke-dasharray: 0 251; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out both;
+}
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out both;
+}
+
+/* ─── Card enhancements ─── */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.glass-card {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ─── Table rows ─── */
+.table-row-hover {
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+.table-row-hover:hover {
+  transform: scale(1.005);
+}
+
+/* ─── Tab bar ─── */
+.tab-btn {
+  position: relative;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.25s ease, left 0.25s ease;
+}
+.tab-btn:hover::after {
+  width: 100%;
+  left: 0;
+}
+.tab-btn.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* ─── Risk bar animation ─── */
+.risk-bar-fill {
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Badge pulse ─── */
+.badge-elevated {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ─── Gauge arc animation ─── */
+.gauge-arc {
+  animation: gauge-fill 1.2s ease-out both;
+}
+
+/* ─── Gradient dividers ─── */
+.gradient-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.3), transparent);
+}
+
+/* ─── Header glass effect ─── */
+.header-glass {
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+}
+
+/* ─── Recharts overrides ─── */
 .recharts-cartesian-axis-tick-value {
   font-family: 'DM Sans', system-ui, sans-serif;
+}
+.recharts-tooltip-wrapper {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+/* ─── Selection color ─── */
+::selection {
+  background: rgba(129, 140, 248, 0.25);
+  color: inherit;
+}
+
+/* ─── Focus states ─── */
+button:focus-visible {
+  outline: 2px solid rgba(129, 140, 248, 0.5);
+  outline-offset: 2px;
+}
+
+/* ─── Link hover ─── */
+a {
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+a:hover {
+  opacity: 0.8;
 }

@@ -14,7 +14,7 @@ const themes = {
     accent:"#818cf8",accentBg:"rgba(129,140,248,0.08)",
     gridStroke:"#1e293b",tooltipBg:"#1e293b",headerBg:"rgba(17,24,39,0.92)",
     refLabel:"#94a3b8",riskBarBg:"#1e293b",
-    shadow:"0 4px 20px rgba(0,0,0,0.3)",cardShadow:"0 1px 2px rgba(0,0,0,0.3)",
+    shadow:"0 8px 32px rgba(0,0,0,0.4)",cardShadow:"0 2px 8px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.03)",
   },
   light: {
     bg:"#f5f7fb",bgCard:"#ffffff",bgCardAlt:"#f0f4f8",bgHover:"#e8edf4",
@@ -27,7 +27,7 @@ const themes = {
     accent:"#4f46e5",accentBg:"rgba(79,70,229,0.06)",
     gridStroke:"#e5e7eb",tooltipBg:"#ffffff",headerBg:"rgba(245,247,251,0.92)",
     refLabel:"#6b7280",riskBarBg:"#e5e7eb",
-    shadow:"0 4px 20px rgba(0,0,0,0.08)",cardShadow:"0 1px 3px rgba(0,0,0,0.05)",
+    shadow:"0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)",cardShadow:"0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03)",
   },
 };
 
@@ -140,7 +140,7 @@ function Badge({ signal }) {
   const t = useT();
   const c = sigColor(signal, t);
   return (
-    <span style={{display:"inline-flex",alignItems:"center",gap:5,padding:"3px 10px",borderRadius:20,fontSize:10,fontWeight:700,letterSpacing:1,background:sigBg(signal,t),color:c,border:`1px solid ${sigBd(signal,t)}`}}>
+    <span className={signal === "red" ? "badge-elevated" : ""} style={{display:"inline-flex",alignItems:"center",gap:5,padding:"3px 10px",borderRadius:20,fontSize:10,fontWeight:700,letterSpacing:1,background:sigBg(signal,t),color:c,border:`1px solid ${sigBd(signal,t)}`}}>
       <span style={{width:6,height:6,borderRadius:"50%",background:c}} />
       {signal === "green" ? "HEALTHY" : signal === "yellow" ? "CAUTION" : "ELEVATED"}
     </span>
@@ -153,7 +153,7 @@ function RiskBar({ score }) {
   return (
     <div style={{display:"flex",alignItems:"center",gap:6,minWidth:80}}>
       <div style={{flex:1,height:6,borderRadius:3,background:t.riskBarBg,overflow:"hidden"}}>
-        <div style={{width:`${score}%`,height:"100%",borderRadius:3,background:c,transition:"width 0.6s"}} />
+        <div className="risk-bar-fill" style={{width:`${score}%`,height:"100%",borderRadius:3,background:c}} />
       </div>
       <span style={{fontSize:10,fontWeight:700,color:c,minWidth:18}}>{score}</span>
     </div>
@@ -181,7 +181,7 @@ function InfoBtn({ info, calc, name }) {
         justifyContent:"center",padding:0,marginLeft:6,fontFamily:"Georgia,serif",fontStyle:"italic"
       }}>i</button>
       {open && (
-        <div onClick={(e) => e.stopPropagation()} style={{
+        <div className="animate-scale-in" onClick={(e) => e.stopPropagation()} style={{
           position:"absolute",top:"calc(100% + 8px)",left:-120,width:320,zIndex:300,
           background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:12,padding:16,boxShadow:t.shadow,
         }}>
@@ -235,7 +235,7 @@ function Explainer({ title, info, calc }) {
 
 function Card({ children, style }) {
   const t = useT();
-  return <div style={{background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:14,padding:20,boxShadow:t.cardShadow,...style}}>{children}</div>;
+  return <div className="card-hover" style={{background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:14,padding:20,boxShadow:t.cardShadow,...style}}>{children}</div>;
 }
 
 function ChartTip({ active, payload, label }) {
@@ -290,7 +290,7 @@ function Gauge({ score }) {
   return (
     <svg viewBox="0 0 200 120" style={{width:"100%",maxWidth:180}}>
       <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={t.riskBarBg} strokeWidth="12" strokeLinecap="round" />
-      <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={c} strokeWidth="12" strokeLinecap="round"
+      <path className="gauge-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={c} strokeWidth="12" strokeLinecap="round"
         strokeDasharray={`${score * 2.51} 251`} />
       <line x1="100" y1="100" x2={nx} y2={ny} stroke={t.text} strokeWidth="2.5" strokeLinecap="round" />
       <circle cx="100" cy="100" r="4" fill={t.text} />
@@ -419,7 +419,7 @@ function TabDash({ goTab }) {
             </thead>
             <tbody>
               {MS.map((m, i) => (
-                <tr key={i} onClick={() => goTab(m.tab)} style={{borderBottom:`1px solid ${t.border}`,cursor:"pointer"}}
+                <tr key={i} onClick={() => goTab(m.tab)} className="table-row-hover" style={{borderBottom:`1px solid ${t.border}`,cursor:"pointer"}}
                   onMouseEnter={e => e.currentTarget.style.background = t.bgHover}
                   onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
                   <td style={{padding:"9px 8px",color:t.text,fontWeight:600}}>
@@ -456,7 +456,6 @@ function TabEquity() {
         <Card><StatBox label="ERP" value="0.6%" sub="vs 4.0% avg" color={t.red} /></Card>
       </div>
       {[0,1,2,3].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      {[0,1,2,3].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
       <ChartCard title="Shiller CAPE Ratio (1920–2026)" signal="red" interp="CAPE at 38.8 is 2nd-highest in 154 years. Doesn't adjust for today's lower rates (4.2% vs 6.5% in 2000) or higher-margin tech models. Expensive but not irrational when rate-adjusted.">
         <AC data={capeData} color={t.red} id="cF" name="CAPE" refY={17.4} refLabel="Avg: 17.4" />
       </ChartCard>
@@ -469,6 +468,10 @@ function TabEquity() {
       <ChartCard title="Equity Risk Premium (1995–2026)" signal="red" interp="ERP at 0.6% is razor-thin but positive. In 1999 it went NEGATIVE. Today investors are barely compensated for equity risk — not as extreme as 2000 but a clear warning sign.">
         <AC data={erpD} color={t.blue} id="eF" name="ERP %" yFmt={v => `${v}%`} refY={0} refLabel="Zero (Danger)" refColor={t.red} />
       </ChartCard>
+      <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
+        <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
+        {[0,1,2,3].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
+      </Card>
     </div>
   );
 }
@@ -485,7 +488,6 @@ function TabMktStr() {
         <Card><StatBox label="Margin/Cap" value="1.85%" sub="Below 2000" color={t.green} /></Card>
       </div>
       {[4,5,6].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      {[4,5,6].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
       <ChartCard title="Top 10 Concentration (1990–2026)" signal="red" interp="At 37.5%, exceeds 2000's 27%. But top 10 generate 32.5% of earnings — the premium is earned. Idiosyncratic risk is real: one NVIDIA miss moves the index.">
         <AC data={conc} color={t.purple} id="coF" name="Top 10 %" yFmt={v => `${v}%`} refY={27} refLabel="2000: 27%" refColor={t.yellow} />
       </ChartCard>
@@ -502,6 +504,10 @@ function TabMktStr() {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
+      <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
+        <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
+        {[4,5,6].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
+      </Card>
     </div>
   );
 }
@@ -518,7 +524,6 @@ function TabCredit() {
         <Card><StatBox label="HH Debt/Inc" value="92%" sub="vs 133% (2008)" color={t.green} /></Card>
       </div>
       {[7,8,9].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      {[7,8,9].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
       <ChartCard title="Yield Curve: 10Y − 2Y" signal="green" interp="Deeply inverted 2022-24, re-steepened to +52bp. The economy absorbed rate hikes without recession. A healthy positive slope.">
         <ResponsiveContainer>
           <ComposedChart data={ycD}>
@@ -538,6 +543,10 @@ function TabCredit() {
       <ChartCard title="Household Debt-to-Income" signal="green" interp="At 92%, well below historical averages. The single strongest 'not a bubble' argument. FICO ~740, 95%+ fixed-rate. Consumer is healthy.">
         <AC data={hhD} color={t.green} id="hhF" name="Debt/Inc %" yFmt={v => `${v}%`} domainY={[40,140]} refY={133} refLabel="2008 Peak" refColor={t.red} />
       </ChartCard>
+      <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
+        <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
+        {[7,8,9].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
+      </Card>
     </div>
   );
 }
@@ -555,7 +564,6 @@ function TabMacro() {
         <Card><StatBox label="Core CPI" value="2.6%" color={t.yellow} /></Card>
       </div>
       {[10,11].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      {[10,11].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
       <Card style={{marginBottom:20,borderLeft:`3px solid ${t.green}`}}>
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.green}}>Assessment: Fundamentally Sound</h3>
         <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>EPS growing 15.3% on real 8% revenue. GDP expanding at 2.0%, unemployment stable, inflation cooling. In 2000 earnings fell; in 2008 the economy contracted. Today, reality follows the prices.</p>
@@ -573,6 +581,10 @@ function TabMacro() {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
+      <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
+        <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
+        {[10,11].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
+      </Card>
     </div>
   );
 }
@@ -589,13 +601,16 @@ function TabMoney() {
         <Card><StatBox label="Fed BS" value="$6.6T" sub="Down from $9T" color={t.yellow} /></Card>
       </div>
       {[12,13,14].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      {[12,13,14].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
       <ChartCard title="M2 Money Supply ($T)" signal="yellow" interp="Exploded +40% during COVID. Now $22.4T growing 4.6% YoY. Liquidity remains historically elevated.">
         <AC data={m2D} color={t.cyan} id="m2F" name="M2 ($T)" yFmt={v => `$${v}T`} />
       </ChartCard>
       <ChartCard title="Fed Balance Sheet ($T)" signal="yellow" interp="Peaked $8.8T, now $6.6T via QT. Still 7x pre-2008. Orderly unwinding. Risk: forced pivot to QE.">
         <AC data={fedB} color={t.purple} id="feF" name="Fed BS ($T)" yFmt={v => `$${v}T`} />
       </ChartCard>
+      <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
+        <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
+        {[12,13,14].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
+      </Card>
     </div>
   );
 }
@@ -612,13 +627,16 @@ function TabSent() {
         <Card><StatBox label="IPOs" value="Subdued" color={t.green} /></Card>
       </div>
       <Explainer title={MS[15].nm} info={MS[15].info} calc={MS[15].calc} />
-      <SrcNote m={MS[15]} />
       <ChartCard title="VIX (1995–2026)" signal="yellow" interp="VIX 22.4 near average. Pre-bubble VIX was LOW (9-11) = complacency. Today's moderate reading is healthier. Meme mania has cooled.">
         <AC data={vixD} color={t.yellow} id="vF" name="VIX" refY={20} refLabel="Avg ~20" />
       </ChartCard>
       <Card style={{borderLeft:`3px solid ${t.green}`}}>
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.green}}>Verdict: No Mania</h3>
         <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>No euphoric hallmarks. Sentiment below average, IPOs subdued, SPACs collapsed. Prevailing narrative is caution — contrarian bullish.</p>
+      </Card>
+      <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
+        <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
+        <SrcNote m={MS[15]} />
       </Card>
     </div>
   );
@@ -636,10 +654,13 @@ function TabHousing() {
         <Card><StatBox label="Avg FICO" value="~740" color={t.green} /></Card>
       </div>
       <Explainer title={MS[16].nm} info={MS[16].info} calc={MS[16].calc} />
-      <SrcNote m={MS[16]} />
       <ChartCard title="Case-Shiller HPI (1990–2026)" signal="yellow" interp="Near all-time highs at 327.5 but driven by supply shortage, not reckless lending. FICO ~740, 95% fixed-rate. Growth decelerating to 1.3%.">
         <AC data={csD} color={t.orange} id="csF" name="HPI" refY={190} refLabel="2006 Peak" refColor={t.red} />
       </ChartCard>
+      <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
+        <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
+        <SrcNote m={MS[16]} />
+      </Card>
     </div>
   );
 }
@@ -656,10 +677,13 @@ function TabGlobal() {
         <Card><StatBox label="Geopolitical" value="Elevated" color={t.yellow} /></Card>
       </div>
       <Explainer title={MS[17].nm} info={MS[17].info} calc={MS[17].calc} />
-      <SrcNote m={MS[17]} />
       <ChartCard title="Global Debt-to-GDP" signal="red" interp="At 308%, elevated but off prior highs. Doesn't cause bubbles alone but makes downturns worse. Less fiscal room. Structural vulnerability, not trigger.">
         <AC data={gdD} color={t.red} id="gdF" name="Debt/GDP %" yFmt={v => `${v}%`} />
       </ChartCard>
+      <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
+        <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
+        <SrcNote m={MS[17]} />
+      </Card>
     </div>
   );
 }
@@ -671,7 +695,7 @@ function TabReport() {
   const reds = MS.filter(m => m.sig === "red");
   const radarD = [{s:"Equity Val.",sc:78},{s:"Mkt Structure",sc:67},{s:"Credit/Debt",sc:32},{s:"Macro",sc:15},{s:"Monetary",sc:43},{s:"Sentiment",sc:45},{s:"Housing",sc:40},{s:"Global",sc:65}];
   const catScores = [{name:"Equity Valuation",sc:78,sig:"red",metrics:[0,1,2,3],data:capeData,color:t.red,id:"rCape",dataName:"CAPE",refY:17.4,refLabel:"Avg: 17.4"},{name:"Market Structure",sc:67,sig:"yellow",metrics:[4,5,6],data:conc,color:t.purple,id:"rConc",dataName:"Top 10 %",refY:27,refLabel:"2000: 27%",yFmt:v=>`${v}%`},{name:"Credit & Debt",sc:32,sig:"green",metrics:[7,8,9],data:hyD,color:t.orange,id:"rHY",dataName:"HY Spread %",refY:4.9,refLabel:"20Y Avg",yFmt:v=>`${v}%`},{name:"Macro Fundamentals",sc:15,sig:"green",metrics:[10,11],data:null,color:t.green,id:"rEps"},{name:"Monetary Policy",sc:43,sig:"yellow",metrics:[12,13,14],data:m2D,color:t.cyan,id:"rM2",dataName:"M2 ($T)",yFmt:v=>`$${v}T`},{name:"Sentiment",sc:45,sig:"yellow",metrics:[15],data:vixD,color:t.yellow,id:"rVix",dataName:"VIX",refY:20,refLabel:"Avg ~20"},{name:"Housing",sc:40,sig:"yellow",metrics:[16],data:csD,color:t.orange,id:"rCS",dataName:"Case-Shiller",refY:190,refLabel:"2006 Peak"},{name:"Global Risk",sc:65,sig:"red",metrics:[17],data:gdD,color:t.red,id:"rGD",dataName:"Debt/GDP %",yFmt:v=>`${v}%`}];
-  const sectionDivider = <div style={{height:1,background:`linear-gradient(90deg, transparent, ${t.border}, transparent)`,margin:"36px 0"}} />;
+  const sectionDivider = <div className="gradient-divider" style={{height:1,background:`linear-gradient(90deg, transparent, ${t.border}, transparent)`,margin:"36px 0"}} />;
   const sectionNum = (n, title) => (
     <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16}}>
       <div style={{width:36,height:36,borderRadius:"50%",background:t.accentBg,border:`1.5px solid ${t.accent}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,fontWeight:800,color:t.accent,flexShrink:0}}>{n}</div>
@@ -1363,7 +1387,7 @@ function TabReport() {
               <div style={{fontSize:10,color:t.textDim}}>Independent Market Analysis</div>
             </div>
           </div>
-          <div style={{height:1,background:`linear-gradient(90deg, transparent, ${t.accent}, transparent)`,margin:"12px 0"}} />
+          <div className="gradient-divider" style={{height:1,background:`linear-gradient(90deg, transparent, ${t.accent}, transparent)`,margin:"12px 0"}} />
           <div style={{fontSize:10,color:t.textDim,lineHeight:1.7}}>
             <p style={{margin:"0 0 4px"}}>Lead Analyst: Dachi | Research Date: March 18, 2026 | Composite Score: {OS}/100</p>
             <p style={{margin:"0 0 4px"}}>Data: FRED, FactSet, Shiller, S&P Global, FINRA, ICE BofA, CBOE, Case-Shiller, IIF</p>
@@ -1400,7 +1424,7 @@ export default function App() {
     <Ctx.Provider value={t}>
       <div style={{minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'DM Sans',system-ui,sans-serif",transition:"background 0.4s,color 0.4s"}}>
         {/* Header */}
-        <div style={{borderBottom:`1px solid ${t.border}`,background:t.headerBg,backdropFilter:"blur(14px)",position:"sticky",top:0,zIndex:50}}>
+        <div className="header-glass" style={{borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
           <div style={{maxWidth:1200,margin:"0 auto",padding:"10px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <div style={{width:8,height:8,borderRadius:"50%",background:t.yellow,boxShadow:`0 0 10px ${t.yellow}55`}} />
@@ -1416,23 +1440,16 @@ export default function App() {
           </div>
           <div style={{maxWidth:1200,margin:"0 auto",padding:"0 20px",display:"flex",overflowX:"auto"}}>
             {tabNames.map((n,i) => (
-              <button key={i} onClick={() => setTab(i)} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",borderBottom:tab===i?`2px solid ${t.accent}`:"2px solid transparent",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
+              <button key={i} onClick={() => setTab(i)} className={"tab-btn" + (tab===i ? " active" : "")} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
             ))}
           </div>
         </div>
 
         {/* Content */}
-        <div ref={scrollRef} style={{maxWidth:1200,margin:"0 auto",padding:"20px 20px 50px",opacity:fade?0.3:1,transition:"opacity 0.2s"}}>
+        <div ref={scrollRef} className={fade ? "" : "animate-fade-in"} style={{maxWidth:1200,margin:"0 auto",padding:"20px 20px 50px"}}>
           {tab === 0 ? <TabDash goTab={goTab} /> : ActiveTab ? <ActiveTab /> : null}
         </div>
 
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap');
-          * { box-sizing: border-box; }
-          ::-webkit-scrollbar { height: 4px; width: 5px; }
-          ::-webkit-scrollbar-track { background: transparent; }
-          ::-webkit-scrollbar-thumb { background: ${t.border}; border-radius: 4px; }
-        `}</style>
       </div>
     </Ctx.Provider>
   );
