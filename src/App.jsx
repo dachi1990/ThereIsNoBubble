@@ -740,10 +740,10 @@ function TabReport() {
       <div style={{borderBottom:`2px solid ${t.accent}`,paddingBottom:28,marginBottom:0}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:40,height:40,borderRadius:8,background:`linear-gradient(135deg, ${t.accent}, ${t.purple})`,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:18,fontWeight:900}}>M</div>
+            <div style={{width:40,height:40,borderRadius:8,background:`linear-gradient(135deg, ${t.accent}, ${t.purple})`,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:18,fontWeight:900}}>D</div>
             <div>
-              <div style={{fontSize:13,fontWeight:800,color:t.text,letterSpacing:-0.3}}>Monticello Fund Research</div>
-              <div style={{fontSize:10,color:t.textDim}}>UVA Darden Capital Management</div>
+              <div style={{fontSize:13,fontWeight:800,color:t.text,letterSpacing:-0.3}}>Dachi's Research</div>
+              <div style={{fontSize:10,color:t.textDim}}>Independent Market Analysis</div>
             </div>
           </div>
           <div style={{textAlign:"right"}}>
@@ -1305,7 +1305,7 @@ function TabReport() {
         <Card style={{marginBottom:16,padding:18,background:t.bgCardAlt}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>C. Important Disclosures & Disclaimers</h4>
           <div style={{fontSize:10,color:t.textDim,lineHeight:1.7}}>
-            <p style={{margin:"0 0 8px"}}>This report is prepared by Monticello Fund Research, a division of UVA Darden Capital Management, for educational and informational purposes. It does not constitute investment advice, a solicitation, or an offer to buy or sell any securities. The views expressed herein represent the analytical conclusions of the research team and do not necessarily reflect the views of the University of Virginia, the Darden School of Business, or Darden Capital Management.</p>
+            <p style={{margin:"0 0 8px"}}>This report is prepared for educational and informational purposes only. It does not constitute investment advice, a solicitation, or an offer to buy or sell any securities. The views expressed herein represent the analytical conclusions of the author and are based on publicly available data.</p>
             <p style={{margin:"0 0 8px"}}>Past performance is not indicative of future results. All investments involve risk, including the potential loss of principal. The analytical framework presented herein is subject to inherent limitations including data availability, model assumptions, and the fundamental unpredictability of complex adaptive systems. Scenario probabilities are subjective estimates based on historical analogues and current conditions; actual outcomes may differ materially.</p>
             <p style={{margin:"0 0 8px"}}>The metrics and thresholds presented in this report should not be interpreted as precise predictive indicators. Financial markets are complex adaptive systems in which structural relationships can shift without warning. No quantitative framework, however sophisticated, can fully capture the range of potential outcomes in such a system.</p>
             <p style={{margin:0}}>Data sources are believed to be reliable but are not independently verified. Any errors or omissions are unintentional. This report may be updated periodically as new data becomes available. Distribution restricted to authorized recipients per applicable securities regulations including MiFID II and Regulation FD.</p>
@@ -1317,10 +1317,10 @@ function TabReport() {
         {/* ═══════ SECTION 13: FOOTER ═══════ */}
         <div style={{textAlign:"center",padding:"24px 0 10px"}}>
           <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:10,marginBottom:12}}>
-            <div style={{width:32,height:32,borderRadius:6,background:`linear-gradient(135deg, ${t.accent}, ${t.purple})`,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:15,fontWeight:900}}>M</div>
+            <div style={{width:32,height:32,borderRadius:6,background:`linear-gradient(135deg, ${t.accent}, ${t.purple})`,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:15,fontWeight:900}}>D</div>
             <div style={{textAlign:"left"}}>
-              <div style={{fontSize:12,fontWeight:800,color:t.text}}>Monticello Fund Research</div>
-              <div style={{fontSize:10,color:t.textDim}}>UVA Darden Capital Management</div>
+              <div style={{fontSize:12,fontWeight:800,color:t.text}}>Dachi's Research</div>
+              <div style={{fontSize:10,color:t.textDim}}>Independent Market Analysis</div>
             </div>
           </div>
           <div style={{height:1,background:`linear-gradient(90deg, transparent, ${t.accent}, transparent)`,margin:"12px 0"}} />

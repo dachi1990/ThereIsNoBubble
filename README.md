@@ -43,4 +43,4 @@ FRED, FactSet, Robert Shiller, S&P Dow Jones Indices, FINRA, ICE BofA, MacroMicr
 
 ## Author
 
-Dachi | Monticello Fund Research, UVA Darden Capital Management
+Dachi
