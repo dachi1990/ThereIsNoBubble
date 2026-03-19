@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, createContext, useContext } from "react";
+import ReactDOM from "react-dom";
 import { AreaChart, Area, BarChart, Bar, ComposedChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, Line } from "recharts";
 
 /* ══════════════ THEMES ══════════════ */
@@ -48,88 +49,135 @@ const csD=[{y:"1990",v:77},{y:"2000",v:100},{y:"2006",v:190},{y:"2009",v:140},{y
 const gdD=[{y:"2000",v:230},{y:"2008",v:305},{y:"2012",v:310},{y:"2020",v:360},{y:"2022",v:340},{y:"2026",v:308}];
 const epsQ=[{q:"Q3'24",g:5.8},{q:"Q4'24",g:13.2},{q:"Q1'25",g:12.8},{q:"Q2'25",g:11.5},{q:"Q3'25",g:10.2},{q:"Q4'25",g:14.5},{q:"Q1'26E",g:11.6},{q:"Q2'26E",g:16},{q:"Q3'26E",g:16.9},{q:"Q4'26E",g:15.9}];
 
+/* ══════════════ RISK SCORING ══════════════ */
+const riskScore = (nv, na, nc, dir) => {
+  const raw = dir === 1
+    ? ((nv - na) / (nc - na)) * 100
+    : ((na - nv) / (na - nc)) * 100;
+  return Math.round(Math.max(0, Math.min(100, raw)));
+};
+const sigFromScore = sc => sc <= 33 ? "green" : sc <= 66 ? "yellow" : "red";
+
 /* ══════════════ METRICS ══════════════ */
-const MS = [
-  {nm:"Shiller CAPE Ratio",cur:"38.8",c00:"44.2",c08:"27.5",avg:"17.4",sig:"red",sc:85,tab:1,
+let MS = [
+  {nm:"Shiller CAPE Ratio",cur:"38.8",c00:"44.2",c08:"27.5",avg:"17.4",dir:1,nv:38.8,na:17.4,nc:44.2,sc:riskScore(38.8,17.4,44.2,1),sig:sigFromScore(riskScore(38.8,17.4,44.2,1)),tab:1,
     info:"How many years of profits are you paying for? Take the S&P 500 price ÷ 10-year average inflation-adjusted earnings. Example: A lemonade stand earning $10/year — if you pay $388, the CAPE is 38.8. You're paying ~39 years' profits upfront. Average is ~17.4, so at 38.8 you pay more than double the normal price.",
     calc:"S&P 500 Price ÷ 10Y Avg Inflation-Adj EPS",
     src:"Multpl / Shiller",srcUrl:"https://www.multpl.com/shiller-pe",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Forward P/E",cur:"20.9",c00:"25.5",c08:"15.2",avg:"16.7",sig:"yellow",sc:60,tab:1,
+  {nm:"Forward P/E",cur:"20.9",c00:"25.5",c08:"15.2",avg:"16.7",dir:1,nv:20.9,na:16.7,nc:25.5,sc:riskScore(20.9,16.7,25.5,1),sig:sigFromScore(riskScore(20.9,16.7,25.5,1)),tab:1,
     info:"How much you pay for NEXT year's expected profits. If Apple earns $7/share next year and trades at $146, its P/E is ~21x. For the S&P 500 at 20.9x, you pay $20.90 per $1 of expected earnings. Unlike 2000, today's expectations are backed by real 8%+ revenue growth.",
     calc:"S&P 500 Price ÷ Next-12-Month Expected EPS",
     src:"FactSet Earnings Insight",srcUrl:"https://www.factset.com/earningsinsight",asOf:"Mar 12, 2026",freq:"weekly"},
-  {nm:"Buffett Indicator",cur:"217%",c00:"148%",c08:"110%",avg:"90%",sig:"red",sc:95,tab:1,
+  {nm:"Buffett Indicator",cur:"217%",c00:"148%",c08:"110%",avg:"90%",dir:1,nv:217,na:90,nc:148,sc:riskScore(217,90,148,1),sig:sigFromScore(riskScore(217,90,148,1)),tab:1,
     info:"Buffett's favorite: total stock market value vs. the entire economy. If all companies are worth $60T but the economy produces $28T/year = 217%. Like a restaurant valued at 2x annual revenue. BUT: companies earn 40% overseas, and GDP only counts domestic, so the ratio structurally overstates.",
     calc:"Total US Market Cap ÷ US GDP × 100",
     src:"GuruFocus",srcUrl:"https://www.gurufocus.com/stock-market-valuations.php",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Equity Risk Premium (Fwd EY − 10Y)",cur:"0.6%",c00:"−0.5%",c08:"2.0%",avg:"4.0%",sig:"red",sc:70,tab:1,
+  {nm:"Equity Risk Premium (Fwd EY − 10Y)",cur:"0.6%",c00:"−0.5%",c08:"2.0%",avg:"4.0%",dir:-1,nv:0.6,na:4.0,nc:-0.5,sc:riskScore(0.6,4.0,-0.5,-1),sig:sigFromScore(riskScore(0.6,4.0,-0.5,-1)),tab:1,
     info:"The 'bonus return' stocks offer over safe bonds, measured as forward earnings yield minus the 10-year Treasury yield. If the S&P 500 forward earnings yield is 4.8% and the 10Y Treasury pays 4.2%, the ERP is 0.6%. In 2000, this went NEGATIVE — investors accepted LESS return from risky stocks than safe bonds. Today at 0.6%, razor-thin: you're barely paid for taking equity risk.",
     calc:"Forward Earnings Yield − 10Y Treasury Yield",
     src:"FactSet / Treasury.gov",srcUrl:"https://www.multpl.com/10-year-treasury-rate",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Top 10 Concentration",cur:"37.5%",c00:"27%",c08:"20%",avg:"19%",sig:"red",sc:90,tab:2,
+  {nm:"Top 10 Concentration",cur:"37.5%",c00:"27%",c08:"20%",avg:"19%",dir:1,nv:37.5,na:19,nc:27,sc:riskScore(37.5,19,27,1),sig:sigFromScore(riskScore(37.5,19,27,1)),tab:2,
     info:"What % of the S&P 500 is just the 10 biggest companies. Imagine 500 students where the top 10 hold 37.5% of all lunch money. If one has a bad day, everyone suffers. Apple + MSFT + NVIDIA alone ≈ 20%. Most concentrated market ever — but they also produce 32.5% of all earnings.",
     calc:"Top 10 Market Caps ÷ Total S&P 500 Cap × 100",
     src:"S&P / SlickCharts",srcUrl:"https://www.slickcharts.com/sp500",asOf:"Mar 14, 2026",freq:"weekly"},
-  {nm:"FINRA Margin Debt",cur:"$1.28T",c00:"$278B",c08:"$381B",avg:"$347B",sig:"red",sc:80,tab:2,
+  {nm:"FINRA Margin Debt",cur:"$1.28T",c00:"$278B",c08:"$381B",avg:"$347B",dir:1,nv:1280,na:347,nc:381,sc:riskScore(1280,347,381,1),sig:sigFromScore(riskScore(1280,347,381,1)),tab:2,
     info:"Money borrowed to buy stocks. You have $100K, borrow $100K more from your broker = margin debt. $1.28T borrowed nationwide — a record. Danger: if stocks drop, brokers demand repayment ('margin call'), forcing selling → prices drop → more margin calls. A cascade.",
     calc:"Total dollars borrowed from brokers to buy securities",
     src:"FINRA",srcUrl:"https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics",asOf:"Jan 2026",freq:"monthly"},
-  {nm:"Margin Debt / Mkt Cap",cur:"1.85%",c00:"2.5%",c08:"2.7%",avg:"2.0%",sig:"green",sc:30,tab:2,
+  {nm:"Margin Debt / Mkt Cap",cur:"1.85%",c00:"2.5%",c08:"2.7%",avg:"2.0%",dir:1,nv:1.85,na:2.0,nc:2.7,sc:riskScore(1.85,2.0,2.7,1),sig:sigFromScore(riskScore(1.85,2.0,2.7,1)),tab:2,
     info:"Borrowed money RELATIVE to market size — the fairer measure. Borrowing $100K is risky at $500K portfolio (20%) but modest at $5M (2%). At 1.85%, today's leverage is BELOW both 2000 (2.5%) and 2008 (2.7%). Less aggressive than headlines suggest.",
     calc:"Margin Debt ÷ Total Market Cap × 100",
     src:"FINRA / market cap",srcUrl:"https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics",asOf:"Jan 2026",freq:"monthly"},
-  {nm:"Yield Curve (10Y−2Y)",cur:"+52bp",c00:"−50bp",c08:"−20bp",avg:"+100bp",sig:"green",sc:35,tab:3,
+  {nm:"Yield Curve (10Y−2Y)",cur:"+52bp",c00:"−50bp",c08:"−20bp",avg:"+100bp",dir:-1,nv:0.52,na:1.0,nc:-0.5,sc:riskScore(0.52,1.0,-0.5,-1),sig:sigFromScore(riskScore(0.52,1.0,-0.5,-1)),tab:3,
     info:"Difference between long-term and short-term bond rates. Normally long rates are higher. When short > long ('inverted'), recession follows in 12-24 months. Like a 2-year CD paying 4.5% while a 10-year pays only 4.0% — something's off. Today at +52bp, positively sloped — a healthy sign.",
     calc:"10Y Treasury Yield − 2Y Treasury Yield (100bp = 1%)",
     src:"FRED T10Y2Y",srcUrl:"https://fred.stlouisfed.org/series/T10Y2Y",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"HY Credit Spread",cur:"3.2%",c00:"8.0%",c08:"21.8%",avg:"4.9%",sig:"yellow",sc:45,tab:3,
+  {nm:"HY Credit Spread",cur:"3.2%",c00:"8.0%",c08:"21.8%",avg:"4.9%",dir:-1,nv:3.2,na:4.9,nc:2.0,sc:riskScore(3.2,4.9,2.0,-1),sig:sigFromScore(riskScore(3.2,4.9,2.0,-1)),tab:3,
     info:"Extra interest risky companies pay vs. the government. Govt borrows at 4%, junk-rated company at 7.2% — spread = 3.2%. Tight spread = investors feel safe. Before 2008, spreads were 2.6% — then exploded to 21.8%. Today's 3.2% signals calm, possibly too calm.",
     calc:"High-Yield Bond Yield − Treasury Yield",
     src:"FRED BAMLH0A0HYM2",srcUrl:"https://fred.stlouisfed.org/series/BAMLH0A0HYM2",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Household Debt/Income",cur:"92%",c00:"97%",c08:"133%",avg:"100%",sig:"green",sc:15,tab:3,
+  {nm:"Household Debt/Income",cur:"92%",c00:"97%",c08:"133%",avg:"100%",dir:1,nv:92,na:100,nc:133,sc:riskScore(92,100,133,1),sig:sigFromScore(riskScore(92,100,133,1)),tab:3,
     info:"How much families owe vs. earn (FRED Z.1 Financial Accounts series). Earn $100K, owe $92K total = 92%. In 2008, 133% — families owed MORE than a year's income. At 92%, consumers remain in strong shape. Arguably the strongest 'not a bubble' data point: the consumer isn't overleveraged.",
     calc:"Total Household Debt ÷ Disposable Income × 100",
     src:"FRED Z.1",srcUrl:"https://fred.stlouisfed.org/series/BOGZ1FL154190006Q",asOf:"Q3 2025",freq:"quarterly"},
-  {nm:"S&P 500 EPS Growth (Est.)",cur:"+15.3%",c00:"−2%",c08:"−30%",avg:"+8%",sig:"green",sc:10,tab:4,
+  {nm:"S&P 500 EPS Growth (Est.)",cur:"+15.3%",c00:"−2%",c08:"−30%",avg:"+8%",dir:-1,nv:15.3,na:8,nc:-30,sc:riskScore(15.3,8,-30,-1),sig:sigFromScore(riskScore(15.3,8,-30,-1)),tab:4,
     info:"How fast company profits grow year-over-year. Earned $200/share last year, $230 this year = +15%. High prices are only 'bubbly' if earnings don't keep up. At +15.3%, nearly double the average. In 2000, earnings FELL. In 2008, they collapsed −30%.",
     calc:"Current Year EPS ÷ Prior Year EPS − 1",
     src:"FactSet Earnings Insight",srcUrl:"https://www.factset.com/earningsinsight",asOf:"Mar 12, 2026",freq:"weekly"},
-  {nm:"Real GDP Growth (YoY)",cur:"2.0%",c00:"1.0%",c08:"−4.3%",avg:"2.5%",sig:"green",sc:20,tab:4,
+  {nm:"Real GDP Growth (YoY)",cur:"2.0%",c00:"1.0%",c08:"−4.3%",avg:"2.5%",dir:-1,nv:2.0,na:2.5,nc:-4.3,sc:riskScore(2.0,2.5,-4.3,-1),sig:sigFromScore(riskScore(2.0,2.5,-4.3,-1)),tab:4,
     info:"Real (inflation-adjusted) growth of the entire US economy, year-over-year. At 2.0%, the economy is expanding slightly below its long-run average of 2.5%. Before 2008, GDP SHRANK 4.3%. Today the economy grows at a solid pace, meaning the real economy supports stock prices.",
     calc:"Change in Inflation-Adjusted GDP (annualized %)",
     src:"FRED / BEA",srcUrl:"https://fred.stlouisfed.org/series/A191RL1Q225SBEA",asOf:"Q4 2025",freq:"quarterly"},
-  {nm:"Fed Funds Rate",cur:"3.6%",c00:"6.5%",c08:"5.25%",avg:"3.5%",sig:"green",sc:25,tab:5,
+  {nm:"Fed Funds Rate",cur:"3.6%",c00:"6.5%",c08:"5.25%",avg:"3.5%",dir:1,nv:3.6,na:3.5,nc:6.5,sc:riskScore(3.6,3.5,6.5,1),sig:sigFromScore(riskScore(3.6,3.5,6.5,1)),tab:5,
     info:"The rate banks charge each other overnight — the most important rate in the world. Ripples through mortgages, car loans, everything. At 3.6%, near average. Before 2000 and 2008, the Fed pushed to 5-6.5%, choking the economy. Today the Fed is CUTTING — tailwinds, not headwinds.",
     calc:"Set by the Fed's FOMC at 8 meetings/year",
     src:"FRED DFF",srcUrl:"https://fred.stlouisfed.org/series/DFF",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"M2 Money Supply",cur:"$22.4T",c00:"$4.9T",c08:"$8.0T",avg:"N/A",sig:"yellow",sc:50,tab:5,
+  {nm:"M2 Money Supply",cur:"$22.4T",c00:"$4.9T",c08:"$8.0T",avg:"N/A",dir:1,nv:72,na:60,nc:93,scoreNote:"Scored as M2/GDP ratio",sc:riskScore(72,60,93,1),sig:sigFromScore(riskScore(72,60,93,1)),tab:5,
     info:"All money in the economy: cash, checking, savings. Think of M2 as 'water' in the economic pool. During COVID the Fed pumped 40% more in ($15T → $21.7T). More money chasing same goods = higher prices. At $22.4T growing 4.6%/yr (above GDP), the pool is still very full.",
     calc:"Currency + checking + savings + money market funds",
     src:"FRED M2SL",srcUrl:"https://fred.stlouisfed.org/series/M2SL",asOf:"Jan 2026",freq:"monthly"},
-  {nm:"Fed Balance Sheet",cur:"$6.6T",c00:"$0.6T",c08:"$0.9T",avg:"N/A",sig:"yellow",sc:55,tab:5,
+  {nm:"Fed Balance Sheet",cur:"$6.6T",c00:"$0.6T",c08:"$0.9T",avg:"N/A",dir:1,nv:21.3,na:6,nc:37.8,scoreNote:"Scored as Fed BS/GDP ratio",sc:riskScore(21.3,6,37.8,1),sig:sigFromScore(riskScore(21.3,6,37.8,1)),tab:5,
     info:"How much the Fed 'owns' — bonds bought to pump money in. Imagine a giant shopping cart: $0.9T before 2008, then $8.8T by 2022 via buying sprees. Now slowly putting things back ($6.6T). More buying = higher prices. The unwinding is orderly but slow.",
     calc:"Total Fed assets (bonds, MBS, etc.)",
     src:"FRED WALCL",srcUrl:"https://fred.stlouisfed.org/series/WALCL",asOf:"Mar 11, 2026",freq:"weekly"},
-  {nm:"VIX",cur:"22.4",c00:"33",c08:"80",avg:"19",sig:"yellow",sc:45,tab:6,
+  {nm:"VIX",cur:"22.4",c00:"33",c08:"80",avg:"19",dir:-1,nv:22.4,na:19,nc:10,sc:riskScore(22.4,19,10,-1),sig:sigFromScore(riskScore(22.4,19,10,-1)),tab:6,
     info:"The 'fear gauge': expected market swings over 30 days from options prices. VIX 22.4 = market expects ~22% annual moves. Below 12 = dangerously calm. Above 30 = fear. Pre-bubble VIX was LOW (9-11 in 2006-07) = complacency. Today's 22.4 is actually healthier.",
     calc:"From S&P 500 options; annualized expected volatility",
     src:"FRED VIXCLS",srcUrl:"https://fred.stlouisfed.org/series/VIXCLS",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Case-Shiller HPI",cur:"327.5",c00:"100",c08:"190→140",avg:"N/A",sig:"yellow",sc:40,tab:7,
+  {nm:"Case-Shiller HPI",cur:"327.5",c00:"100",c08:"190→140",avg:"N/A",dir:1,nv:327.5,na:150,nc:305,sc:riskScore(327.5,150,305,1),sig:sigFromScore(riskScore(327.5,150,305,1)),tab:7,
     info:"Home prices across 20 cities, indexed to 100 in 2000. At 327.5, homes cost 3.3x what they did then. In 2006 it peaked at 190 before crashing. But the driver is different: 2006 = reckless lending; today = housing SHORTAGE. FICO ~740 (vs ~700), 95% fixed-rate.",
     calc:"Repeat-sale index tracking same homes, 20 metros",
     src:"FRED CSUSHPINSA",srcUrl:"https://fred.stlouisfed.org/series/CSUSHPINSA",asOf:"Dec 2025",freq:"monthly (2mo lag)"},
-  {nm:"Global Debt/GDP",cur:"308%",c00:"230%",c08:"305%",avg:"N/A",sig:"red",sc:65,tab:8,
+  {nm:"Global Debt/GDP",cur:"308%",c00:"230%",c08:"305%",avg:"N/A",dir:1,nv:308,na:230,nc:340,sc:riskScore(308,230,340,1),sig:sigFromScore(riskScore(308,230,340,1)),tab:8,
     info:"All debt worldwide vs. global GDP. The world earns $100, owes $308. Like a family earning $100K owing $308K. Doesn't cause crises directly but makes them WORSE: less fiscal room to respond, higher refinancing costs.",
     calc:"Global Govt + Corp + Household Debt ÷ Global GDP × 100",
     src:"IIF Global Debt Monitor",srcUrl:"https://www.reuters.com/business/finance/government-spending-lifts-global-debt-record-348-trillion-2025-says-iif-2026-02-25/",asOf:"2025 annual",freq:"annual"},
 ];
-const OS = Math.round(MS.reduce((a,m) => a + m.sc, 0) / MS.length);
+let OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
+let OS = Math.round(OS_SUM / MS.length);
 
 const tabNames = ["Dashboard","Equity Valuation","Market Structure","Credit & Debt","Macro","Monetary Policy","Sentiment","Housing","Global Risk","Report"];
 
 /* ══════════════ CONTEXT ══════════════ */
 const Ctx = createContext(themes.dark);
 const useT = () => useContext(Ctx);
+
+/* ══════════════ FRED API ══════════════ */
+const FRED_SERIES = [
+  { series: 'VIXCLS', idx: 15, parse: v => parseFloat(v), fmt: v => v.toFixed(1) },
+  { series: 'T10Y2Y', idx: 7, parse: v => parseFloat(v), fmt: v => `${v >= 0 ? "+" : ""}${Math.round(v * 100)}bp` },
+  { series: 'BAMLH0A0HYM2', idx: 8, parse: v => parseFloat(v), fmt: v => `${v.toFixed(1)}%` },
+  { series: 'DFF', idx: 12, parse: v => parseFloat(v), fmt: v => `${v.toFixed(1)}%` },
+  { series: 'WALCL', idx: 14, parse: v => parseFloat(v) / 1e6, fmt: v => `$${v.toFixed(1)}T`, scoreNv: (v, gdp) => (v / gdp) * 100 },
+  { series: 'M2SL', idx: 13, parse: v => parseFloat(v) / 1e3, fmt: v => `$${v.toFixed(1)}T`, scoreNv: (v, gdp) => (v / gdp) * 100 },
+  { series: 'CSUSHPISA', idx: 16, parse: v => parseFloat(v), fmt: v => v.toFixed(1) },
+  { series: 'GDP', idx: -1, parse: v => parseFloat(v) / 1e3, fmt: null },
+];
+
+async function fetchFredSeries(seriesId, apiKey) {
+  const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${apiKey}&file_type=json&sort_order=desc&limit=1`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`FRED ${seriesId}: ${res.status}`);
+  const data = await res.json();
+  if (!data.observations?.length) throw new Error(`FRED ${seriesId}: no data`);
+  const val = data.observations[0].value;
+  if (val === '.') throw new Error(`FRED ${seriesId}: missing value`);
+  return { value: val, date: data.observations[0].date };
+}
+
+async function fetchAllFred(apiKey) {
+  const results = {};
+  const promises = FRED_SERIES.map(async s => {
+    try {
+      const { value, date } = await fetchFredSeries(s.series, apiKey);
+      results[s.series] = { raw: value, parsed: s.parse(value), date };
+    } catch (e) {
+      console.warn(e.message);
+    }
+  });
+  await Promise.all(promises);
+  return results;
+}
 
 /* ══════════════ SMALL COMPONENTS ══════════════ */
 const sigColor = (s, t) => s === "green" ? t.green : s === "yellow" ? t.yellow : t.red;
@@ -163,26 +211,45 @@ function RiskBar({ score }) {
 function InfoBtn({ info, calc, name }) {
   const t = useT();
   const [open, setOpen] = useState(false);
-  const ref = useRef(null);
+  const btnRef = useRef(null);
+  const popRef = useRef(null);
+  const [pos, setPos] = useState({top:0,left:0});
 
   useEffect(() => {
     if (!open) return;
-    const fn = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const fn = (e) => {
+      if (btnRef.current?.contains(e.target)) return;
+      if (popRef.current && !popRef.current.contains(e.target)) setOpen(false);
+    };
     document.addEventListener("mousedown", fn);
     return () => document.removeEventListener("mousedown", fn);
   }, [open]);
 
+  useEffect(() => {
+    if (open && btnRef.current) {
+      const r = btnRef.current.getBoundingClientRect();
+      const popW = 340;
+      let left = r.left + r.width / 2 - popW / 2;
+      if (left < 8) left = 8;
+      if (left + popW > window.innerWidth - 8) left = window.innerWidth - popW - 8;
+      let top = r.bottom + 8;
+      if (top + 300 > window.innerHeight) top = r.top - 308;
+      if (top < 8) top = 8;
+      setPos({top, left});
+    }
+  }, [open]);
+
   return (
-    <span ref={ref} style={{position:"relative",display:"inline-flex",verticalAlign:"middle"}}>
-      <button onClick={(e) => { e.stopPropagation(); setOpen(!open); }} style={{
+    <span style={{display:"inline-flex",verticalAlign:"middle"}}>
+      <button ref={btnRef} onClick={(e) => { e.stopPropagation(); setOpen(!open); }} style={{
         width:18,height:18,borderRadius:"50%",border:`1.5px solid ${open ? t.accent : t.borderLight}`,
         background:open ? t.accentBg : "transparent",color:open ? t.accent : t.textDim,
         fontSize:11,fontWeight:700,cursor:"pointer",display:"inline-flex",alignItems:"center",
         justifyContent:"center",padding:0,marginLeft:6,fontFamily:"Georgia,serif",fontStyle:"italic"
       }}>i</button>
-      {open && (
-        <div className="animate-scale-in" onClick={(e) => e.stopPropagation()} style={{
-          position:"absolute",top:"calc(100% + 8px)",left:-120,width:320,zIndex:300,
+      {open && ReactDOM.createPortal(
+        <div ref={popRef} className="animate-scale-in" onClick={(e) => e.stopPropagation()} style={{
+          position:"fixed",top:pos.top,left:pos.left,width:340,zIndex:10000,
           background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:12,padding:16,boxShadow:t.shadow,
         }}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
@@ -196,7 +263,8 @@ function InfoBtn({ info, calc, name }) {
               <div style={{fontSize:11,color:t.accent,fontFamily:"monospace",fontWeight:600}}>{calc}</div>
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </span>
   );
@@ -244,7 +312,7 @@ function ChartTip({ active, payload, label }) {
   return (
     <div style={{background:t.tooltipBg,border:`1px solid ${t.border}`,borderRadius:8,padding:"8px 14px",boxShadow:t.shadow}}>
       <p style={{color:t.textDim,fontSize:11,margin:0}}>{label}</p>
-      {payload.map((p, i) => <p key={i} style={{color:p.color,fontSize:13,fontWeight:700,margin:"3px 0 0"}}>{p.name}: {typeof p.value === "number" ? p.value.toLocaleString() : p.value}</p>)}
+      {payload.map((p, i) => <p key={i} style={{color:p.color,fontSize:13,fontWeight:700,margin:"3px 0 0"}}>{p.name}: {typeof p.value === "number" ? p.value.toLocaleString() : p.value}{p.unit || ""}</p>)}
     </div>
   );
 }
@@ -301,7 +369,7 @@ function Gauge({ score }) {
 }
 
 /* ══════════════ AREA CHART HELPER ══════════════ */
-function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY }) {
+function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY, unit }) {
   const t = useT();
   const years = data.map(d => d.y);
   const hasDotCom = years.includes("2000");
@@ -323,7 +391,7 @@ function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY }) 
         {hasDotCom && <ReferenceLine x="2000" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />}
         {hasGFC && gfcYear && <ReferenceLine x={gfcYear} stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />}
         {refY != null && <ReferenceLine y={refY} stroke={refColor || t.refLabel} strokeDasharray="6 3" label={{value:refLabel,fill:refColor || t.refLabel,fontSize:10,position:"insideTopLeft",dy:-8}} />}
-        <Area type="monotone" dataKey="v" stroke={color} fill={`url(#${id})`} strokeWidth={2.5} name={name} dot={false} />
+        <Area type="monotone" dataKey="v" stroke={color} fill={`url(#${id})`} strokeWidth={2.5} name={name} unit={unit} dot={false} />
       </AreaChart>
     </ResponsiveContainer>
   );
@@ -347,7 +415,16 @@ function TabDash({ goTab }) {
   const t = useT();
   const greens = MS.filter(m => m.sig === "green");
   const reds = MS.filter(m => m.sig === "red");
-  const radarD = [{s:"Equity",sc:78},{s:"Mkt Str.",sc:67},{s:"Credit",sc:32},{s:"Macro",sc:15},{s:"Money",sc:43},{s:"Sent.",sc:45},{s:"Housing",sc:40},{s:"Global",sc:65}];
+  const radarD = [
+    {s:"Equity", sc: Math.round([0,1,2,3].reduce((a,i) => a + MS[i].sc, 0) / 4)},
+    {s:"Mkt Str.", sc: Math.round([4,5,6].reduce((a,i) => a + MS[i].sc, 0) / 3)},
+    {s:"Credit", sc: Math.round([7,8,9].reduce((a,i) => a + MS[i].sc, 0) / 3)},
+    {s:"Macro", sc: Math.round([10,11].reduce((a,i) => a + MS[i].sc, 0) / 2)},
+    {s:"Money", sc: Math.round([12,13,14].reduce((a,i) => a + MS[i].sc, 0) / 3)},
+    {s:"Sent.", sc: MS[15].sc},
+    {s:"Housing", sc: MS[16].sc},
+    {s:"Global", sc: MS[17].sc},
+  ];
 
   return (
     <div>
@@ -359,11 +436,34 @@ function TabDash({ goTab }) {
 
       <Card style={{marginBottom:16}}>
         <div style={{display:"grid",gridTemplateColumns:"1fr 2fr 1fr",gap:16,alignItems:"center"}}>
-          <div style={{textAlign:"center"}}>
+          <div style={{textAlign:"center",position:"relative"}} onMouseEnter={e => {const tip = e.currentTarget.querySelector('.gauge-tip'); if(tip) tip.style.display='block';}} onMouseLeave={e => {const tip = e.currentTarget.querySelector('.gauge-tip'); if(tip) tip.style.display='none';}}>
             <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600,marginBottom:4}}>Composite Risk</div>
             <Gauge score={OS} />
             <div style={{marginTop:6}}>
               <span style={{padding:"4px 12px",borderRadius:20,fontSize:10,fontWeight:700,letterSpacing:1,background:t.yellowBg,color:t.yellow,border:`1px solid ${t.yellowBorder}`}}>ELEVATED — NOT A BUBBLE</span>
+            </div>
+            <div className="gauge-tip" style={{display:"none",position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",marginTop:8,zIndex:50,width:380,background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:12,padding:"14px 16px",boxShadow:t.shadow,textAlign:"left"}}>
+              <div style={{fontSize:11,fontWeight:700,color:t.accent,marginBottom:8,letterSpacing:0.5}}>Composite Score Methodology</div>
+              <div style={{fontSize:11,color:t.textMuted,marginBottom:6,lineHeight:1.5}}>Each metric scored 0–100 based on where its current value sits between the historical average (score 0) and the worst crisis-era peak (score 100).</div>
+              <div style={{fontSize:10,color:t.textDim,marginBottom:10,lineHeight:1.4,fontFamily:"monospace"}}>Formula: (Current − Avg) / (Crisis − Avg) × 100, clamped 0–100. For metrics where lower = riskier, the formula inverts.</div>
+              <div style={{maxHeight:240,overflowY:"auto",marginBottom:10}}>
+                {MS.map((m,i) => (
+                  <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:`1px solid ${t.border}`,gap:8}}>
+                    <span style={{fontSize:10,color:t.text,flex:1,minWidth:0}}>{m.nm}</span>
+                    <span style={{fontSize:9,color:t.textDim,fontFamily:"monospace",whiteSpace:"nowrap"}}>
+                      {m.dir === 1
+                        ? `(${m.nv}−${m.na})/(${m.nc}−${m.na})`
+                        : `(${m.na}−${m.nv})/(${m.na}−${m.nc})`}
+                    </span>
+                    <span style={{fontSize:10,fontWeight:700,fontFamily:"monospace",color:sigColor(m.sig,t),minWidth:24,textAlign:"right"}}>{m.sc}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{borderTop:`1px solid ${t.border}`,paddingTop:8}}>
+                <div style={{fontSize:11,color:t.text,fontFamily:"monospace",lineHeight:1.6}}>
+                  <span style={{color:t.textMuted}}>Sum:</span> {OS_SUM} <span style={{color:t.textMuted}}>÷</span> {MS.length} <span style={{color:t.textMuted}}>metrics =</span> <strong style={{color:t.yellow}}>{(OS_SUM / MS.length).toFixed(1)} ≈ {OS}</strong>
+                </div>
+              </div>
             </div>
           </div>
           <div style={{height:200}}>
@@ -469,10 +569,10 @@ function TabEquity() {
         <AC data={fwdPE} color={t.yellow} id="fF" name="Fwd P/E" refY={16.7} refLabel="25Y Avg" domainY={[8,30]} />
       </ChartCard>
       <ChartCard title="Buffett Indicator (1970–2026)" signal="red" interp="At 217%, highest ever. But S&P earns 40% abroad (GDP = domestic only) and margins doubled from 6% to 12%. Still demands respect as a mean-reversion signal.">
-        <AC data={buffett} color={t.red} id="bF" name="Mkt Cap/GDP %" yFmt={v => `${v}%`} refY={90} refLabel="Avg: 90%" />
+        <AC data={buffett} color={t.red} id="bF" name="Mkt Cap/GDP" unit="%" yFmt={v => `${v}%`} refY={90} refLabel="Avg: 90%" />
       </ChartCard>
       <ChartCard title="Equity Risk Premium (1995–2026)" signal="red" interp="ERP at 0.6% is razor-thin but positive. In 1999 it went NEGATIVE. Today investors are barely compensated for equity risk — not as extreme as 2000 but a clear warning sign.">
-        <AC data={erpD} color={t.blue} id="eF" name="ERP %" yFmt={v => `${v}%`} refY={0} refLabel="Zero (Danger)" refColor={t.red} />
+        <AC data={erpD} color={t.blue} id="eF" name="ERP" unit="%" yFmt={v => `${v}%`} refY={0} refLabel="Zero (Danger)" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
         <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
@@ -495,7 +595,7 @@ function TabMktStr() {
       </div>
       {[4,5,6].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
       <ChartCard title="Top 10 Concentration (1990–2026)" signal="red" interp="At 37.5%, exceeds 2000's 27%. But top 10 generate 32.5% of earnings — the premium is earned. Idiosyncratic risk is real: one NVIDIA miss moves the index.">
-        <AC data={conc} color={t.purple} id="coF" name="Top 10 %" yFmt={v => `${v}%`} refY={27} refLabel="2000: 27%" refColor={t.yellow} />
+        <AC data={conc} color={t.purple} id="coF" name="Top 10" unit="%" yFmt={v => `${v}%`} refY={27} refLabel="2000: 27%" refColor={t.yellow} />
       </ChartCard>
       <ChartCard title="FINRA Margin Debt ($B)" signal="red" interp="Record $1.28T but as % of market cap (1.85%), below 2000 (2.5%) and 2008 (2.7%). Relative leverage is moderate.">
         <ResponsiveContainer>
@@ -503,10 +603,10 @@ function TabMktStr() {
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
             <XAxis dataKey="y" tick={{fontSize:10,fill:t.textDim}} />
             <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={v => `$${v}B`} />
-            <Tooltip content={<ChartTip />} />
+            <Tooltip content={<ChartTip />} cursor={false} />
             <ReferenceLine x="2000" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
             <ReferenceLine x="2007" stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
-            <Bar dataKey="v" name="Margin ($B)" radius={[6,6,0,0]}>
+            <Bar dataKey="v" name="Margin ($B)" radius={[6,6,0,0]} activeBar={{fillOpacity:1}}>
               {mDebt.map((d,i) => <Cell key={i} fill={d.v > 900 ? t.red : d.v > 500 ? t.yellow : t.blue} fillOpacity={0.7} />)}
             </Bar>
           </BarChart>
@@ -543,15 +643,15 @@ function TabCredit() {
             <ReferenceLine x="2007" stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
             <ReferenceLine y={0} stroke={t.red} strokeWidth={2} label={{value:"Inversion",fill:t.red,fontSize:10,position:"insideTopLeft",dy:-8}} />
             <Area type="monotone" dataKey="v" fill={t.blue} fillOpacity={0.06} stroke="none" />
-            <Line type="monotone" dataKey="v" stroke={t.cyan} strokeWidth={2.5} dot={{r:3,fill:t.cyan}} name="10Y-2Y %" />
+            <Line type="monotone" dataKey="v" stroke={t.cyan} strokeWidth={2.5} dot={{r:3,fill:t.cyan}} name="10Y-2Y" unit="%" />
           </ComposedChart>
         </ResponsiveContainer>
       </ChartCard>
       <ChartCard title="HY Credit Spreads" signal="yellow" interp="At 3.2%, below 20Y avg of 4.9%. Calm — possibly too calm. Before 2008 spreads were 2.6% → exploded to 21.8%.">
-        <AC data={hyD} color={t.orange} id="hF" name="HY Spread %" yFmt={v => `${v}%`} refY={4.9} refLabel="20Y Avg" />
+        <AC data={hyD} color={t.orange} id="hF" name="HY Spread" unit="%" yFmt={v => `${v}%`} refY={4.9} refLabel="20Y Avg" />
       </ChartCard>
       <ChartCard title="Household Debt-to-Income" signal="green" interp="At 92%, well below historical averages. The single strongest 'not a bubble' argument. FICO ~740, 95%+ fixed-rate. Consumer is healthy.">
-        <AC data={hhD} color={t.green} id="hhF" name="Debt/Inc %" yFmt={v => `${v}%`} domainY={[40,140]} refY={133} refLabel="2008 Peak" refColor={t.red} />
+        <AC data={hhD} color={t.green} id="hhF" name="Debt/Inc" unit="%" yFmt={v => `${v}%`} domainY={[40,140]} refY={133} refLabel="2008 Peak" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
         <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
@@ -584,8 +684,8 @@ function TabMacro() {
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
             <XAxis dataKey="q" tick={{fontSize:9,fill:t.textDim}} />
             <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={v => `${v}%`} />
-            <Tooltip content={<ChartTip />} />
-            <Bar dataKey="g" name="EPS Growth %" radius={[6,6,0,0]}>
+            <Tooltip content={<ChartTip />} cursor={false} />
+            <Bar dataKey="g" name="EPS Growth" unit="%" radius={[6,6,0,0]} activeBar={{fillOpacity:1}}>
               {epsQ.map((d,i) => <Cell key={i} fill={i >= 6 ? t.blue : t.green} fillOpacity={0.7} />)}
             </Bar>
           </BarChart>
@@ -688,7 +788,7 @@ function TabGlobal() {
       </div>
       <Explainer title={MS[17].nm} info={MS[17].info} calc={MS[17].calc} />
       <ChartCard title="Global Debt-to-GDP" signal="red" interp="At 308%, elevated but off prior highs. Doesn't cause bubbles alone but makes downturns worse. Less fiscal room. Structural vulnerability, not trigger.">
-        <AC data={gdD} color={t.red} id="gdF" name="Debt/GDP %" yFmt={v => `${v}%`} />
+        <AC data={gdD} color={t.red} id="gdF" name="Debt/GDP" unit="%" yFmt={v => `${v}%`} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
         <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
@@ -703,8 +803,27 @@ function TabReport() {
   const greens = MS.filter(m => m.sig === "green");
   const yellows = MS.filter(m => m.sig === "yellow");
   const reds = MS.filter(m => m.sig === "red");
-  const radarD = [{s:"Equity Val.",sc:78},{s:"Mkt Structure",sc:67},{s:"Credit/Debt",sc:32},{s:"Macro",sc:15},{s:"Monetary",sc:43},{s:"Sentiment",sc:45},{s:"Housing",sc:40},{s:"Global",sc:65}];
-  const catScores = [{name:"Equity Valuation",sc:78,sig:"red",metrics:[0,1,2,3],data:capeData,color:t.red,id:"rCape",dataName:"CAPE",refY:17.4,refLabel:"Avg: 17.4"},{name:"Market Structure",sc:67,sig:"yellow",metrics:[4,5,6],data:conc,color:t.purple,id:"rConc",dataName:"Top 10 %",refY:27,refLabel:"2000: 27%",yFmt:v=>`${v}%`},{name:"Credit & Debt",sc:32,sig:"green",metrics:[7,8,9],data:hyD,color:t.orange,id:"rHY",dataName:"HY Spread %",refY:4.9,refLabel:"20Y Avg",yFmt:v=>`${v}%`},{name:"Macro Fundamentals",sc:15,sig:"green",metrics:[10,11],data:null,color:t.green,id:"rEps"},{name:"Monetary Policy",sc:43,sig:"yellow",metrics:[12,13,14],data:m2D,color:t.cyan,id:"rM2",dataName:"M2 ($T)",yFmt:v=>`$${v}T`},{name:"Sentiment",sc:45,sig:"yellow",metrics:[15],data:vixD,color:t.yellow,id:"rVix",dataName:"VIX",refY:20,refLabel:"Avg ~20"},{name:"Housing",sc:40,sig:"yellow",metrics:[16],data:csD,color:t.orange,id:"rCS",dataName:"Case-Shiller",refY:190,refLabel:"2006 Peak"},{name:"Global Risk",sc:65,sig:"red",metrics:[17],data:gdD,color:t.red,id:"rGD",dataName:"Debt/GDP %",yFmt:v=>`${v}%`}];
+  const radarD = [
+    {s:"Equity Val.", sc: Math.round([0,1,2,3].reduce((a,i) => a + MS[i].sc, 0) / 4)},
+    {s:"Mkt Structure", sc: Math.round([4,5,6].reduce((a,i) => a + MS[i].sc, 0) / 3)},
+    {s:"Credit/Debt", sc: Math.round([7,8,9].reduce((a,i) => a + MS[i].sc, 0) / 3)},
+    {s:"Macro", sc: Math.round([10,11].reduce((a,i) => a + MS[i].sc, 0) / 2)},
+    {s:"Monetary", sc: Math.round([12,13,14].reduce((a,i) => a + MS[i].sc, 0) / 3)},
+    {s:"Sentiment", sc: MS[15].sc},
+    {s:"Housing", sc: MS[16].sc},
+    {s:"Global", sc: MS[17].sc},
+  ];
+  const _catAvg = (idxs) => Math.round(idxs.reduce((a,i) => a + MS[i].sc, 0) / idxs.length);
+  const catScores = [
+    {name:"Equity Valuation",sc:_catAvg([0,1,2,3]),sig:sigFromScore(_catAvg([0,1,2,3])),metrics:[0,1,2,3],data:capeData,color:t.red,id:"rCape",dataName:"CAPE",refY:17.4,refLabel:"Avg: 17.4"},
+    {name:"Market Structure",sc:_catAvg([4,5,6]),sig:sigFromScore(_catAvg([4,5,6])),metrics:[4,5,6],data:conc,color:t.purple,id:"rConc",dataName:"Top 10 %",refY:27,refLabel:"2000: 27%",yFmt:v=>`${v}%`},
+    {name:"Credit & Debt",sc:_catAvg([7,8,9]),sig:sigFromScore(_catAvg([7,8,9])),metrics:[7,8,9],data:hyD,color:t.orange,id:"rHY",dataName:"HY Spread %",refY:4.9,refLabel:"20Y Avg",yFmt:v=>`${v}%`},
+    {name:"Macro Fundamentals",sc:_catAvg([10,11]),sig:sigFromScore(_catAvg([10,11])),metrics:[10,11],data:null,color:t.green,id:"rEps"},
+    {name:"Monetary Policy",sc:_catAvg([12,13,14]),sig:sigFromScore(_catAvg([12,13,14])),metrics:[12,13,14],data:m2D,color:t.cyan,id:"rM2",dataName:"M2 ($T)",yFmt:v=>`$${v}T`},
+    {name:"Sentiment",sc:MS[15].sc,sig:MS[15].sig,metrics:[15],data:vixD,color:t.yellow,id:"rVix",dataName:"VIX",refY:20,refLabel:"Avg ~20"},
+    {name:"Housing",sc:MS[16].sc,sig:MS[16].sig,metrics:[16],data:csD,color:t.orange,id:"rCS",dataName:"Case-Shiller",refY:190,refLabel:"2006 Peak"},
+    {name:"Global Risk",sc:MS[17].sc,sig:MS[17].sig,metrics:[17],data:gdD,color:t.red,id:"rGD",dataName:"Debt/GDP %",yFmt:v=>`${v}%`},
+  ];
   const sectionDivider = <div className="gradient-divider" style={{height:1,background:`linear-gradient(90deg, transparent, ${t.border}, transparent)`,margin:"36px 0"}} />;
   const sectionNum = (n, title) => (
     <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16}}>
@@ -1046,8 +1165,8 @@ function TabReport() {
                       <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
                       <XAxis dataKey="q" tick={{fontSize:9,fill:t.textDim}} />
                       <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={v => `${v}%`} />
-                      <Tooltip content={<ChartTip />} />
-                      <Bar dataKey="g" name="EPS Growth %" radius={[6,6,0,0]}>
+                      <Tooltip content={<ChartTip />} cursor={false} />
+                      <Bar dataKey="g" name="EPS Growth" unit="%" radius={[6,6,0,0]} activeBar={{fillOpacity:1}}>
                         {epsQ.map((d,i) => <Cell key={i} fill={i >= 6 ? t.blue : t.green} fillOpacity={0.7} />)}
                       </Bar>
                     </BarChart>
@@ -1193,8 +1312,8 @@ function TabReport() {
                 <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
                 <XAxis dataKey="name" tick={{fontSize:10,fill:t.textDim}} />
                 <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={v=>`${v}%`} domain={[0,60]} />
-                <Tooltip content={<ChartTip />} />
-                <Bar dataKey="prob" name="Probability %" radius={[6,6,0,0]}>
+                <Tooltip content={<ChartTip />} cursor={false} />
+                <Bar dataKey="prob" name="Probability" unit="%" radius={[6,6,0,0]} activeBar={{fillOpacity:1}}>
                   {scenarios.map((s,i) => <Cell key={i} fill={s.color} fillOpacity={0.75} />)}
                 </Bar>
               </BarChart>
@@ -1401,9 +1520,41 @@ export default function App() {
   const [fade, setFade] = useState(false);
   const scrollRef = useRef(null);
   const t = isDark ? themes.dark : themes.light;
+  const [fredData, setFredData] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => { setFade(true); const x = setTimeout(() => setFade(false), 200); return () => clearTimeout(x); }, [tab]);
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [tab]);
+
+  useEffect(() => {
+    const key = import.meta.env.VITE_FRED_API_KEY;
+    if (!key) return;
+    fetchAllFred(key).then(results => {
+      const gdpData = results['GDP'];
+      const gdp = gdpData ? gdpData.parsed : 31;
+
+      FRED_SERIES.forEach(s => {
+        if (s.idx < 0 || !results[s.series]) return;
+        const val = results[s.series].parsed;
+        const m = MS[s.idx];
+        m.cur = s.fmt(val);
+        m.asOf = results[s.series].date;
+        if (s.scoreNv) {
+          m.nv = s.scoreNv(val, gdp);
+        } else {
+          m.nv = val;
+        }
+        m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
+        m.sig = sigFromScore(m.sc);
+      });
+
+      OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
+      OS = Math.round(OS_SUM / MS.length);
+
+      setFredData(results);
+      setLastUpdated(new Date());
+    }).catch(err => console.warn('FRED fetch failed:', err));
+  }, []);
 
   const goTab = (i) => setTab(i);
 
@@ -1431,6 +1582,16 @@ export default function App() {
               <button key={i} onClick={() => setTab(i)} className={"tab-btn" + (tab===i ? " active" : "")} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
             ))}
           </div>
+          {lastUpdated && (
+            <div style={{fontSize:9,color:t.textDim,textAlign:"center",padding:"2px 0"}}>
+              Live data via FRED API · Updated {lastUpdated.toLocaleString()}
+            </div>
+          )}
+          {!import.meta.env.VITE_FRED_API_KEY && (
+            <div style={{fontSize:9,color:t.textDim,textAlign:"center",padding:"2px 0"}}>
+              Using cached data · Add VITE_FRED_API_KEY to .env for daily updates
+            </div>
+          )}
         </div>
 
         {/* Content */}
