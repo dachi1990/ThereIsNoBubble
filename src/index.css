@@ -184,6 +184,31 @@ a:hover {
   .grid-5-col { grid-template-columns: repeat(3, 1fr) !important; }
 }
 
+/* ── Tab bar scroll hint ── */
+@media (max-width: 768px) {
+  .tab-bar-outer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, var(--header-bg, #f5f7fb));
+    pointer-events: none;
+    z-index: 2;
+  }
+  .tab-bar-wrap {
+    padding-right: 48px !important;
+  }
+  .tab-bar-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  .tab-bar-wrap {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 /* ── Mobile (≤768px) ── */
 @media (max-width: 768px) {
   .grid-3-col { grid-template-columns: 1fr !important; }

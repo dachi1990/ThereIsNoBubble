@@ -1590,7 +1590,7 @@ export default function App() {
     <Ctx.Provider value={t}>
       <div style={{minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'DM Sans',system-ui,sans-serif",transition:"background 0.4s,color 0.4s"}}>
         {/* Header */}
-        <div className="header-glass" style={{borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
+        <div className="header-glass" style={{"--header-bg":t.bg,borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
           <div className="header-inner" style={{maxWidth:1200,margin:"0 auto",padding:"10px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <div style={{width:8,height:8,borderRadius:"50%",background:t.yellow,boxShadow:`0 0 10px ${t.yellow}55`}} />
@@ -1603,19 +1603,16 @@ export default function App() {
               </button>
             </div>
           </div>
-          <div className="tab-bar-wrap" style={{maxWidth:1200,margin:"0 auto",padding:"0 20px",display:"flex",overflowX:"auto"}}>
+          <div className="tab-bar-outer" style={{position:"relative",maxWidth:1200,margin:"0 auto"}}>
+          <div className="tab-bar-wrap" style={{padding:"0 20px",display:"flex",overflowX:"auto"}}>
             {tabNames.map((n,i) => (
               <button key={i} onClick={() => setTab(i)} className={"tab-btn" + (tab===i ? " active" : "")} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
             ))}
           </div>
+          </div>
           {lastUpdated && (
             <div style={{fontSize:9,color:t.textDim,textAlign:"center",padding:"2px 0"}}>
               Live data via FRED API · Updated {lastUpdated.toLocaleString()}
-            </div>
-          )}
-          {!import.meta.env.VITE_FRED_API_KEY && (
-            <div style={{fontSize:9,color:t.textDim,textAlign:"center",padding:"2px 0"}}>
-              Using cached data · Add VITE_FRED_API_KEY to .env for daily updates
             </div>
           )}
         </div>
