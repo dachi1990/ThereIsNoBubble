@@ -303,7 +303,7 @@ function Explainer({ title, info, calc }) {
 
 function Card({ children, style }) {
   const t = useT();
-  return <div className="card-hover" style={{background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:14,padding:20,boxShadow:t.cardShadow,...style}}>{children}</div>;
+  return <div className="card-hover mobile-pad" style={{background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:14,padding:20,boxShadow:t.cardShadow,...style}}>{children}</div>;
 }
 
 function ChartTip({ active, payload, label }) {
@@ -430,19 +430,19 @@ function TabDash({ goTab }) {
     <div>
       <div style={{textAlign:"center",padding:"24px 0 18px"}}>
         <div style={{fontSize:11,color:t.accent,letterSpacing:3,textTransform:"uppercase",fontWeight:700}}>Real-Time Multi-Factor Analysis</div>
-        <h1 style={{fontSize:32,fontWeight:900,color:t.text,margin:"6px 0",letterSpacing:-1.5}}>Bubble Risk Monitor</h1>
-        <p style={{color:t.textMuted,fontSize:13,maxWidth:560,margin:"0 auto"}}>18 indicators compared against the Dot-Com Bubble (2000) and Global Financial Crisis (2008).</p>
+        <h1 className="main-title" style={{fontSize:32,fontWeight:900,color:t.text,margin:"6px 0",letterSpacing:-1.5}}>Bubble Risk Monitor</h1>
+        <p className="main-subtitle" style={{color:t.textMuted,fontSize:13,maxWidth:560,margin:"0 auto"}}>18 indicators compared against the Dot-Com Bubble (2000) and Global Financial Crisis (2008).</p>
       </div>
 
       <Card style={{marginBottom:16}}>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 2fr 1fr",gap:16,alignItems:"center"}}>
+        <div className="grid-dash-main" style={{display:"grid",gridTemplateColumns:"1fr 2fr 1fr",gap:16,alignItems:"center"}}>
           <div style={{textAlign:"center",position:"relative"}} onMouseEnter={e => {const tip = e.currentTarget.querySelector('.gauge-tip'); if(tip) tip.style.display='block';}} onMouseLeave={e => {const tip = e.currentTarget.querySelector('.gauge-tip'); if(tip) tip.style.display='none';}}>
             <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600,marginBottom:4}}>Composite Risk</div>
             <Gauge score={OS} />
             <div style={{marginTop:6}}>
               <span style={{padding:"4px 12px",borderRadius:20,fontSize:10,fontWeight:700,letterSpacing:1,background:t.yellowBg,color:t.yellow,border:`1px solid ${t.yellowBorder}`}}>ELEVATED — NOT A BUBBLE</span>
             </div>
-            <div className="gauge-tip" style={{display:"none",position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",marginTop:8,zIndex:50,width:380,background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:12,padding:"14px 16px",boxShadow:t.shadow,textAlign:"left"}}>
+            <div className="gauge-tip gauge-tip-popup" style={{display:"none",position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",marginTop:8,zIndex:50,width:"min(380px, calc(100vw - 24px))",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:12,padding:"14px 16px",boxShadow:t.shadow,textAlign:"left"}}>
               <div style={{fontSize:11,fontWeight:700,color:t.accent,marginBottom:8,letterSpacing:0.5}}>Composite Score Methodology</div>
               <div style={{fontSize:11,color:t.textMuted,marginBottom:6,lineHeight:1.5}}>Each metric scored 0–100 based on where its current value sits between the historical average (score 0) and the worst crisis-era peak (score 100).</div>
               <div style={{fontSize:10,color:t.textDim,marginBottom:10,lineHeight:1.4,fontFamily:"monospace"}}>Formula: (Current − Avg) / (Crisis − Avg) × 100, clamped 0–100. For metrics where lower = riskier, the formula inverts.</div>
@@ -486,7 +486,7 @@ function TabDash({ goTab }) {
         </div>
       </Card>
 
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
+      <div className="grid-2-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
         <Card style={{borderLeft:`3px solid ${t.green}`,padding:16}}>
           <div style={{fontSize:10,color:t.green,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>Strongest Bull Signals</div>
           {greens.slice(0,3).map((m,i) => (
@@ -514,7 +514,7 @@ function TabDash({ goTab }) {
 
       <Card>
         <h3 style={{margin:"0 0 14px",fontSize:15,fontWeight:700,color:t.text}}>Complete Scorecard — 18 Metrics</h3>
-        <div style={{overflowX:"auto"}}>
+        <div className="table-responsive" style={{overflowX:"auto"}}>
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -555,7 +555,7 @@ function TabEquity() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Equity Valuation Metrics</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Are equity prices justified by fundamentals?</p>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-4-col" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="CAPE" value="38.8" sub="vs 17.4 avg" color={t.red} /></Card>
         <Card><StatBox label="Fwd P/E" value="20.9" sub="vs 18.9 10Y" color={t.yellow} /></Card>
         <Card><StatBox label="Buffett" value="217%" sub="vs 90% avg" color={t.red} /></Card>
@@ -588,7 +588,7 @@ function TabMktStr() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Market Structure & Breadth</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>How narrow is the rally and how much leverage exists?</p>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="Top 10" value="37.5%" sub="vs 19% avg" color={t.red} /></Card>
         <Card><StatBox label="Margin Debt" value="$1.28T" sub="Record" color={t.red} /></Card>
         <Card><StatBox label="Margin/Cap" value="1.85%" sub="Below 2000" color={t.green} /></Card>
@@ -626,7 +626,7 @@ function TabCredit() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Credit & Debt Metrics</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Credit is the lifeblood of bubbles. 2008 was a credit crisis.</p>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="Yield Curve" value="+52bp" sub="Positively sloped" color={t.green} /></Card>
         <Card><StatBox label="HY Spread" value="3.2%" sub="vs 4.9% avg" color={t.yellow} /></Card>
         <Card><StatBox label="HH Debt/Inc" value="92%" sub="vs 133% (2008)" color={t.green} /></Card>
@@ -667,7 +667,7 @@ function TabMacro() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Macro Fundamentals</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Does the real economy support prices?</p>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-4-col" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="EPS Growth" value="+15.3%" color={t.green} /></Card>
         <Card><StatBox label="GDP" value="2.0%" color={t.green} /></Card>
         <Card><StatBox label="Unemp." value="4.4%" color={t.green} /></Card>
@@ -705,7 +705,7 @@ function TabMoney() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Monetary Policy & Liquidity</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>The Fed almost always pops the bubble.</p>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="Fed Funds" value="3.6%" color={t.green} /></Card>
         <Card><StatBox label="M2" value="$22.4T" sub="+4.6% YoY" color={t.yellow} /></Card>
         <Card><StatBox label="Fed BS" value="$6.6T" sub="Down from $9T" color={t.yellow} /></Card>
@@ -731,7 +731,7 @@ function TabSent() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Sentiment</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Capturing "irrational exuberance" — or the lack thereof.</p>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="VIX" value="22.4" color={t.yellow} /></Card>
         <Card><StatBox label="UMich" value="56.4" sub="Below avg" color={t.yellow} /></Card>
         <Card><StatBox label="IPOs" value="Subdued" color={t.green} /></Card>
@@ -758,7 +758,7 @@ function TabHousing() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Housing</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>2008 was a housing bubble. Is today different?</p>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="Case-Shiller" value="327.5" color={t.yellow} /></Card>
         <Card><StatBox label="YoY" value="+1.3%" color={t.green} /></Card>
         <Card><StatBox label="Avg FICO" value="~740" color={t.green} /></Card>
@@ -781,7 +781,7 @@ function TabGlobal() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Global & Structural Risk</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Systemic vulnerabilities beyond the US market.</p>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="Global Debt/GDP" value="308%" color={t.red} /></Card>
         <Card><StatBox label="US Debt/GDP" value="~124%" color={t.red} /></Card>
         <Card><StatBox label="Geopolitical" value="Elevated" color={t.yellow} /></Card>
@@ -828,7 +828,7 @@ function TabReport() {
   const sectionNum = (n, title) => (
     <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16}}>
       <div style={{width:36,height:36,borderRadius:"50%",background:t.accentBg,border:`1.5px solid ${t.accent}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,fontWeight:800,color:t.accent,flexShrink:0}}>{n}</div>
-      <h2 style={{margin:0,fontSize:20,fontWeight:800,color:t.text,letterSpacing:-0.5}}>{title}</h2>
+      <h2 className="section-heading" style={{margin:0,fontSize:20,fontWeight:800,color:t.text,letterSpacing:-0.5}}>{title}</h2>
     </div>
   );
   const prose = (text) => <p style={{margin:"0 0 14px",fontSize:13.5,lineHeight:1.85,color:t.textMuted}}>{text}</p>;
@@ -938,10 +938,10 @@ function TabReport() {
       <div style={{borderBottom:`2px solid ${t.accent}`,paddingBottom:28,marginBottom:0}}>
         <div style={{textAlign:"center",padding:"24px 0 8px"}}>
           <div style={{fontSize:10,color:t.accent,letterSpacing:4,textTransform:"uppercase",fontWeight:700,marginBottom:6}}>Equity Strategy Research — Thematic Deep Dive</div>
-          <h1 style={{fontSize:34,fontWeight:900,color:t.text,margin:"6px 0 4px",letterSpacing:-1.5,lineHeight:1.1}}>U.S. Equity Market Bubble Risk Assessment</h1>
-          <h2 style={{fontSize:16,fontWeight:400,color:t.textMuted,margin:"8px 0 0",fontStyle:"italic"}}>A Comprehensive Multi-Factor Quantitative and Qualitative Framework for Systemic Market Risk Evaluation</h2>
+          <h1 className="report-title" style={{fontSize:34,fontWeight:900,color:t.text,margin:"6px 0 4px",letterSpacing:-1.5,lineHeight:1.1}}>U.S. Equity Market Bubble Risk Assessment</h1>
+          <h2 className="report-subtitle" style={{fontSize:16,fontWeight:400,color:t.textMuted,margin:"8px 0 0",fontStyle:"italic"}}>A Comprehensive Multi-Factor Quantitative and Qualitative Framework for Systemic Market Risk Evaluation</h2>
         </div>
-        <div style={{display:"flex",justifyContent:"center",gap:32,marginTop:20,flexWrap:"wrap"}}>
+        <div className="report-header-meta" style={{display:"flex",justifyContent:"center",gap:32,marginTop:20,flexWrap:"wrap"}}>
           {[{l:"Date",v:"March 18, 2026"},{l:"Lead Analyst",v:"Dachi Gubadze"},{l:"Classification",v:"ELEVATED BUT SUPPORTED"},{l:"Composite Score",v:`${OS}/100`},{l:"Prior Rating",v:"N/A (Initiation)"}].map((x,i)=>(
             <div key={i} style={{textAlign:"center"}}>
               <div style={{fontSize:9,color:t.textDim,textTransform:"uppercase",letterSpacing:1.5,fontWeight:600}}>{x.l}</div>
@@ -951,7 +951,7 @@ function TabReport() {
         </div>
       </div>
 
-      <div style={{maxWidth:760,margin:"0 auto",paddingTop:28}}>
+      <div className="report-content" style={{maxWidth:760,margin:"0 auto",paddingTop:28}}>
 
         {/* ═══════ SECTION 2: EXECUTIVE SUMMARY ═══════ */}
         {sectionNum(1, "Executive Summary")}
@@ -969,7 +969,7 @@ function TabReport() {
         </Card>
 
         {/* Key metrics summary strip */}
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:20}}>
+        <div className="grid-4-col" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:20}}>
           {[{l:"Composite",v:OS+"/100",c:t.yellow},{l:"Green Signals",v:greens.length,c:t.green},{l:"Yellow Signals",v:yellows.length,c:t.yellow},{l:"Red Signals",v:reds.length,c:t.red}].map((x,i)=>(
             <Card key={i} style={{textAlign:"center",padding:14,borderTop:`3px solid ${x.c}`}}>
               <div style={{fontSize:9,color:t.textDim,textTransform:"uppercase",letterSpacing:1.5,fontWeight:600}}>{x.l}</div>
@@ -988,7 +988,7 @@ function TabReport() {
 
         <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Scoring Scale Interpretation</h4>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:8}}>
+          <div className="grid-5-col" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:8}}>
             {[{range:"0-20",label:"Low Risk",color:t.green,desc:"Fundamentals strong; well below historical risk"},{range:"20-40",label:"Below Avg",color:t.green,desc:"Modest risk; conditions broadly supportive"},{range:"40-60",label:"Elevated",color:t.yellow,desc:"Above-average risk; caution warranted"},{range:"60-80",label:"High Risk",color:t.orange,desc:"Significant stress; multiple warning signals"},{range:"80-100",label:"Extreme",color:t.red,desc:"Crisis-level; systemic dislocation probable"}].map((x,i)=>(
               <div key={i} style={{padding:10,borderRadius:8,background:t.bgCardAlt,borderTop:`3px solid ${x.color}`,textAlign:"center"}}>
                 <div style={{fontSize:14,fontWeight:800,color:x.color}}>{x.range}</div>
@@ -1001,6 +1001,7 @@ function TabReport() {
 
         <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Category Breakdown & Weights</h4>
+          <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -1021,6 +1022,7 @@ function TabReport() {
               ))}
             </tbody>
           </table>
+          </div>
         </Card>
 
         {sectionDivider}
@@ -1030,7 +1032,7 @@ function TabReport() {
         {prose("The composite risk score of " + OS + "/100 positions the current market environment in the upper band of the \"Elevated\" zone. This reading captures the fundamental tension that defines the March 2026 market: valuations that are historically extreme by nearly every traditional metric, coexisting with macroeconomic fundamentals and corporate earnings that provide genuine support for elevated price levels. The radar chart below visualizes the dispersion of risk across our eight analytical categories, revealing a highly asymmetric risk profile — concentrated primarily in equity valuation and global structural risk, with credit conditions and macroeconomic fundamentals providing significant counterbalancing strength.")}
 
         <Card style={{marginBottom:20,padding:20}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,alignItems:"center"}}>
+          <div className="grid-report-gauge" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,alignItems:"center"}}>
             <div style={{textAlign:"center"}}>
               <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600,marginBottom:6}}>Composite Risk Score</div>
               <Gauge score={OS} />
@@ -1057,6 +1059,7 @@ function TabReport() {
         {/* Category scores detailed table */}
         <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Category Risk Score Detail</h4>
+          <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -1087,6 +1090,7 @@ function TabReport() {
               ))}
             </tbody>
           </table>
+          </div>
         </Card>
 
         {sectionDivider}
@@ -1118,7 +1122,7 @@ function TabReport() {
               ))}
 
               {/* Metric comparison table for this category */}
-              <div style={{marginTop:14,marginBottom:14}}>
+              <div className="table-responsive" style={{marginTop:14,marginBottom:14}}>
                 <div style={{fontSize:10,color:t.accent,fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8}}>Constituent Metrics</div>
                 <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
                   <thead>
@@ -1194,6 +1198,7 @@ function TabReport() {
 
         <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Signal Correlation Matrix</h4>
+          <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -1217,6 +1222,7 @@ function TabReport() {
               ))}
             </tbody>
           </table>
+          </div>
           <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8,borderLeft:`3px solid ${t.accent}`}}>
             <p style={{margin:0,fontSize:11,color:t.textMuted,lineHeight:1.6}}><strong style={{color:t.accent}}>Key Takeaway:</strong> Of 11 major metric pairs analyzed, 5 are confirming, 4 are diverging, and 2 are partially offsetting. The most significant divergence is between AI infrastructure investment and traditional software revenue — a leading indicator of the creative destruction that will reshape the composition of equity indices over the next 3-5 years. This mixed signal profile is characteristic not of a late-cycle bubble, but of a market undergoing structural transformation driven by the AI revolution.</p>
           </div>
@@ -1230,6 +1236,7 @@ function TabReport() {
 
         <Card style={{marginBottom:20,padding:18,overflowX:"auto"}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Comprehensive Historical Comparison</h4>
+          <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,minWidth:600}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -1269,6 +1276,7 @@ function TabReport() {
               ))}
             </tbody>
           </table>
+          </div>
           <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8,borderLeft:`3px solid ${t.green}`}}>
             <p style={{margin:0,fontSize:11,color:t.textMuted,lineHeight:1.6}}><strong style={{color:t.green}}>Summary:</strong> Of 16 comparison dimensions (excluding Recovery Time), current conditions are more favorable than historical crisis peaks in 10 categories, comparable in 3, and less favorable in 2 — with the technological catalyst dimension representing an entirely new variable that no prior framework has had to account for. The AI revolution is not comparable to the internet; it is comparable to the invention of cognitive labor itself. The absence of an identifiable transmission mechanism and the presence of a technological catalyst of unprecedented magnitude together form the strongest argument that current valuations reflect rational pricing of a civilizational transformation rather than speculative excess.</p>
           </div>
@@ -1280,7 +1288,7 @@ function TabReport() {
         {sectionNum(7, "Scenario Analysis")}
         {prose("The following scenario analysis presents four distinct forward-looking market pathways, each with an assigned probability, 12-month S&P 500 target range, expected return implications, key underlying assumptions, and portfolio positioning implications. Probabilities are derived from a combination of historical base rates for analogous market conditions, current fundamental and technical indicators, and qualitative assessment of emerging risk vectors. These scenarios are not mutually exclusive — elements of multiple scenarios may manifest simultaneously — but are presented as discrete outcomes to facilitate strategic planning.")}
 
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
+        <div className="grid-scenarios" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:20}}>
           {scenarios.map((s,i)=>(
             <Card key={i} style={{padding:18,borderTop:`4px solid ${s.color}`}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}}>
@@ -1342,6 +1350,7 @@ function TabReport() {
 
         <Card style={{marginBottom:20,padding:18,overflowX:"auto"}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Catalyst Trigger Matrix</h4>
+          <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,minWidth:600}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -1362,6 +1371,7 @@ function TabReport() {
               ))}
             </tbody>
           </table>
+          </div>
           <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8,borderLeft:`3px solid ${t.yellow}`}}>
             <p style={{margin:0,fontSize:11,color:t.textMuted,lineHeight:1.6}}><strong style={{color:t.yellow}}>Current Status:</strong> Of 9 monitored catalyst categories, 5 show no trigger activation (Green), 4 show elevated monitoring status (Yellow), and 0 show active trigger breach (Red). The AI Disruption catalyst deserves particular attention: while no major SaaS incumbent has yet reported a &gt;20% revenue decline attributable to AI-native competition, the early indicators — accelerating adoption of AI coding assistants, AI-generated customer service, and AI-native workflow tools — suggest this trigger may activate within 12-18 months.</p>
           </div>
@@ -1376,6 +1386,7 @@ function TabReport() {
 
         <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Tactical Asset Allocation Framework (12-Month Horizon)</h4>
+          <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -1397,12 +1408,13 @@ function TabReport() {
               ))}
             </tbody>
           </table>
+          </div>
         </Card>
 
         {/* Sector positioning */}
         <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Sector Positioning Recommendations</h4>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
+          <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
             <div style={{padding:12,borderRadius:8,background:t.greenBg,border:`1px solid ${t.greenBorder}`}}>
               <div style={{fontSize:10,fontWeight:700,color:t.green,letterSpacing:1,textTransform:"uppercase",marginBottom:8}}>Overweight</div>
               {["AI Infrastructure & Semiconductors (compute backbone of the revolution)","Technology — AI-native platforms only (not legacy SaaS)","Healthcare (defensive + AI drug discovery + diagnostics)","Industrials (reshoring, data center construction, energy infrastructure)","Financials (NIM expansion, deregulation, AI-driven efficiency)"].map((s,i)=>(
@@ -1446,7 +1458,7 @@ function TabReport() {
 
         <Card style={{marginBottom:16,padding:18}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>A. Data Sources & Methodology Notes</h4>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+          <div className="grid-2-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
             <div>
               <div style={{fontSize:10,fontWeight:700,color:t.text,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>Primary Data Sources</div>
               {["Federal Reserve Economic Data (FRED)","FactSet Earnings Insight","Robert Shiller Online Data","S&P Global Market Intelligence","FINRA Margin Statistics","ICE BofA Credit Indices","CBOE Volatility Index (VIX)","S&P CoreLogic Case-Shiller","University of Michigan Surveys","IIF Global Debt Monitor"].map((s,i)=>(
@@ -1464,6 +1476,7 @@ function TabReport() {
 
         <Card style={{marginBottom:16,padding:18}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>B. Complete Metric Scorecard</h4>
+          <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -1492,6 +1505,7 @@ function TabReport() {
               </tr>
             </tbody>
           </table>
+          </div>
         </Card>
 
         <Card style={{marginBottom:16,padding:18,background:t.bgCardAlt}}>
@@ -1577,7 +1591,7 @@ export default function App() {
       <div style={{minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'DM Sans',system-ui,sans-serif",transition:"background 0.4s,color 0.4s"}}>
         {/* Header */}
         <div className="header-glass" style={{borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
-          <div style={{maxWidth:1200,margin:"0 auto",padding:"10px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div className="header-inner" style={{maxWidth:1200,margin:"0 auto",padding:"10px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <div style={{width:8,height:8,borderRadius:"50%",background:t.yellow,boxShadow:`0 0 10px ${t.yellow}55`}} />
               <span style={{fontSize:14,fontWeight:800,letterSpacing:-0.5}}>BUBBLE RISK MONITOR</span>
@@ -1589,7 +1603,7 @@ export default function App() {
               </button>
             </div>
           </div>
-          <div style={{maxWidth:1200,margin:"0 auto",padding:"0 20px",display:"flex",overflowX:"auto"}}>
+          <div className="tab-bar-wrap" style={{maxWidth:1200,margin:"0 auto",padding:"0 20px",display:"flex",overflowX:"auto"}}>
             {tabNames.map((n,i) => (
               <button key={i} onClick={() => setTab(i)} className={"tab-btn" + (tab===i ? " active" : "")} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
             ))}
@@ -1607,7 +1621,7 @@ export default function App() {
         </div>
 
         {/* Content */}
-        <div ref={scrollRef} className={fade ? "" : "animate-fade-in"} style={{maxWidth:1200,margin:"0 auto",padding:"20px 20px 50px"}}>
+        <div ref={scrollRef} className={(fade ? "" : "animate-fade-in") + " content-wrap"} style={{maxWidth:1200,margin:"0 auto",padding:"20px 20px 50px"}}>
           {tab === 0 ? <TabDash goTab={goTab} /> : ActiveTab ? <ActiveTab /> : null}
         </div>
 
