@@ -380,7 +380,7 @@ function ChartCard({ title, sub, children, signal, interp }) {
       </div>
       <div style={{height:260}}>{children}</div>
       {interp && (
-        <div style={{marginTop:14,padding:"12px 16px",background:t.bgCardAlt,borderRadius:10,borderLeft:`3px solid ${signal ? sigColor(signal,t) : t.accent}`}}>
+        <div style={{marginTop:14,padding:"12px 16px",background:t.bgCardAlt,borderRadius:10}}>
           <p style={{margin:0,fontSize:13,lineHeight:1.65,color:t.textMuted}}>{interp}</p>
         </div>
       )}
@@ -543,7 +543,7 @@ function TabDash({ goTab }) {
       </Card>
 
       <div className="grid-2-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
-        <Card style={{borderLeft:`3px solid ${t.green}`,padding:16}}>
+        <Card style={{padding:16}}>
           <div style={{fontSize:10,color:t.green,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>Strongest Bull Signals</div>
           {greens.slice(0,3).map((m,i) => (
             <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:i < 2 ? `1px solid ${t.border}` : "none"}}>
@@ -552,7 +552,7 @@ function TabDash({ goTab }) {
             </div>
           ))}
         </Card>
-        <Card style={{borderLeft:`3px solid ${t.red}`,padding:16}}>
+        <Card style={{padding:16}}>
           <div style={{fontSize:10,color:t.red,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>Key Risk Signals</div>
           {reds.slice(0,3).map((m,i) => (
             <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:i < 2 ? `1px solid ${t.border}` : "none"}}>
@@ -563,7 +563,7 @@ function TabDash({ goTab }) {
         </Card>
       </div>
 
-      <Card style={{marginBottom:16,borderLeft:`3px solid ${t.accent}`}}>
+      <Card style={{marginBottom:16}}>
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.accent}}>THESIS: Stretched but Not a Bubble</h3>
         <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>Valuations (CAPE 38.8, Buffett 217%) are extreme, but today's mega-caps produce massive real earnings. Household balance sheets are healthy (92% vs 133% in 2008). ERP remains positive at 0.6% (vs negative in 2000). Credit shows no systemic stress. Expensive but fundamentally supported.</p>
       </Card>
@@ -756,7 +756,7 @@ function TabMacro() {
         <Card><StatBox label="Core CPI" value="2.6%" color={t.yellow} /></Card>
       </div>
       {[10,11].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <Card style={{marginBottom:20,borderLeft:`3px solid ${t.green}`}}>
+      <Card style={{marginBottom:20}}>
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.green}}>Assessment: Fundamentally Sound</h3>
         <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>EPS growing 15.3% on real 8% revenue. GDP expanding at 2.0%, unemployment stable, inflation cooling. In 2000 earnings fell; in 2008 the economy contracted. Today, reality follows the prices.</p>
       </Card>
@@ -1038,7 +1038,7 @@ function TabReport() {
 
         {/* ═══════ SECTION 2: EXECUTIVE SUMMARY ═══════ */}
         {sectionNum(1, "Executive Summary")}
-        <Card style={{marginBottom:20,borderLeft:`4px solid ${t.yellow}`,padding:24}}>
+        <Card style={{marginBottom:20,padding:24}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
             <span style={{padding:"4px 14px",borderRadius:20,fontSize:11,fontWeight:800,letterSpacing:1,background:t.yellowBg,color:t.yellow,border:`1px solid ${t.yellowBorder}`}}>VERDICT: ELEVATED — NOT A BUBBLE</span>
             <span style={{fontSize:12,fontWeight:700,color:t.yellow}}>{OS}/100</span>
@@ -1069,7 +1069,7 @@ function TabReport() {
         {prose("The composite score is calculated as the unweighted arithmetic mean of all 20 individual metric scores. While more sophisticated weighting schemes (e.g., factor-loading-based, principal component-derived) could theoretically improve predictive accuracy, the unweighted approach provides transparency, reproducibility, and resistance to overfitting — qualities we consider essential for a framework intended to inform investment decisions under conditions of fundamental uncertainty. The traffic-light classification (Green/Healthy, Yellow/Caution, Red/Elevated) represents a qualitative overlay informed by the quantitative scores but incorporating contextual judgment that purely mechanical scoring cannot capture.")}
         {prose("A critical limitation of this framework — and indeed of all historical comparison-based valuation models — is that it benchmarks current conditions against crisis periods that occurred before the AI era. The 1929, 2000, and 2008 dislocations all took place in economies where cognitive labor was exclusively human, software was expensive to build and distribute, and productivity growth was constrained by biological limits on human output. No prior analytical framework accounts for a technology that can replicate, augment, and eventually surpass cognitive labor across virtually every economic domain. This means our historical comparisons may systematically overstate risk by anchoring to a world that no longer exists. We flag this not to dismiss the framework's utility — historical patterns remain the best available guide — but to acknowledge that if AI represents a genuine phase change in economic capability, then backward-looking metrics may be measuring the wrong baseline.")}
 
-        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Scoring Scale Interpretation</h4>
           <div className="grid-5-col" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:8}}>
             {[{range:"0-20",label:"Low Risk",color:t.green,desc:"Fundamentals strong; well below historical risk"},{range:"20-40",label:"Below Avg",color:t.green,desc:"Modest risk; conditions broadly supportive"},{range:"40-60",label:"Elevated",color:t.yellow,desc:"Above-average risk; caution warranted"},{range:"60-80",label:"High Risk",color:t.orange,desc:"Significant stress; multiple warning signals"},{range:"80-100",label:"Extreme",color:t.red,desc:"Crisis-level; systemic dislocation probable"}].map((x,i)=>(
@@ -1082,7 +1082,7 @@ function TabReport() {
           </div>
         </Card>
 
-        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Category Breakdown & Weights</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
@@ -1114,7 +1114,7 @@ function TabReport() {
         {sectionNum(3, "Composite Risk Assessment")}
         {prose("The composite risk score of " + OS + "/100 positions the current market environment in the upper band of the \"Elevated\" zone. This reading captures the fundamental tension that defines the March 2026 market: valuations that are historically extreme by nearly every traditional metric, coexisting with macroeconomic fundamentals and corporate earnings that provide genuine support for elevated price levels. The radar chart below visualizes the dispersion of risk across our eight analytical categories, revealing a highly asymmetric risk profile — concentrated primarily in equity valuation and global structural risk, with credit conditions and macroeconomic fundamentals providing significant counterbalancing strength.")}
 
-        <Card style={{marginBottom:20,padding:20,borderLeft:`4px solid ${t.yellow}`}}>
+        <Card style={{marginBottom:20,padding:20}}>
           <div className="grid-report-gauge" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,alignItems:"center"}}>
             <div style={{textAlign:"center"}}>
               <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600,marginBottom:6}}>Composite Risk Score</div>
@@ -1140,7 +1140,7 @@ function TabReport() {
         </Card>
 
         {/* Category scores detailed table */}
-        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.yellow}`}}>
+        <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Category Risk Score Detail</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
@@ -1184,7 +1184,7 @@ function TabReport() {
 
         {catScores.map((cat, ci) => (
           <div key={ci} style={{marginBottom:30}}>
-            <Card style={{marginBottom:14,borderLeft:`4px solid ${cat.sc<30?t.green:cat.sc<60?t.yellow:t.red}`}}>
+            <Card style={{marginBottom:14}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
                 <div>
                   <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600}}>Category {ci+1} of 8</div>
@@ -1279,7 +1279,7 @@ function TabReport() {
         {prose("Understanding the relationships between individual risk metrics is essential for assessing whether warning signals are reinforcing one another (confirming) or sending contradictory messages (diverging). Confirming signals across multiple categories strengthen the conviction behind a directional assessment, while divergences suggest a more nuanced risk environment that resists simple classification. The table below maps the key inter-metric relationships and their current directional alignment.")}
         {prose("A critical observation from this analysis is that the most dangerous configuration — in which valuation, credit, macro, and sentiment signals all simultaneously flash red — is notably absent. The current environment is characterized by a bifurcation: valuation and structural metrics signal elevated risk, while credit, macro, and sentiment metrics signal relative health. This divergence is itself the strongest evidence against a bubble classification, as historical bubbles have been characterized by broad-based deterioration across multiple categories simultaneously.")}
 
-        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Signal Correlation Matrix</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
@@ -1306,7 +1306,7 @@ function TabReport() {
             </tbody>
           </table>
           </div>
-          <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8,borderLeft:`3px solid ${t.accent}`}}>
+          <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8}}>
             <p style={{margin:0,fontSize:11,color:t.textMuted,lineHeight:1.6}}><strong style={{color:t.accent}}>Key Takeaway:</strong> Of 11 major metric pairs analyzed, 5 are confirming, 4 are diverging, and 2 are partially offsetting. The most significant divergence is between AI infrastructure investment and traditional software revenue — a leading indicator of the creative destruction that will reshape the composition of equity indices over the next 3-5 years. This mixed signal profile is characteristic not of a late-cycle bubble, but of a market undergoing structural transformation driven by the AI revolution.</p>
           </div>
         </Card>
@@ -1317,7 +1317,7 @@ function TabReport() {
         {sectionNum(6, "Expanded Historical Comparison Matrix")}
         {prose("The following matrix provides a comprehensive comparison of current market conditions against the three most significant market dislocations in modern financial history: the 1929 crash that precipitated the Great Depression, the 2000 dot-com bubble collapse, and the 2008 Global Financial Crisis. Each comparison dimension is evaluated to determine whether current conditions are more or less favorable than at those historical crisis points. This matrix is designed to provide a holistic, at-a-glance assessment of the structural similarities and differences that define the current risk environment.")}
 
-        <Card style={{marginBottom:20,padding:18,overflowX:"auto",borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:20,padding:18,overflowX:"auto"}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Comprehensive Historical Comparison</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,minWidth:600}}>
@@ -1360,7 +1360,7 @@ function TabReport() {
             </tbody>
           </table>
           </div>
-          <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8,borderLeft:`3px solid ${t.green}`}}>
+          <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8}}>
             <p style={{margin:0,fontSize:11,color:t.textMuted,lineHeight:1.6}}><strong style={{color:t.green}}>Summary:</strong> Of 16 comparison dimensions (excluding Recovery Time), current conditions are more favorable than historical crisis peaks in 10 categories, comparable in 3, and less favorable in 2 — with the technological catalyst dimension representing an entirely new variable that no prior framework has had to account for. The AI revolution is not comparable to the internet; it is comparable to the invention of cognitive labor itself. The absence of an identifiable transmission mechanism and the presence of a technological catalyst of unprecedented magnitude together form the strongest argument that current valuations reflect rational pricing of a civilizational transformation rather than speculative excess.</p>
           </div>
         </Card>
@@ -1395,7 +1395,7 @@ function TabReport() {
                   <li key={ai} style={{fontSize:11,color:t.textMuted,lineHeight:1.6,marginBottom:2}}>{a}</li>
                 ))}
               </ul>
-              <div style={{padding:"8px 10px",background:t.bgCardAlt,borderRadius:6,borderLeft:`2px solid ${s.color}`}}>
+              <div style={{padding:"8px 10px",background:t.bgCardAlt,borderRadius:6}}>
                 <div style={{fontSize:9,color:t.textDim,fontWeight:600,textTransform:"uppercase",letterSpacing:1,marginBottom:3}}>Portfolio Implication</div>
                 <div style={{fontSize:11,color:t.textMuted,lineHeight:1.5}}>{s.implication}</div>
               </div>
@@ -1404,7 +1404,7 @@ function TabReport() {
         </div>
 
         {/* Probability distribution visual */}
-        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Probability Distribution</h4>
           <div style={{height:180}}>
             <ResponsiveContainer>
@@ -1431,7 +1431,7 @@ function TabReport() {
         {prose("While our base case does not anticipate a systemic market dislocation, the compressed risk premiums and elevated valuations that characterize the current environment demand a rigorous monitoring framework for early warning signals. The following catalyst matrix identifies the specific trigger conditions that would warrant a material reassessment of our risk posture, along with current readings, status assessments, and the specific data sources to monitor for each trigger. This framework is designed to provide actionable, real-time intelligence that can inform portfolio adjustments before a potential dislocation materializes.")}
         {prose("The critical insight is that systemic crises rarely emerge from a single catalyst in isolation. Rather, they typically result from the convergence of multiple deteriorating conditions that interact in non-linear and often unpredictable ways. The monitoring framework below should therefore be evaluated holistically — the simultaneous deterioration of multiple indicators should trigger a more aggressive risk reduction than any single indicator breach in isolation.")}
 
-        <Card style={{marginBottom:20,padding:18,overflowX:"auto",borderLeft:`4px solid ${t.yellow}`}}>
+        <Card style={{marginBottom:20,padding:18,overflowX:"auto"}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Catalyst Trigger Matrix</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,minWidth:600}}>
@@ -1455,7 +1455,7 @@ function TabReport() {
             </tbody>
           </table>
           </div>
-          <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8,borderLeft:`3px solid ${t.yellow}`}}>
+          <div style={{marginTop:12,padding:"10px 14px",background:t.bgCardAlt,borderRadius:8}}>
             <p style={{margin:0,fontSize:11,color:t.textMuted,lineHeight:1.6}}><strong style={{color:t.yellow}}>Current Status:</strong> Of 9 monitored catalyst categories, 5 show no trigger activation (Green), 4 show elevated monitoring status (Yellow), and 0 show active trigger breach (Red). The AI Disruption catalyst deserves particular attention: while no major SaaS incumbent has yet reported a &gt;20% revenue decline attributable to AI-native competition, the early indicators — accelerating adoption of AI coding assistants, AI-generated customer service, and AI-native workflow tools — suggest this trigger may activate within 12-18 months.</p>
           </div>
         </Card>
@@ -1467,7 +1467,7 @@ function TabReport() {
         {prose("The analytical framework presented in this report carries direct and actionable implications for portfolio construction. The core challenge facing allocators in March 2026 is not the compression of expected returns across major asset classes — it is the unprecedented divergence between assets positioned to benefit from the AI revolution and those facing disruption by it. This is not a market that rewards passive, benchmark-hugging allocation. It rewards conviction about the direction of technological change and the willingness to position portfolios accordingly. The following framework is designed for an institutional portfolio with a 12-month tactical horizon and a structural view on AI's transformative impact.")}
         {prose("Our allocation tilts reflect the central thesis of this report: the AI revolution represents a phase change in economic productivity that will create massive winners and massive losers simultaneously. We aggressively overweight assets that are building the infrastructure layer of the AI economy — semiconductors, hyperscale cloud, data centers, energy infrastructure — while underweighting the traditional software incumbents facing existential disruption. We maintain hedges against the primary risk vectors (AI capex disappointment, geopolitical disruption of semiconductor supply chains, regulatory overreach) but size those hedges as tail-risk insurance rather than core positioning. The emphasis is on strategic conviction with tactical discipline — positioning for the revolution while managing the risks inherent in any transformation of this magnitude.")}
 
-        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Tactical Asset Allocation Framework (12-Month Horizon)</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
@@ -1495,7 +1495,7 @@ function TabReport() {
         </Card>
 
         {/* Sector positioning */}
-        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:20,padding:18}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Sector Positioning Recommendations</h4>
           <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
             <div style={{padding:12,borderRadius:8,background:t.greenBg,border:`1px solid ${t.greenBorder}`}}>
@@ -1523,7 +1523,7 @@ function TabReport() {
 
         {/* ═══════ SECTION 11: CONCLUSION ═══════ */}
         {sectionNum(10, "Conclusion")}
-        <Card style={{marginBottom:20,borderLeft:`4px solid ${t.accent}`,padding:24}}>
+        <Card style={{marginBottom:20,padding:24}}>
           {prose("After exhaustive analysis of 20 quantitative metrics spanning eight analytical categories, extensive historical comparison against the most significant market dislocations of the past century, and rigorous scenario modeling, we arrive at a definitive assessment: the U.S. equity market in March 2026 is not in a bubble. It is in the early stages of the most transformative technological revolution in human history.")}
           {prose("The AI revolution is the First and Second Industrial Revolutions compressed into five years. The steam engine mechanized physical labor over the course of a century. Electrification transformed manufacturing over decades. The internet connected information over twenty years. Artificial intelligence creates intelligence itself — and it is doing so at the exponential pace of Moore's Law rather than the linear pace of industrial adoption. This is not an iteration on prior technologies. It is a phase change in human civilization: the first technology capable of replicating, augmenting, and eventually surpassing the cognitive capabilities that have defined economic production since the Enlightenment. The implications for asset prices, corporate earnings, and economic structure are not merely significant — they are without historical precedent.")}
           {prose("Traditional valuation metrics — the CAPE at 38.8x, the Buffett Indicator at 217%, the forward P/E at 20.9x — are backward-looking tools designed to measure an industrial economy. They compare current prices to historical earnings generated by human labor, historical GDP produced by human productivity, and historical growth rates constrained by biological limits on cognitive output. These frameworks have no mechanism to price a technology that can automate legal research, medical diagnostics, software engineering, financial analysis, content creation, and scientific discovery simultaneously, at near-zero marginal cost, and at global scale. Applying CAPE ratios developed in the 1990s to an economy undergoing an intelligence revolution is like using horse-drawn carriage metrics to evaluate the early automobile industry. The framework is not wrong — it is obsolete.")}
@@ -1539,7 +1539,7 @@ function TabReport() {
         {/* ═══════ SECTION 12: APPENDIX ═══════ */}
         {sectionNum(11, "Appendix")}
 
-        <Card style={{marginBottom:16,padding:18,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:16,padding:18}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>A. Data Sources & Methodology Notes</h4>
           <div className="grid-2-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
             <div>
@@ -1557,7 +1557,7 @@ function TabReport() {
           </div>
         </Card>
 
-        <Card style={{marginBottom:16,padding:18,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:16,padding:18}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>B. Complete Metric Scorecard</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
@@ -1591,7 +1591,7 @@ function TabReport() {
           </div>
         </Card>
 
-        <Card style={{marginBottom:16,padding:18,background:t.bgCardAlt,borderLeft:`4px solid ${t.accent}`}}>
+        <Card style={{marginBottom:16,padding:18,background:t.bgCardAlt}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>C. Important Disclosures & Disclaimers</h4>
           <div style={{fontSize:10,color:t.textDim,lineHeight:1.7}}>
             <p style={{margin:"0 0 8px"}}>This report is prepared for educational and informational purposes only. It does not constitute investment advice, a solicitation, or an offer to buy or sell any securities. The views expressed herein represent the analytical conclusions of the author and are based on publicly available data.</p>
@@ -1625,9 +1625,11 @@ function TabReport() {
 
 /* ══════════════ MAIN APP ══════════════ */
 const TAB_COMPS = [null, TabEquity, TabMktStr, TabCredit, TabMacro, TabMoney, TabSent, TabHousing, TabGlobal, TabReport];
+const TAB_PATHS = ["/","/equity-valuation","/market-structure","/credit-debt","/macro","/monetary-policy","/sentiment","/housing","/global-risk","/report"];
+const pathToTab = (p) => { const i = TAB_PATHS.indexOf(p); return i >= 0 ? i : 0; };
 
 export default function App() {
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(() => pathToTab(window.location.pathname));
   const [isDark, setIsDark] = useState(false);
   const [fade, setFade] = useState(false);
   const scrollRef = useRef(null);
@@ -1637,6 +1639,8 @@ export default function App() {
 
   useEffect(() => { setFade(true); const x = setTimeout(() => setFade(false), 200); return () => clearTimeout(x); }, [tab]);
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [tab]);
+  useEffect(() => { if (TAB_PATHS[tab] !== window.location.pathname) window.history.pushState(null, "", TAB_PATHS[tab]); }, [tab]);
+  useEffect(() => { const fn = () => setTab(pathToTab(window.location.pathname)); window.addEventListener("popstate", fn); return () => window.removeEventListener("popstate", fn); }, []);
 
   useEffect(() => {
     const key = import.meta.env.VITE_FRED_API_KEY;
