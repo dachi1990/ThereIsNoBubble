@@ -39,6 +39,7 @@ let buffett=[{y:"1970",v:75},{y:"1982",v:33},{y:"1990",v:58},{y:"1995",v:92},{y:
 let erpD=[{y:"1995",v:4},{y:"1999",v:0.5},{y:"2000",v:-0.5},{y:"2004",v:3.5},{y:"2009",v:8},{y:"2015",v:4},{y:"2020",v:4.5},{y:"2022",v:2.5},{y:"2026",v:0.6}];
 let conc=[{y:"1990",v:16},{y:"1995",v:17},{y:"2000",v:27},{y:"2005",v:19},{y:"2010",v:20},{y:"2015",v:19},{y:"2020",v:28},{y:"2024",v:37},{y:"2025",v:41},{y:"2026",v:37.5}];
 let mDebt=[{y:"1997",v:132},{y:"2000",v:278},{y:"2007",v:381},{y:"2009",v:173},{y:"2014",v:451},{y:"2018",v:568},{y:"2021",v:936},{y:"2023",v:743},{y:"2026",v:1279}];
+let mDebtPct=[{y:"1997",v:2.1},{y:"2000",v:2.5},{y:"2003",v:1.6},{y:"2007",v:2.7},{y:"2009",v:1.5},{y:"2014",v:1.9},{y:"2018",v:2.0},{y:"2021",v:1.7},{y:"2023",v:1.8},{y:"2026",v:1.85}];
 let ycD=[{y:"1990",v:0.3},{y:"1995",v:1},{y:"2000",v:-0.5},{y:"2007",v:-0.2},{y:"2009",v:2.7},{y:"2013",v:2.4},{y:"2019",v:-0.05},{y:"2023",v:-1},{y:"2025",v:0.3},{y:"2026",v:0.52}];
 let hyD=[{y:"1997",v:3},{y:"2000",v:8},{y:"2007",v:2.6},{y:"2008",v:21.8},{y:"2011",v:5.5},{y:"2015",v:5.5},{y:"2018",v:3.5},{y:"2020",v:10.9},{y:"2024",v:3},{y:"2026",v:3.2}];
 let hhD=[{y:"1990",v:83},{y:"1995",v:90},{y:"2000",v:97},{y:"2005",v:125},{y:"2007",v:133},{y:"2010",v:118},{y:"2015",v:100},{y:"2020",v:95},{y:"2024",v:90},{y:"2026",v:92}];
@@ -62,6 +63,7 @@ const CHART_MAP = {
   3: () => erpD,
   4: () => conc,
   5: () => mDebt,
+  6: () => mDebtPct,
   7: () => ycD,
   8: () => hyD,
   9: () => hhD,
@@ -662,7 +664,7 @@ function TabMktStr() {
       <ChartCard title="Top 10 Concentration (1990–2026)" signal="red" interp="At 37.5%, exceeds 2000's 27%. But top 10 generate 32.5% of earnings — the premium is earned. Idiosyncratic risk is real: one NVIDIA miss moves the index.">
         <AC data={conc} color={t.purple} id="coF" name="Top 10" unit="%" yFmt={v => `${v}%`} refY={27} refLabel="2000: 27%" refColor={t.yellow} />
       </ChartCard>
-      <ChartCard title="FINRA Margin Debt ($B)" signal="red" interp="Record $1.28T but as % of market cap (1.85%), below 2000 (2.5%) and 2008 (2.7%). Relative leverage is moderate.">
+      <ChartCard title="FINRA Margin Debt ($B) — Nominal, Not Inflation-Adjusted" signal="red" interp="⚠️ Nominal margin debt will always hit 'records' due to inflation and market growth. The raw $1.28T is misleading — see the normalized chart below (Margin Debt / Market Cap) for the meaningful comparison.">
         <ResponsiveContainer>
           <BarChart data={mDebt}>
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
@@ -676,6 +678,12 @@ function TabMktStr() {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+      </ChartCard>
+      <Card style={{marginBottom:8,padding:"10px 16px",background:t.greenBg,border:`1px solid ${t.greenBorder}`,borderRadius:10}}>
+        <p style={{margin:0,fontSize:12,color:t.green,fontWeight:600}}>👇 The chart below is the meaningful measure — margin debt RELATIVE to market size. At 1.85%, leverage is actually below both 2000 and 2008 levels.</p>
+      </Card>
+      <ChartCard title="Margin Debt / Market Cap (%) — The Normalized View" signal="green" interp="At 1.85%, margin leverage relative to market size is BELOW the 2000 level (2.5%) and the 2008 level (2.7%). This is the metric that matters — raw dollar amounts are misleading because the market and economy have grown enormously. Current leverage is moderate.">
+        <AC data={mDebtPct} color={t.green} id="mdPctF" name="Margin/MktCap" unit="%" yFmt={v => `${v}%`} refY={2.5} refLabel="2000: 2.5%" refColor={t.red} domainY={[0,3.5]} />
       </ChartCard>
       <ChartCard title="Capex / GDP (%)" signal={MS[18].sig} interp="At 13.9%, approaching the dot-com overinvestment peak of 14.6%. The AI infrastructure boom is the primary driver. Crossing 14% sustained historically signals overinvestment.">
         <AC data={capexGdpD} color={t.orange} id="cxF" name="Capex/GDP" unit="%" yFmt={v => `${v}%`} refY={14.6} refLabel="2000 Peak" refColor={t.red} />
