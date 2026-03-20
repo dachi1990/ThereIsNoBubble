@@ -152,6 +152,10 @@ const FRED_SERIES = [
   { series: 'M2SL', idx: 13, parse: v => parseFloat(v) / 1e3, fmt: v => `$${v.toFixed(1)}T`, scoreNv: (v, gdp) => (v / gdp) * 100 },
   { series: 'CSUSHPISA', idx: 16, parse: v => parseFloat(v), fmt: v => v.toFixed(1) },
   { series: 'GDP', idx: -1, parse: v => parseFloat(v) / 1e3, fmt: null },
+  { series: 'A191RO1Q156NBEA', idx: 11, parse: v => parseFloat(v), fmt: v => `${v.toFixed(1)}%` },
+  { series: 'BOGZ1FL154190006Q', idx: 9, parse: v => parseFloat(v), fmt: v => `${v.toFixed(0)}%` },
+  { series: 'DGS10', idx: -2, parse: v => parseFloat(v), fmt: null },
+  { series: 'FEDFUNDS', idx: -3, parse: v => parseFloat(v), fmt: null },
 ];
 
 async function fetchFredSeries(seriesId, apiKey) {
@@ -1574,12 +1578,66 @@ export default function App() {
         m.sig = sigFromScore(m.sc);
       });
 
+      // Compute ERP from 10Y Treasury + Forward P/E (idx 3)
+      const dgs10 = results['DGS10'];
+      if (dgs10) {
+        const treasury10y = dgs10.parsed;
+        const fwdPeVal = MS[1].nv; // Forward P/E
+        const fwdEarningsYield = (1 / fwdPeVal) * 100;
+        const erp = fwdEarningsYield - treasury10y;
+        const m = MS[3]; // ERP metric
+        m.cur = `${erp.toFixed(1)}%`;
+        m.nv = erp;
+        m.asOf = dgs10.date;
+        m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
+        m.sig = sigFromScore(m.sc);
+      }
+
       OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
       OS = Math.round(OS_SUM / MS.length);
 
       setFredData(results);
       setLastUpdated(new Date());
     }).catch(err => console.warn('FRED fetch failed:', err));
+
+    // Also fetch scraped metrics (CAPE, Forward P/E, Buffett, Top 10, Margin Debt, EPS Growth)
+    fetch('/api/scraped-metrics').then(r => r.json()).then(data => {
+      if (!data.metrics) return;
+      const fmtMap = {
+        0: v => v.toFixed(1),                    // CAPE
+        1: v => v.toFixed(1),                    // Forward P/E
+        2: v => `${v.toFixed(0)}%`,              // Buffett
+        4: v => `${v.toFixed(1)}%`,              // Top 10
+        5: v => v >= 1000 ? `$${(v/1000).toFixed(2)}T` : `$${v.toFixed(0)}B`, // Margin Debt
+        10: v => `+${v.toFixed(1)}%`,            // EPS Growth
+      };
+      Object.values(data.metrics).forEach(entry => {
+        const m = MS[entry.idx];
+        if (!m) return;
+        m.cur = fmtMap[entry.idx] ? fmtMap[entry.idx](entry.value) : String(entry.value);
+        m.nv = entry.value;
+        m.asOf = data.timestamp.split('T')[0];
+        m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
+        m.sig = sigFromScore(m.sc);
+      });
+
+      // Recompute ERP if we got a fresh Forward P/E and have 10Y Treasury
+      if (data.metrics.fwdPe) {
+        const dgs10 = fredData;
+        // Use DGS10 from FRED if available, otherwise use existing nv
+        const treasury10y = MS[3].na - MS[3].nv > 0 ? 4.26 : 4.26; // fallback
+        const fwdEarningsYield = (1 / MS[1].nv) * 100;
+        const erp = fwdEarningsYield - treasury10y;
+        MS[3].cur = `${erp.toFixed(1)}%`;
+        MS[3].nv = erp;
+        MS[3].sc = riskScore(MS[3].nv, MS[3].na, MS[3].nc, MS[3].dir);
+        MS[3].sig = sigFromScore(MS[3].sc);
+      }
+
+      OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
+      OS = Math.round(OS_SUM / MS.length);
+      setLastUpdated(new Date());
+    }).catch(err => console.warn('Scraped metrics fetch failed:', err));
   }, []);
 
   const goTab = (i) => setTab(i);

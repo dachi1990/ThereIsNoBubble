@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/scraped-metrics",
+      "schedule": "0 6 * * *"
+    }
+  ]
+}
