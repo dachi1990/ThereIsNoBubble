@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   function extractNum(html, regex) {
     if (!html) return null;
     const m = html.match(regex);
-    return m ? parseFloat(m[1]) : null;
+    return m ? parseFloat(m[1].replace(/,/g, '')) : null;
   }
 
   // 1. Shiller CAPE — multpl.com
