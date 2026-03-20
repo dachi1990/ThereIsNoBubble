@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -17,38 +15,38 @@ html, body, #root {
 }
 
 body {
-  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
+  height: 5px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.3);
+  background: rgba(120, 116, 108, 0.25);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.5);
+  background: rgba(120, 116, 108, 0.4);
 }
 
 /* ─── Animations ─── */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
+  from { opacity: 0; transform: scale(0.96); }
   to   { opacity: 1; transform: scale(1); }
 }
 @keyframes shimmer {
@@ -56,35 +54,39 @@ body {
   100% { background-position: 200% 0; }
 }
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(129, 140, 248, 0); }
-  50%      { box-shadow: 0 0 20px 4px rgba(129, 140, 248, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 100, 97, 0); }
+  50%      { box-shadow: 0 0 20px 5px rgba(239, 100, 97, 0.12); }
+}
+@keyframes pulse-live {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+  50%      { box-shadow: 0 0 12px 4px rgba(52, 211, 153, 0.2); }
 }
 @keyframes gauge-fill {
   from { stroke-dasharray: 0 251; }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s ease-out both;
+  animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .animate-slide-up {
-  animation: slideUp 0.5s ease-out both;
+  animation: slideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .animate-scale-in {
-  animation: scaleIn 0.3s ease-out both;
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ─── Card enhancements ─── */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
 }
 
 .glass-card {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
 }
 
 /* ─── Table rows ─── */
@@ -92,13 +94,13 @@ body {
   transition: background-color 0.15s ease, transform 0.15s ease;
 }
 .table-row-hover:hover {
-  transform: scale(1.005);
+  transform: scale(1.004);
 }
 
 /* ─── Tab bar ─── */
 .tab-btn {
   position: relative;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition: color 0.25s ease, background-color 0.25s ease;
 }
 .tab-btn::after {
   content: '';
@@ -108,20 +110,22 @@ body {
   width: 0;
   height: 2px;
   background: currentColor;
-  transition: width 0.25s ease, left 0.25s ease;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 1px;
 }
 .tab-btn:hover::after {
-  width: 100%;
-  left: 0;
+  width: 80%;
+  left: 10%;
 }
 .tab-btn.active::after {
   width: 100%;
   left: 0;
+  height: 2.5px;
 }
 
 /* ─── Risk bar animation ─── */
 .risk-bar-fill {
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ─── Badge pulse ─── */
@@ -131,47 +135,47 @@ body {
 
 /* ─── Gauge arc animation ─── */
 .gauge-arc {
-  animation: gauge-fill 1.2s ease-out both;
+  animation: gauge-fill 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ─── Gradient dividers ─── */
 .gradient-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.2), transparent);
 }
 
 /* ─── Header glass effect ─── */
 .header-glass {
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  backdrop-filter: saturate(200%) blur(20px);
+  -webkit-backdrop-filter: saturate(200%) blur(20px);
 }
 
 /* ─── Recharts overrides ─── */
 .recharts-cartesian-axis-tick-value {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: 'JetBrains Mono', 'Outfit', system-ui, sans-serif;
 }
 .recharts-tooltip-wrapper {
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.18));
 }
 
 /* ─── Selection color ─── */
 ::selection {
-  background: rgba(129, 140, 248, 0.25);
+  background: rgba(201, 168, 76, 0.2);
   color: inherit;
 }
 
 /* ─── Focus states ─── */
 button:focus-visible {
-  outline: 2px solid rgba(129, 140, 248, 0.5);
+  outline: 2px solid rgba(201, 168, 76, 0.4);
   outline-offset: 2px;
 }
 
 /* ─── Link hover ─── */
 a {
-  transition: color 0.15s ease, opacity 0.15s ease;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 a:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 /* ═══════════════════════════════════════════
@@ -193,7 +197,7 @@ a:hover {
     right: 0;
     width: 48px;
     height: 100%;
-    background: linear-gradient(to right, transparent, var(--header-bg, #f5f7fb));
+    background: linear-gradient(to right, transparent, var(--header-bg, #f7f4ee));
     pointer-events: none;
     z-index: 2;
   }
@@ -228,10 +232,10 @@ a:hover {
   .tab-bar-wrap { padding: 0 8px !important; }
   .content-wrap { padding: 12px 12px 50px !important; }
 
-  .main-title { font-size: 22px !important; }
+  .main-title { font-size: 24px !important; }
   .main-subtitle { font-size: 11px !important; }
 
-  .report-title { font-size: 22px !important; }
+  .report-title { font-size: 24px !important; }
   .report-subtitle { font-size: 13px !important; }
 
   .section-heading { font-size: 16px !important; }
@@ -261,9 +265,9 @@ a:hover {
 
   .mobile-pad { padding: 10px !important; }
 
-  .main-title { font-size: 20px !important; }
+  .main-title { font-size: 22px !important; }
 
-  .report-title { font-size: 18px !important; }
+  .report-title { font-size: 20px !important; }
   .section-heading { font-size: 15px !important; }
 
   .table-responsive table { min-width: 420px; }

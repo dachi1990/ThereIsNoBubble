@@ -5,30 +5,30 @@ import { AreaChart, Area, BarChart, Bar, ComposedChart, XAxis, YAxis, CartesianG
 /* ══════════════ THEMES ══════════════ */
 const themes = {
   dark: {
-    bg:"#0a0e17",bgCard:"#111827",bgCardAlt:"#0f172a",bgHover:"#1a2235",
-    border:"#1e293b",borderLight:"#334155",
-    text:"#e2e8f0",textMuted:"#94a3b8",textDim:"#64748b",
-    green:"#34d399",greenBg:"rgba(52,211,153,0.1)",greenBorder:"rgba(52,211,153,0.25)",
-    yellow:"#fbbf24",yellowBg:"rgba(251,191,36,0.1)",yellowBorder:"rgba(251,191,36,0.25)",
-    red:"#f87171",redBg:"rgba(248,113,113,0.1)",redBorder:"rgba(248,113,113,0.25)",
-    blue:"#60a5fa",purple:"#a78bfa",cyan:"#22d3ee",orange:"#fb923c",
-    accent:"#818cf8",accentBg:"rgba(129,140,248,0.08)",
-    gridStroke:"#1e293b",tooltipBg:"#1e293b",headerBg:"rgba(17,24,39,0.92)",
-    refLabel:"#94a3b8",riskBarBg:"#1e293b",
-    shadow:"0 8px 32px rgba(0,0,0,0.4)",cardShadow:"0 2px 8px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.03)",
+    bg:"#07090f",bgCard:"rgba(14,18,30,0.75)",bgCardAlt:"rgba(10,14,24,0.9)",bgHover:"rgba(30,35,52,0.7)",
+    border:"rgba(255,255,255,0.06)",borderLight:"rgba(255,255,255,0.1)",
+    text:"#e8e4db",textMuted:"#9b978e",textDim:"#5c5a54",
+    green:"#34d399",greenBg:"rgba(52,211,153,0.08)",greenBorder:"rgba(52,211,153,0.2)",
+    yellow:"#f59e0b",yellowBg:"rgba(245,158,11,0.08)",yellowBorder:"rgba(245,158,11,0.2)",
+    red:"#ef6461",redBg:"rgba(239,100,97,0.08)",redBorder:"rgba(239,100,97,0.2)",
+    blue:"#5b9cf5",purple:"#a78bfa",cyan:"#22d3ee",orange:"#e8944a",
+    accent:"#c9a84c",accentBg:"rgba(201,168,76,0.06)",
+    gridStroke:"rgba(255,255,255,0.04)",tooltipBg:"rgba(14,18,30,0.95)",headerBg:"rgba(7,9,15,0.85)",
+    refLabel:"#7a7770",riskBarBg:"rgba(255,255,255,0.06)",
+    shadow:"0 20px 60px rgba(0,0,0,0.5)",cardShadow:"0 4px 16px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.04)",
   },
   light: {
-    bg:"#f5f7fb",bgCard:"#ffffff",bgCardAlt:"#f0f4f8",bgHover:"#e8edf4",
-    border:"#d8dfe9",borderLight:"#c0c9d6",
-    text:"#111827",textMuted:"#4b5563",textDim:"#9ca3af",
-    green:"#059669",greenBg:"rgba(5,150,105,0.07)",greenBorder:"rgba(5,150,105,0.22)",
-    yellow:"#b45309",yellowBg:"rgba(180,83,9,0.07)",yellowBorder:"rgba(180,83,9,0.2)",
-    red:"#dc2626",redBg:"rgba(220,38,38,0.06)",redBorder:"rgba(220,38,38,0.18)",
+    bg:"#f7f4ee",bgCard:"#ffffff",bgCardAlt:"#f2efe8",bgHover:"#eae7e0",
+    border:"#ddd9d0",borderLight:"#c8c4bb",
+    text:"#1a1916",textMuted:"#555249",textDim:"#8b877e",
+    green:"#0d9668",greenBg:"rgba(13,150,104,0.06)",greenBorder:"rgba(13,150,104,0.18)",
+    yellow:"#d97706",yellowBg:"rgba(217,119,6,0.06)",yellowBorder:"rgba(217,119,6,0.18)",
+    red:"#c53030",redBg:"rgba(197,48,48,0.05)",redBorder:"rgba(197,48,48,0.15)",
     blue:"#2563eb",purple:"#7c3aed",cyan:"#0891b2",orange:"#c2410c",
-    accent:"#4f46e5",accentBg:"rgba(79,70,229,0.06)",
-    gridStroke:"#e5e7eb",tooltipBg:"#ffffff",headerBg:"rgba(245,247,251,0.92)",
-    refLabel:"#6b7280",riskBarBg:"#e5e7eb",
-    shadow:"0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)",cardShadow:"0 2px 8px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03)",
+    accent:"#1a2744",accentBg:"rgba(26,39,68,0.05)",
+    gridStroke:"#e8e4db",tooltipBg:"#ffffff",headerBg:"rgba(247,244,238,0.88)",
+    refLabel:"#8b877e",riskBarBg:"#e8e4db",
+    shadow:"0 20px 60px rgba(0,0,0,0.06)",cardShadow:"0 4px 16px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03)",
   },
 };
 
@@ -238,8 +238,8 @@ function Badge({ signal }) {
   const t = useT();
   const c = sigColor(signal, t);
   return (
-    <span className={signal === "red" ? "badge-elevated" : ""} style={{display:"inline-flex",alignItems:"center",gap:5,padding:"3px 10px",borderRadius:20,fontSize:10,fontWeight:700,letterSpacing:1,background:sigBg(signal,t),color:c,border:`1px solid ${sigBd(signal,t)}`}}>
-      <span style={{width:6,height:6,borderRadius:"50%",background:c}} />
+    <span className={signal === "red" ? "badge-elevated" : ""} style={{display:"inline-flex",alignItems:"center",gap:5,padding:"3px 10px",borderRadius:20,fontSize:9,fontWeight:700,letterSpacing:1.2,background:sigBg(signal,t),color:c,border:`1px solid ${sigBd(signal,t)}`}}>
+      <span style={{width:5,height:5,borderRadius:"50%",background:c,boxShadow:`0 0 6px ${c}55`}} />
       {signal === "green" ? "HEALTHY" : signal === "yellow" ? "CAUTION" : "ELEVATED"}
     </span>
   );
@@ -250,10 +250,10 @@ function RiskBar({ score }) {
   const c = score < 30 ? t.green : score < 60 ? t.yellow : t.red;
   return (
     <div style={{display:"flex",alignItems:"center",gap:6,minWidth:80}}>
-      <div style={{flex:1,height:6,borderRadius:3,background:t.riskBarBg,overflow:"hidden"}}>
-        <div className="risk-bar-fill" style={{width:`${score}%`,height:"100%",borderRadius:3,background:c}} />
+      <div style={{flex:1,height:5,borderRadius:3,background:t.riskBarBg,overflow:"hidden"}}>
+        <div className="risk-bar-fill" style={{width:`${score}%`,height:"100%",borderRadius:3,background:`linear-gradient(90deg, ${c}88, ${c})`}} />
       </div>
-      <span style={{fontSize:10,fontWeight:700,color:c,minWidth:18}}>{score}</span>
+      <span style={{fontSize:10,fontWeight:700,color:c,minWidth:18,fontFamily:"'JetBrains Mono',monospace"}}>{score}</span>
     </div>
   );
 }
@@ -310,7 +310,7 @@ function InfoBtn({ info, calc, name }) {
           {calc && (
             <div style={{padding:"7px 10px",background:t.bgCardAlt,borderRadius:8,border:`1px solid ${t.border}`}}>
               <div style={{fontSize:9,color:t.textDim,textTransform:"uppercase",letterSpacing:1,fontWeight:600,marginBottom:2}}>Formula</div>
-              <div style={{fontSize:11,color:t.accent,fontFamily:"monospace",fontWeight:600}}>{calc}</div>
+              <div style={{fontSize:11,color:t.accent,fontFamily:"'JetBrains Mono',monospace",fontWeight:600}}>{calc}</div>
             </div>
           )}
         </div>,
@@ -342,7 +342,7 @@ function Explainer({ title, info, calc }) {
           {calc && (
             <div style={{padding:"7px 10px",background:t.bgCard,borderRadius:8,border:`1px solid ${t.border}`}}>
               <span style={{fontSize:9,color:t.textDim,textTransform:"uppercase",letterSpacing:1,fontWeight:600}}>Formula: </span>
-              <span style={{fontSize:11,color:t.accent,fontFamily:"monospace",fontWeight:600}}>{calc}</span>
+              <span style={{fontSize:11,color:t.accent,fontFamily:"'JetBrains Mono',monospace",fontWeight:600}}>{calc}</span>
             </div>
           )}
         </div>
@@ -353,7 +353,7 @@ function Explainer({ title, info, calc }) {
 
 function Card({ children, style }) {
   const t = useT();
-  return <div className="card-hover mobile-pad" style={{background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:14,padding:20,boxShadow:t.cardShadow,...style}}>{children}</div>;
+  return <div className="card-hover mobile-pad" style={{background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:16,padding:20,boxShadow:t.cardShadow,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",...style}}>{children}</div>;
 }
 
 function ChartTip({ active, payload, label }) {
@@ -392,9 +392,9 @@ function StatBox({ label, value, sub, color }) {
   const t = useT();
   return (
     <div style={{textAlign:"center",padding:"10px 4px"}}>
-      <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:1.2,fontWeight:600}}>{label}</div>
-      <div style={{fontSize:24,fontWeight:800,color:color || t.text,marginTop:3}}>{value}</div>
-      {sub && <div style={{fontSize:11,color:t.textMuted,marginTop:2}}>{sub}</div>}
+      <div style={{fontSize:9,color:t.textDim,textTransform:"uppercase",letterSpacing:1.5,fontWeight:600}}>{label}</div>
+      <div style={{fontSize:26,fontWeight:400,color:color || t.text,marginTop:4,fontFamily:"'Instrument Serif',Georgia,serif"}}>{value}</div>
+      {sub && <div style={{fontSize:10,color:t.textMuted,marginTop:2}}>{sub}</div>}
     </div>
   );
 }
@@ -406,14 +406,17 @@ function Gauge({ score }) {
   const nx = 100 + 55 * Math.cos((angle * Math.PI) / 180);
   const ny = 100 - 55 * Math.sin((angle * Math.PI) / 180);
   return (
-    <svg viewBox="0 0 200 120" style={{width:"100%",maxWidth:180,display:"block",margin:"0 auto"}}>
-      <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={t.riskBarBg} strokeWidth="12" strokeLinecap="round" />
-      <path className="gauge-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={c} strokeWidth="12" strokeLinecap="round"
-        strokeDasharray={`${score * 2.51} 251`} />
-      <line x1="100" y1="100" x2={nx} y2={ny} stroke={t.text} strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="100" cy="100" r="4" fill={t.text} />
-      <text x="100" y="85" textAnchor="middle" fill={c} fontSize="26" fontWeight="900" fontFamily="system-ui">{score}</text>
-      <text x="100" y="115" textAnchor="middle" fill={t.textDim} fontSize="9" fontWeight="600">OF 100</text>
+    <svg viewBox="0 0 200 120" style={{width:"100%",maxWidth:200,display:"block",margin:"0 auto"}}>
+      <defs>
+        <filter id="arcGlow"><feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+      </defs>
+      <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={t.riskBarBg} strokeWidth="10" strokeLinecap="round" />
+      <path className="gauge-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke={c} strokeWidth="10" strokeLinecap="round"
+        strokeDasharray={`${score * 2.51} 251`} filter="url(#arcGlow)" />
+      <line x1="100" y1="100" x2={nx} y2={ny} stroke={t.text} strokeWidth="2" strokeLinecap="round" />
+      <circle cx="100" cy="100" r="3.5" fill={t.text} />
+      <text x="100" y="82" textAnchor="middle" fill={c} fontSize="32" fontWeight="400" fontFamily="'Instrument Serif',Georgia,serif">{score}</text>
+      <text x="100" y="115" textAnchor="middle" fill={t.textDim} fontSize="8" fontWeight="600" letterSpacing="3">OF 100</text>
     </svg>
   );
 }
@@ -478,13 +481,13 @@ function TabDash({ goTab }) {
 
   return (
     <div>
-      <div style={{textAlign:"center",padding:"24px 0 18px"}}>
-        <div style={{fontSize:11,color:t.accent,letterSpacing:3,textTransform:"uppercase",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-  <span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:t.green,boxShadow:`0 0 8px ${t.green}`,animation:"pulse-glow 2s ease-in-out infinite"}} />
+      <div style={{textAlign:"center",padding:"28px 0 20px"}}>
+        <div style={{fontSize:10,color:t.accent,letterSpacing:4,textTransform:"uppercase",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+  <span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:t.green,boxShadow:`0 0 8px ${t.green}`,animation:"pulse-live 2s ease-in-out infinite"}} />
   Live Multi-Factor Analysis
 </div>
-        <h1 className="main-title" style={{fontSize:32,fontWeight:900,color:t.text,margin:"6px 0",letterSpacing:-1.5}}>Bubble Risk Monitor</h1>
-        <p className="main-subtitle" style={{color:t.textMuted,fontSize:13,maxWidth:560,margin:"0 auto"}}>20 indicators compared against the Dot-Com Bubble (2000) and Global Financial Crisis (2008).</p>
+        <h1 className="main-title" style={{fontSize:40,fontWeight:400,color:t.text,margin:"8px 0",letterSpacing:-0.5,fontFamily:"'Instrument Serif',Georgia,serif"}}>Bubble Risk Monitor</h1>
+        <p className="main-subtitle" style={{color:t.textMuted,fontSize:13,maxWidth:700,margin:"0 auto",letterSpacing:0.3}}>20 indicators compared against the Dot-Com Bubble (2000) and Global Financial Crisis (2008).</p>
       </div>
 
       <Card style={{marginBottom:16}}>
@@ -495,25 +498,25 @@ function TabDash({ goTab }) {
             <div style={{marginTop:6}}>
               <span style={{padding:"4px 12px",borderRadius:20,fontSize:10,fontWeight:700,letterSpacing:1,background:t.yellowBg,color:t.yellow,border:`1px solid ${t.yellowBorder}`}}>ELEVATED — NOT A BUBBLE</span>
             </div>
-            <div className="gauge-tip gauge-tip-popup" style={{display:"none",position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",marginTop:8,zIndex:50,width:"min(380px, calc(100vw - 24px))",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:12,padding:"14px 16px",boxShadow:t.shadow,textAlign:"left"}}>
+            <div className="gauge-tip gauge-tip-popup" style={{display:"none",position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",marginTop:8,zIndex:9999,width:"min(380px, calc(100vw - 24px))",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:12,padding:"14px 16px",boxShadow:t.shadow,textAlign:"left"}}>
               <div style={{fontSize:11,fontWeight:700,color:t.accent,marginBottom:8,letterSpacing:0.5}}>Composite Score Methodology</div>
               <div style={{fontSize:11,color:t.textMuted,marginBottom:6,lineHeight:1.5}}>Each metric scored 0–100 based on where its current value sits between the historical average (score 0) and the worst crisis-era peak (score 100).</div>
-              <div style={{fontSize:10,color:t.textDim,marginBottom:10,lineHeight:1.4,fontFamily:"monospace"}}>Formula: (Current − Avg) / (Crisis − Avg) × 100, clamped 0–100. For metrics where lower = riskier, the formula inverts.</div>
+              <div style={{fontSize:10,color:t.textDim,marginBottom:10,lineHeight:1.4,fontFamily:"'JetBrains Mono',monospace"}}>Formula: (Current − Avg) / (Crisis − Avg) × 100, clamped 0–100. For metrics where lower = riskier, the formula inverts.</div>
               <div style={{maxHeight:240,overflowY:"auto",marginBottom:10}}>
                 {MS.map((m,i) => (
                   <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:`1px solid ${t.border}`,gap:8}}>
                     <span style={{fontSize:10,color:t.text,flex:1,minWidth:0}}>{m.nm}</span>
-                    <span style={{fontSize:9,color:t.textDim,fontFamily:"monospace",whiteSpace:"nowrap"}}>
+                    <span style={{fontSize:9,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",whiteSpace:"nowrap"}}>
                       {m.dir === 1
                         ? `(${m.nv}−${m.na})/(${m.nc}−${m.na})`
                         : `(${m.na}−${m.nv})/(${m.na}−${m.nc})`}
                     </span>
-                    <span style={{fontSize:10,fontWeight:700,fontFamily:"monospace",color:sigColor(m.sig,t),minWidth:24,textAlign:"right"}}>{m.sc}</span>
+                    <span style={{fontSize:10,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:sigColor(m.sig,t),minWidth:24,textAlign:"right"}}>{m.sc}</span>
                   </div>
                 ))}
               </div>
               <div style={{borderTop:`1px solid ${t.border}`,paddingTop:8}}>
-                <div style={{fontSize:11,color:t.text,fontFamily:"monospace",lineHeight:1.6}}>
+                <div style={{fontSize:11,color:t.text,fontFamily:"'JetBrains Mono',monospace",lineHeight:1.6}}>
                   <span style={{color:t.textMuted}}>Sum:</span> {OS_SUM} <span style={{color:t.textMuted}}>÷</span> {MS.length} <span style={{color:t.textMuted}}>metrics =</span> <strong style={{color:t.yellow}}>{(OS_SUM / MS.length).toFixed(1)} ≈ {OS}</strong>
                 </div>
               </div>
@@ -545,7 +548,7 @@ function TabDash({ goTab }) {
           {greens.slice(0,3).map((m,i) => (
             <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:i < 2 ? `1px solid ${t.border}` : "none"}}>
               <span style={{fontSize:12,color:t.text}}>{m.nm}</span>
-              <span style={{fontSize:12,fontWeight:700,color:t.green,fontFamily:"monospace"}}>{m.cur}</span>
+              <span style={{fontSize:12,fontWeight:700,color:t.green,fontFamily:"'JetBrains Mono',monospace"}}>{m.cur}</span>
             </div>
           ))}
         </Card>
@@ -554,7 +557,7 @@ function TabDash({ goTab }) {
           {reds.slice(0,3).map((m,i) => (
             <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:i < 2 ? `1px solid ${t.border}` : "none"}}>
               <span style={{fontSize:12,color:t.text}}>{m.nm}</span>
-              <span style={{fontSize:12,fontWeight:700,color:t.red,fontFamily:"monospace"}}>{m.cur}</span>
+              <span style={{fontSize:12,fontWeight:700,color:t.red,fontFamily:"'JetBrains Mono',monospace"}}>{m.cur}</span>
             </div>
           ))}
         </Card>
@@ -584,10 +587,10 @@ function TabDash({ goTab }) {
                   <td style={{padding:"9px 8px",color:t.text,fontWeight:600}}>
                     <span style={{display:"inline-flex",alignItems:"center"}}>{m.nm}<InfoBtn info={m.info} calc={m.calc} name={m.nm} /></span>
                   </td>
-                  <td style={{padding:"9px 8px",color:t.text,fontWeight:700,fontFamily:"monospace"}}>{m.cur}</td>
-                  <td style={{padding:"9px 8px",color:t.textMuted,fontFamily:"monospace"}}>{m.c00}</td>
-                  <td style={{padding:"9px 8px",color:t.textMuted,fontFamily:"monospace"}}>{m.c08}</td>
-                  <td style={{padding:"9px 8px",color:t.textMuted,fontFamily:"monospace"}}>{m.avg}</td>
+                  <td style={{padding:"9px 8px",color:t.text,fontWeight:700,fontFamily:"'JetBrains Mono',monospace"}}>{m.cur}</td>
+                  <td style={{padding:"9px 8px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{m.c00}</td>
+                  <td style={{padding:"9px 8px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{m.c08}</td>
+                  <td style={{padding:"9px 8px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{m.avg}</td>
                   <td style={{padding:"9px 8px",minWidth:86}}><RiskBar score={m.sc} /></td>
                   <td style={{padding:"9px 8px"}}><Badge signal={m.sig} /></td>
                 </tr>
@@ -1018,7 +1021,7 @@ function TabReport() {
       <div style={{borderBottom:`2px solid ${t.accent}`,paddingBottom:28,marginBottom:0}}>
         <div style={{textAlign:"center",padding:"24px 0 8px"}}>
           <div style={{fontSize:10,color:t.accent,letterSpacing:4,textTransform:"uppercase",fontWeight:700,marginBottom:6}}>Equity Strategy Research — Thematic Deep Dive</div>
-          <h1 className="report-title" style={{fontSize:34,fontWeight:900,color:t.text,margin:"6px 0 4px",letterSpacing:-1.5,lineHeight:1.1}}>U.S. Equity Market Bubble Risk Assessment</h1>
+          <h1 className="report-title" style={{fontSize:36,fontWeight:400,color:t.text,margin:"6px 0 4px",letterSpacing:-0.5,lineHeight:1.15,fontFamily:"'Instrument Serif',Georgia,serif"}}>U.S. Equity Market Bubble Risk Assessment</h1>
           <h2 className="report-subtitle" style={{fontSize:16,fontWeight:400,color:t.textMuted,margin:"8px 0 0",fontStyle:"italic"}}>A Comprehensive Multi-Factor Quantitative and Qualitative Framework for Systemic Market Risk Evaluation</h2>
         </div>
         <div className="report-header-meta" style={{display:"flex",justifyContent:"center",gap:32,marginTop:20,flexWrap:"wrap"}}>
@@ -1066,7 +1069,7 @@ function TabReport() {
         {prose("The composite score is calculated as the unweighted arithmetic mean of all 20 individual metric scores. While more sophisticated weighting schemes (e.g., factor-loading-based, principal component-derived) could theoretically improve predictive accuracy, the unweighted approach provides transparency, reproducibility, and resistance to overfitting — qualities we consider essential for a framework intended to inform investment decisions under conditions of fundamental uncertainty. The traffic-light classification (Green/Healthy, Yellow/Caution, Red/Elevated) represents a qualitative overlay informed by the quantitative scores but incorporating contextual judgment that purely mechanical scoring cannot capture.")}
         {prose("A critical limitation of this framework — and indeed of all historical comparison-based valuation models — is that it benchmarks current conditions against crisis periods that occurred before the AI era. The 1929, 2000, and 2008 dislocations all took place in economies where cognitive labor was exclusively human, software was expensive to build and distribute, and productivity growth was constrained by biological limits on human output. No prior analytical framework accounts for a technology that can replicate, augment, and eventually surpass cognitive labor across virtually every economic domain. This means our historical comparisons may systematically overstate risk by anchoring to a world that no longer exists. We flag this not to dismiss the framework's utility — historical patterns remain the best available guide — but to acknowledge that if AI represents a genuine phase change in economic capability, then backward-looking metrics may be measuring the wrong baseline.")}
 
-        <Card style={{marginBottom:20,padding:18}}>
+        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Scoring Scale Interpretation</h4>
           <div className="grid-5-col" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:8}}>
             {[{range:"0-20",label:"Low Risk",color:t.green,desc:"Fundamentals strong; well below historical risk"},{range:"20-40",label:"Below Avg",color:t.green,desc:"Modest risk; conditions broadly supportive"},{range:"40-60",label:"Elevated",color:t.yellow,desc:"Above-average risk; caution warranted"},{range:"60-80",label:"High Risk",color:t.orange,desc:"Significant stress; multiple warning signals"},{range:"80-100",label:"Extreme",color:t.red,desc:"Crisis-level; systemic dislocation probable"}].map((x,i)=>(
@@ -1079,7 +1082,7 @@ function TabReport() {
           </div>
         </Card>
 
-        <Card style={{marginBottom:20,padding:18}}>
+        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Category Breakdown & Weights</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
@@ -1097,7 +1100,7 @@ function TabReport() {
                   <td style={{padding:"8px",color:t.textMuted}}>{c.metrics.length}</td>
                   <td style={{padding:"8px"}}><RiskBar score={c.sc} /></td>
                   <td style={{padding:"8px"}}><Badge signal={c.sig} /></td>
-                  <td style={{padding:"8px",color:t.textMuted,fontFamily:"monospace"}}>Equal</td>
+                  <td style={{padding:"8px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>Equal</td>
                 </tr>
               ))}
             </tbody>
@@ -1111,7 +1114,7 @@ function TabReport() {
         {sectionNum(3, "Composite Risk Assessment")}
         {prose("The composite risk score of " + OS + "/100 positions the current market environment in the upper band of the \"Elevated\" zone. This reading captures the fundamental tension that defines the March 2026 market: valuations that are historically extreme by nearly every traditional metric, coexisting with macroeconomic fundamentals and corporate earnings that provide genuine support for elevated price levels. The radar chart below visualizes the dispersion of risk across our eight analytical categories, revealing a highly asymmetric risk profile — concentrated primarily in equity valuation and global structural risk, with credit conditions and macroeconomic fundamentals providing significant counterbalancing strength.")}
 
-        <Card style={{marginBottom:20,padding:20}}>
+        <Card style={{marginBottom:20,padding:20,borderLeft:`4px solid ${t.yellow}`}}>
           <div className="grid-report-gauge" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,alignItems:"center"}}>
             <div style={{textAlign:"center"}}>
               <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600,marginBottom:6}}>Composite Risk Score</div>
@@ -1137,7 +1140,7 @@ function TabReport() {
         </Card>
 
         {/* Category scores detailed table */}
-        <Card style={{marginBottom:20,padding:18}}>
+        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.yellow}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Category Risk Score Detail</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
@@ -1216,10 +1219,10 @@ function TabReport() {
                     {cat.metrics.map((mi,mii)=>(
                       <tr key={mii} style={{borderBottom:`1px solid ${t.border}44`}}>
                         <td style={{padding:"6px",color:t.text,fontWeight:600}}>{MS[mi].nm}</td>
-                        <td style={{padding:"6px",color:t.text,fontWeight:700,fontFamily:"monospace"}}>{MS[mi].cur}</td>
-                        <td style={{padding:"6px",color:t.textMuted,fontFamily:"monospace"}}>{MS[mi].c00}</td>
-                        <td style={{padding:"6px",color:t.textMuted,fontFamily:"monospace"}}>{MS[mi].c08}</td>
-                        <td style={{padding:"6px",color:t.textMuted,fontFamily:"monospace"}}>{MS[mi].avg}</td>
+                        <td style={{padding:"6px",color:t.text,fontWeight:700,fontFamily:"'JetBrains Mono',monospace"}}>{MS[mi].cur}</td>
+                        <td style={{padding:"6px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{MS[mi].c00}</td>
+                        <td style={{padding:"6px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{MS[mi].c08}</td>
+                        <td style={{padding:"6px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{MS[mi].avg}</td>
                         <td style={{padding:"6px",minWidth:70}}><RiskBar score={MS[mi].sc} /></td>
                         <td style={{padding:"6px"}}><Badge signal={MS[mi].sig} /></td>
                       </tr>
@@ -1276,7 +1279,7 @@ function TabReport() {
         {prose("Understanding the relationships between individual risk metrics is essential for assessing whether warning signals are reinforcing one another (confirming) or sending contradictory messages (diverging). Confirming signals across multiple categories strengthen the conviction behind a directional assessment, while divergences suggest a more nuanced risk environment that resists simple classification. The table below maps the key inter-metric relationships and their current directional alignment.")}
         {prose("A critical observation from this analysis is that the most dangerous configuration — in which valuation, credit, macro, and sentiment signals all simultaneously flash red — is notably absent. The current environment is characterized by a bifurcation: valuation and structural metrics signal elevated risk, while credit, macro, and sentiment metrics signal relative health. This divergence is itself the strongest evidence against a bubble classification, as historical bubbles have been characterized by broad-based deterioration across multiple categories simultaneously.")}
 
-        <Card style={{marginBottom:20,padding:18}}>
+        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Signal Correlation Matrix</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
@@ -1314,7 +1317,7 @@ function TabReport() {
         {sectionNum(6, "Expanded Historical Comparison Matrix")}
         {prose("The following matrix provides a comprehensive comparison of current market conditions against the three most significant market dislocations in modern financial history: the 1929 crash that precipitated the Great Depression, the 2000 dot-com bubble collapse, and the 2008 Global Financial Crisis. Each comparison dimension is evaluated to determine whether current conditions are more or less favorable than at those historical crisis points. This matrix is designed to provide a holistic, at-a-glance assessment of the structural similarities and differences that define the current risk environment.")}
 
-        <Card style={{marginBottom:20,padding:18,overflowX:"auto"}}>
+        <Card style={{marginBottom:20,padding:18,overflowX:"auto",borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Comprehensive Historical Comparison</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,minWidth:600}}>
@@ -1401,7 +1404,7 @@ function TabReport() {
         </div>
 
         {/* Probability distribution visual */}
-        <Card style={{marginBottom:20,padding:18}}>
+        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Probability Distribution</h4>
           <div style={{height:180}}>
             <ResponsiveContainer>
@@ -1428,7 +1431,7 @@ function TabReport() {
         {prose("While our base case does not anticipate a systemic market dislocation, the compressed risk premiums and elevated valuations that characterize the current environment demand a rigorous monitoring framework for early warning signals. The following catalyst matrix identifies the specific trigger conditions that would warrant a material reassessment of our risk posture, along with current readings, status assessments, and the specific data sources to monitor for each trigger. This framework is designed to provide actionable, real-time intelligence that can inform portfolio adjustments before a potential dislocation materializes.")}
         {prose("The critical insight is that systemic crises rarely emerge from a single catalyst in isolation. Rather, they typically result from the convergence of multiple deteriorating conditions that interact in non-linear and often unpredictable ways. The monitoring framework below should therefore be evaluated holistically — the simultaneous deterioration of multiple indicators should trigger a more aggressive risk reduction than any single indicator breach in isolation.")}
 
-        <Card style={{marginBottom:20,padding:18,overflowX:"auto"}}>
+        <Card style={{marginBottom:20,padding:18,overflowX:"auto",borderLeft:`4px solid ${t.yellow}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Catalyst Trigger Matrix</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11,minWidth:600}}>
@@ -1444,7 +1447,7 @@ function TabReport() {
                 <tr key={i} style={{borderBottom:`1px solid ${t.border}44`}}>
                   <td style={{padding:"8px 6px",color:t.text,fontWeight:600,fontSize:11}}>{c.category}</td>
                   <td style={{padding:"8px 6px",color:t.textMuted,fontSize:10,lineHeight:1.4}}>{c.trigger}</td>
-                  <td style={{padding:"8px 6px",color:t.text,fontWeight:600,fontFamily:"monospace",fontSize:10}}>{c.current}</td>
+                  <td style={{padding:"8px 6px",color:t.text,fontWeight:600,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>{c.current}</td>
                   <td style={{padding:"8px 6px"}}><Badge signal={c.status} /></td>
                   <td style={{padding:"8px 6px",color:t.textDim,fontSize:10,lineHeight:1.4}}>{c.watch}</td>
                 </tr>
@@ -1464,7 +1467,7 @@ function TabReport() {
         {prose("The analytical framework presented in this report carries direct and actionable implications for portfolio construction. The core challenge facing allocators in March 2026 is not the compression of expected returns across major asset classes — it is the unprecedented divergence between assets positioned to benefit from the AI revolution and those facing disruption by it. This is not a market that rewards passive, benchmark-hugging allocation. It rewards conviction about the direction of technological change and the willingness to position portfolios accordingly. The following framework is designed for an institutional portfolio with a 12-month tactical horizon and a structural view on AI's transformative impact.")}
         {prose("Our allocation tilts reflect the central thesis of this report: the AI revolution represents a phase change in economic productivity that will create massive winners and massive losers simultaneously. We aggressively overweight assets that are building the infrastructure layer of the AI economy — semiconductors, hyperscale cloud, data centers, energy infrastructure — while underweighting the traditional software incumbents facing existential disruption. We maintain hedges against the primary risk vectors (AI capex disappointment, geopolitical disruption of semiconductor supply chains, regulatory overreach) but size those hedges as tail-risk insurance rather than core positioning. The emphasis is on strategic conviction with tactical discipline — positioning for the revolution while managing the risks inherent in any transformation of this magnitude.")}
 
-        <Card style={{marginBottom:20,padding:18}}>
+        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Tactical Asset Allocation Framework (12-Month Horizon)</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
@@ -1492,7 +1495,7 @@ function TabReport() {
         </Card>
 
         {/* Sector positioning */}
-        <Card style={{marginBottom:20,padding:18}}>
+        <Card style={{marginBottom:20,padding:18,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:t.accent}}>Sector Positioning Recommendations</h4>
           <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
             <div style={{padding:12,borderRadius:8,background:t.greenBg,border:`1px solid ${t.greenBorder}`}}>
@@ -1536,7 +1539,7 @@ function TabReport() {
         {/* ═══════ SECTION 12: APPENDIX ═══════ */}
         {sectionNum(11, "Appendix")}
 
-        <Card style={{marginBottom:16,padding:18}}>
+        <Card style={{marginBottom:16,padding:18,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>A. Data Sources & Methodology Notes</h4>
           <div className="grid-2-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
             <div>
@@ -1554,7 +1557,7 @@ function TabReport() {
           </div>
         </Card>
 
-        <Card style={{marginBottom:16,padding:18}}>
+        <Card style={{marginBottom:16,padding:18,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>B. Complete Metric Scorecard</h4>
           <div className="table-responsive">
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:11}}>
@@ -1570,10 +1573,10 @@ function TabReport() {
                 <tr key={i} style={{borderBottom:`1px solid ${t.border}44`}}>
                   <td style={{padding:"6px 5px",color:t.textDim,fontSize:10}}>{i+1}</td>
                   <td style={{padding:"6px 5px",color:t.text,fontWeight:600}}>{m.nm}</td>
-                  <td style={{padding:"6px 5px",color:t.text,fontWeight:700,fontFamily:"monospace",fontSize:10}}>{m.cur}</td>
-                  <td style={{padding:"6px 5px",color:t.textMuted,fontFamily:"monospace",fontSize:10}}>{m.c00}</td>
-                  <td style={{padding:"6px 5px",color:t.textMuted,fontFamily:"monospace",fontSize:10}}>{m.c08}</td>
-                  <td style={{padding:"6px 5px",color:t.textMuted,fontFamily:"monospace",fontSize:10}}>{m.avg}</td>
+                  <td style={{padding:"6px 5px",color:t.text,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>{m.cur}</td>
+                  <td style={{padding:"6px 5px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>{m.c00}</td>
+                  <td style={{padding:"6px 5px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>{m.c08}</td>
+                  <td style={{padding:"6px 5px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace",fontSize:10}}>{m.avg}</td>
                   <td style={{padding:"6px 5px",minWidth:70}}><RiskBar score={m.sc} /></td>
                   <td style={{padding:"6px 5px"}}><Badge signal={m.sig} /></td>
                 </tr>
@@ -1588,7 +1591,7 @@ function TabReport() {
           </div>
         </Card>
 
-        <Card style={{marginBottom:16,padding:18,background:t.bgCardAlt}}>
+        <Card style={{marginBottom:16,padding:18,background:t.bgCardAlt,borderLeft:`4px solid ${t.accent}`}}>
           <h4 style={{margin:"0 0 12px",fontSize:13,fontWeight:700,color:t.accent}}>C. Important Disclosures & Disclaimers</h4>
           <div style={{fontSize:10,color:t.textDim,lineHeight:1.7}}>
             <p style={{margin:"0 0 8px"}}>This report is prepared for educational and informational purposes only. It does not constitute investment advice, a solicitation, or an offer to buy or sell any securities. The views expressed herein represent the analytical conclusions of the author and are based on publicly available data.</p>
@@ -1752,16 +1755,16 @@ export default function App() {
 
   return (
     <Ctx.Provider value={t}>
-      <div style={{minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'DM Sans',system-ui,sans-serif",transition:"background 0.4s,color 0.4s"}}>
+      <div style={{minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'Outfit',system-ui,sans-serif",transition:"background 0.4s,color 0.4s"}}>
         {/* Header */}
         <div className="header-glass" style={{"--header-bg":t.bg,borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
           <div className="header-inner" style={{maxWidth:1200,margin:"0 auto",padding:"10px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <div style={{width:8,height:8,borderRadius:"50%",background:t.yellow,boxShadow:`0 0 10px ${t.yellow}55`}} />
-              <span style={{fontSize:14,fontWeight:800,letterSpacing:-0.5}}>BUBBLE RISK MONITOR</span>
+              <div style={{width:6,height:6,borderRadius:"50%",background:t.accent,boxShadow:`0 0 12px ${t.accent}66`}} />
+              <span style={{fontSize:11,fontWeight:700,letterSpacing:2.5}}>BUBBLE RISK MONITOR</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
-              <span style={{fontSize:11,color:t.textDim}}>Mar 18, 2026</span>
+              <span style={{fontSize:10,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.5}}>Mar 18, 2026</span>
               <button onClick={() => setIsDark(!isDark)} style={{position:"relative",width:50,height:26,borderRadius:13,border:`1px solid ${t.border}`,cursor:"pointer",padding:0,background:isDark?"linear-gradient(135deg,#1e293b,#334155)":"linear-gradient(135deg,#dbeafe,#c7d2fe)",transition:"all 0.3s"}}>
                 <div style={{position:"absolute",top:2,left:isDark?26:2,width:20,height:20,borderRadius:"50%",background:isDark?"#fbbf24":"#4f46e5",transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}}>{isDark?"☾":"☀"}</div>
               </button>
