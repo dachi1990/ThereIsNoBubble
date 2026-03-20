@@ -466,6 +466,7 @@ function SrcNote({ m }) {
 /* ══════════════ TABS ══════════════ */
 function TabDash({ goTab }) {
   const t = useT();
+  const [methOpen, setMethOpen] = useState(false);
   const greens = MS.filter(m => m.sig === "green");
   const reds = MS.filter(m => m.sig === "red");
   const radarD = [
@@ -492,35 +493,51 @@ function TabDash({ goTab }) {
 
       <Card style={{marginBottom:16}}>
         <div className="grid-dash-main" style={{display:"grid",gridTemplateColumns:"1fr 2fr 1fr",gap:16,alignItems:"center"}}>
-          <div style={{textAlign:"center",position:"relative"}} onMouseEnter={e => {const tip = e.currentTarget.querySelector('.gauge-tip'); if(tip) tip.style.display='block';}} onMouseLeave={e => {const tip = e.currentTarget.querySelector('.gauge-tip'); if(tip) tip.style.display='none';}}>
-            <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600,marginBottom:4}}>Composite Risk</div>
+          <div style={{textAlign:"center",position:"relative"}}>
+            <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600,marginBottom:4,display:"flex",alignItems:"center",justifyContent:"center",gap:4}}>
+              Composite Risk
+              <button onClick={() => setMethOpen(true)} style={{
+                width:16,height:16,borderRadius:"50%",border:`1.5px solid ${t.borderLight}`,
+                background:"transparent",color:t.textDim,fontSize:10,fontWeight:700,cursor:"pointer",
+                display:"inline-flex",alignItems:"center",justifyContent:"center",padding:0,
+                fontFamily:"Georgia,serif",fontStyle:"italic"
+              }}>i</button>
+            </div>
             <Gauge score={OS} />
             <div style={{marginTop:6}}>
               <span style={{padding:"4px 12px",borderRadius:20,fontSize:10,fontWeight:700,letterSpacing:1,background:t.yellowBg,color:t.yellow,border:`1px solid ${t.yellowBorder}`}}>ELEVATED — NOT A BUBBLE</span>
             </div>
-            <div className="gauge-tip gauge-tip-popup" style={{display:"none",position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",marginTop:8,zIndex:9999,width:"min(380px, calc(100vw - 24px))",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:12,padding:"14px 16px",boxShadow:t.shadow,textAlign:"left"}}>
-              <div style={{fontSize:11,fontWeight:700,color:t.accent,marginBottom:8,letterSpacing:0.5}}>Composite Score Methodology</div>
-              <div style={{fontSize:11,color:t.textMuted,marginBottom:6,lineHeight:1.5}}>Each metric scored 0–100 based on where its current value sits between the historical average (score 0) and the worst crisis-era peak (score 100).</div>
-              <div style={{fontSize:10,color:t.textDim,marginBottom:10,lineHeight:1.4,fontFamily:"'JetBrains Mono',monospace"}}>Formula: (Current − Avg) / (Crisis − Avg) × 100, clamped 0–100. For metrics where lower = riskier, the formula inverts.</div>
-              <div style={{maxHeight:240,overflowY:"auto",marginBottom:10}}>
-                {MS.map((m,i) => (
-                  <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"4px 0",borderBottom:`1px solid ${t.border}`,gap:8}}>
-                    <span style={{fontSize:10,color:t.text,flex:1,minWidth:0}}>{m.nm}</span>
-                    <span style={{fontSize:9,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",whiteSpace:"nowrap"}}>
-                      {m.dir === 1
-                        ? `(${m.nv}−${m.na})/(${m.nc}−${m.na})`
-                        : `(${m.na}−${m.nv})/(${m.na}−${m.nc})`}
-                    </span>
-                    <span style={{fontSize:10,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:sigColor(m.sig,t),minWidth:24,textAlign:"right"}}>{m.sc}</span>
+            {methOpen && ReactDOM.createPortal(
+              <div onClick={() => setMethOpen(false)} style={{position:"fixed",top:0,left:0,right:0,bottom:0,zIndex:10000,background:"rgba(0,0,0,0.5)",display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
+                <div className="animate-scale-in" onClick={e => e.stopPropagation()} style={{width:"min(440px, calc(100vw - 32px))",maxHeight:"80vh",overflow:"auto",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:14,padding:"20px 22px",boxShadow:t.shadow,textAlign:"left"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                    <div style={{fontSize:13,fontWeight:700,color:t.accent,letterSpacing:0.5}}>Composite Score Methodology</div>
+                    <button onClick={() => setMethOpen(false)} style={{background:"none",border:"none",color:t.textDim,cursor:"pointer",fontSize:18,padding:0,lineHeight:1}}>×</button>
                   </div>
-                ))}
-              </div>
-              <div style={{borderTop:`1px solid ${t.border}`,paddingTop:8}}>
-                <div style={{fontSize:11,color:t.text,fontFamily:"'JetBrains Mono',monospace",lineHeight:1.6}}>
-                  <span style={{color:t.textMuted}}>Sum:</span> {OS_SUM} <span style={{color:t.textMuted}}>÷</span> {MS.length} <span style={{color:t.textMuted}}>metrics =</span> <strong style={{color:t.yellow}}>{(OS_SUM / MS.length).toFixed(1)} ≈ {OS}</strong>
+                  <div style={{fontSize:12,color:t.textMuted,marginBottom:8,lineHeight:1.6}}>Each metric scored 0–100 based on where its current value sits between the historical average (score 0) and the worst crisis-era peak (score 100).</div>
+                  <div style={{fontSize:11,color:t.textDim,marginBottom:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace",padding:"8px 10px",background:t.bgCardAlt,borderRadius:8,border:`1px solid ${t.border}`}}>Formula: (Current − Avg) / (Crisis − Avg) × 100, clamped 0–100. For metrics where lower = riskier, the formula inverts.</div>
+                  <div style={{marginBottom:14}}>
+                    {MS.map((m,i) => (
+                      <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:`1px solid ${t.border}`,gap:8}}>
+                        <span style={{fontSize:11,color:t.text,flex:1,minWidth:0}}>{m.nm}</span>
+                        <span style={{fontSize:10,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",whiteSpace:"nowrap"}}>
+                          {m.dir === 1
+                            ? `(${m.nv}−${m.na})/(${m.nc}−${m.na})`
+                            : `(${m.na}−${m.nv})/(${m.na}−${m.nc})`}
+                        </span>
+                        <span style={{fontSize:11,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:sigColor(m.sig,t),minWidth:24,textAlign:"right"}}>{m.sc}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{borderTop:`1px solid ${t.border}`,paddingTop:10}}>
+                    <div style={{fontSize:12,color:t.text,fontFamily:"'JetBrains Mono',monospace",lineHeight:1.6}}>
+                      <span style={{color:t.textMuted}}>Sum:</span> {OS_SUM} <span style={{color:t.textMuted}}>÷</span> {MS.length} <span style={{color:t.textMuted}}>metrics =</span> <strong style={{color:t.yellow}}>{(OS_SUM / MS.length).toFixed(1)} ≈ {OS}</strong>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </div>,
+              document.body
+            )}
           </div>
           <div style={{height:200}}>
             <ResponsiveContainer>
