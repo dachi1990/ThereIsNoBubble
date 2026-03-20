@@ -33,21 +33,52 @@ const themes = {
 };
 
 /* ══════════════ DATA ══════════════ */
-const capeData=[{y:"1920",v:5},{y:"1929",v:32.6},{y:"1932",v:5.6},{y:"1950",v:12},{y:"1966",v:24.1},{y:"1982",v:6.6},{y:"1990",v:17},{y:"1995",v:23},{y:"2000",v:44.2},{y:"2002",v:22},{y:"2007",v:27.5},{y:"2009",v:13.3},{y:"2015",v:26},{y:"2020",v:31},{y:"2022",v:28},{y:"2024",v:36},{y:"2026",v:38.8}];
-const fwdPE=[{y:"1995",v:14.5},{y:"1999",v:25.5},{y:"2000",v:26},{y:"2003",v:16},{y:"2007",v:15.2},{y:"2009",v:10.5},{y:"2013",v:15},{y:"2020",v:22},{y:"2022",v:17},{y:"2024",v:21},{y:"2026",v:20.9}];
-const buffett=[{y:"1970",v:75},{y:"1982",v:33},{y:"1990",v:58},{y:"1995",v:92},{y:"2000",v:148},{y:"2002",v:80},{y:"2007",v:110},{y:"2009",v:60},{y:"2015",v:120},{y:"2020",v:170},{y:"2021",v:200},{y:"2025",v:230},{y:"2026",v:217}];
-const erpD=[{y:"1995",v:4},{y:"1999",v:0.5},{y:"2000",v:-0.5},{y:"2004",v:3.5},{y:"2009",v:8},{y:"2015",v:4},{y:"2020",v:4.5},{y:"2022",v:2.5},{y:"2026",v:0.6}];
-const conc=[{y:"1990",v:16},{y:"1995",v:17},{y:"2000",v:27},{y:"2005",v:19},{y:"2010",v:20},{y:"2015",v:19},{y:"2020",v:28},{y:"2024",v:37},{y:"2025",v:41},{y:"2026",v:37.5}];
-const mDebt=[{y:"1997",v:132},{y:"2000",v:278},{y:"2007",v:381},{y:"2009",v:173},{y:"2014",v:451},{y:"2018",v:568},{y:"2021",v:936},{y:"2023",v:743},{y:"2026",v:1279}];
-const ycD=[{y:"1990",v:0.3},{y:"1995",v:1},{y:"2000",v:-0.5},{y:"2007",v:-0.2},{y:"2009",v:2.7},{y:"2013",v:2.4},{y:"2019",v:-0.05},{y:"2023",v:-1},{y:"2025",v:0.3},{y:"2026",v:0.52}];
-const hyD=[{y:"1997",v:3},{y:"2000",v:8},{y:"2007",v:2.6},{y:"2008",v:21.8},{y:"2011",v:5.5},{y:"2015",v:5.5},{y:"2018",v:3.5},{y:"2020",v:10.9},{y:"2024",v:3},{y:"2026",v:3.2}];
-const hhD=[{y:"1990",v:83},{y:"1995",v:90},{y:"2000",v:97},{y:"2005",v:125},{y:"2007",v:133},{y:"2010",v:118},{y:"2015",v:100},{y:"2020",v:95},{y:"2024",v:90},{y:"2026",v:92}];
-const m2D=[{y:"2010",v:8.6},{y:"2014",v:11},{y:"2019",v:15.3},{y:"2020",v:19.1},{y:"2021",v:21.7},{y:"2022",v:21.5},{y:"2024",v:21.2},{y:"2026",v:22.4}];
-const fedB=[{y:"2008",v:0.9},{y:"2012",v:2.9},{y:"2016",v:4.5},{y:"2019",v:3.8},{y:"2020",v:7.4},{y:"2021",v:8.8},{y:"2023",v:7.8},{y:"2026",v:6.6}];
-const vixD=[{y:"1995",v:12.5},{y:"2000",v:33},{y:"2004",v:14},{y:"2008",v:80},{y:"2013",v:12},{y:"2017",v:9.1},{y:"2020",v:82.7},{y:"2024",v:15},{y:"2026",v:22.4}];
-const csD=[{y:"1990",v:77},{y:"2000",v:100},{y:"2006",v:190},{y:"2009",v:140},{y:"2015",v:170},{y:"2020",v:220},{y:"2022",v:305},{y:"2026",v:327.5}];
-const gdD=[{y:"2000",v:230},{y:"2008",v:305},{y:"2012",v:310},{y:"2020",v:360},{y:"2022",v:340},{y:"2026",v:308}];
+let capeData=[{y:"1920",v:5},{y:"1929",v:32.6},{y:"1932",v:5.6},{y:"1950",v:12},{y:"1966",v:24.1},{y:"1982",v:6.6},{y:"1990",v:17},{y:"1995",v:23},{y:"2000",v:44.2},{y:"2002",v:22},{y:"2007",v:27.5},{y:"2009",v:13.3},{y:"2015",v:26},{y:"2020",v:31},{y:"2022",v:28},{y:"2024",v:36},{y:"2026",v:38.8}];
+let fwdPE=[{y:"1995",v:14.5},{y:"1999",v:25.5},{y:"2000",v:26},{y:"2003",v:16},{y:"2007",v:15.2},{y:"2009",v:10.5},{y:"2013",v:15},{y:"2020",v:22},{y:"2022",v:17},{y:"2024",v:21},{y:"2026",v:20.9}];
+let buffett=[{y:"1970",v:75},{y:"1982",v:33},{y:"1990",v:58},{y:"1995",v:92},{y:"2000",v:148},{y:"2002",v:80},{y:"2007",v:110},{y:"2009",v:60},{y:"2015",v:120},{y:"2020",v:170},{y:"2021",v:200},{y:"2025",v:230},{y:"2026",v:217}];
+let erpD=[{y:"1995",v:4},{y:"1999",v:0.5},{y:"2000",v:-0.5},{y:"2004",v:3.5},{y:"2009",v:8},{y:"2015",v:4},{y:"2020",v:4.5},{y:"2022",v:2.5},{y:"2026",v:0.6}];
+let conc=[{y:"1990",v:16},{y:"1995",v:17},{y:"2000",v:27},{y:"2005",v:19},{y:"2010",v:20},{y:"2015",v:19},{y:"2020",v:28},{y:"2024",v:37},{y:"2025",v:41},{y:"2026",v:37.5}];
+let mDebt=[{y:"1997",v:132},{y:"2000",v:278},{y:"2007",v:381},{y:"2009",v:173},{y:"2014",v:451},{y:"2018",v:568},{y:"2021",v:936},{y:"2023",v:743},{y:"2026",v:1279}];
+let ycD=[{y:"1990",v:0.3},{y:"1995",v:1},{y:"2000",v:-0.5},{y:"2007",v:-0.2},{y:"2009",v:2.7},{y:"2013",v:2.4},{y:"2019",v:-0.05},{y:"2023",v:-1},{y:"2025",v:0.3},{y:"2026",v:0.52}];
+let hyD=[{y:"1997",v:3},{y:"2000",v:8},{y:"2007",v:2.6},{y:"2008",v:21.8},{y:"2011",v:5.5},{y:"2015",v:5.5},{y:"2018",v:3.5},{y:"2020",v:10.9},{y:"2024",v:3},{y:"2026",v:3.2}];
+let hhD=[{y:"1990",v:83},{y:"1995",v:90},{y:"2000",v:97},{y:"2005",v:125},{y:"2007",v:133},{y:"2010",v:118},{y:"2015",v:100},{y:"2020",v:95},{y:"2024",v:90},{y:"2026",v:92}];
+let m2D=[{y:"2010",v:8.6},{y:"2014",v:11},{y:"2019",v:15.3},{y:"2020",v:19.1},{y:"2021",v:21.7},{y:"2022",v:21.5},{y:"2024",v:21.2},{y:"2026",v:22.4}];
+let fedB=[{y:"2008",v:0.9},{y:"2012",v:2.9},{y:"2016",v:4.5},{y:"2019",v:3.8},{y:"2020",v:7.4},{y:"2021",v:8.8},{y:"2023",v:7.8},{y:"2026",v:6.6}];
+let vixD=[{y:"1995",v:12.5},{y:"2000",v:33},{y:"2004",v:14},{y:"2008",v:80},{y:"2013",v:12},{y:"2017",v:9.1},{y:"2020",v:82.7},{y:"2024",v:15},{y:"2026",v:22.4}];
+let csD=[{y:"1990",v:77},{y:"2000",v:100},{y:"2006",v:190},{y:"2009",v:140},{y:"2015",v:170},{y:"2020",v:220},{y:"2022",v:305},{y:"2026",v:327.5}];
+let gdD=[{y:"2000",v:230},{y:"2008",v:305},{y:"2012",v:310},{y:"2020",v:360},{y:"2022",v:340},{y:"2026",v:308}];
 const epsQ=[{q:"Q3'24",g:5.8},{q:"Q4'24",g:13.2},{q:"Q1'25",g:12.8},{q:"Q2'25",g:11.5},{q:"Q3'25",g:10.2},{q:"Q4'25",g:14.5},{q:"Q1'26E",g:11.6},{q:"Q2'26E",g:16},{q:"Q3'26E",g:16.9},{q:"Q4'26E",g:15.9}];
+
+/* ══════════════ CHART UPDATE MAP ══════════════ */
+// Maps metric index → chart array and optional value transform
+// For most metrics, chart value = metric nv
+// For M2 (idx 13) and Fed BS (idx 14), chart uses absolute value in $T, not GDP ratio
+const CHART_MAP = {
+  0: () => capeData,
+  1: () => fwdPE,
+  2: () => buffett,
+  3: () => erpD,
+  4: () => conc,
+  5: () => mDebt,
+  7: () => ycD,
+  8: () => hyD,
+  9: () => hhD,
+  13: () => m2D,
+  14: () => fedB,
+  15: () => vixD,
+  16: () => csD,
+  17: () => gdD,
+};
+
+function updateChart(idx, val) {
+  const getArr = CHART_MAP[idx];
+  if (!getArr) return;
+  const arr = getArr();
+  const last = arr[arr.length - 1];
+  if (last && (last.y === "2026" || last.y === "2025")) {
+    last.v = Math.round(val * 100) / 100;
+  }
+}
 
 /* ══════════════ RISK SCORING ══════════════ */
 const riskScore = (nv, na, nc, dir) => {
@@ -433,7 +464,10 @@ function TabDash({ goTab }) {
   return (
     <div>
       <div style={{textAlign:"center",padding:"24px 0 18px"}}>
-        <div style={{fontSize:11,color:t.accent,letterSpacing:3,textTransform:"uppercase",fontWeight:700}}>Real-Time Multi-Factor Analysis</div>
+        <div style={{fontSize:11,color:t.accent,letterSpacing:3,textTransform:"uppercase",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+  <span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:t.green,boxShadow:`0 0 8px ${t.green}`,animation:"pulse-glow 2s ease-in-out infinite"}} />
+  Live Multi-Factor Analysis
+</div>
         <h1 className="main-title" style={{fontSize:32,fontWeight:900,color:t.text,margin:"6px 0",letterSpacing:-1.5}}>Bubble Risk Monitor</h1>
         <p className="main-subtitle" style={{color:t.textMuted,fontSize:13,maxWidth:560,margin:"0 auto"}}>18 indicators compared against the Dot-Com Bubble (2000) and Global Financial Crisis (2008).</p>
       </div>
@@ -548,6 +582,18 @@ function TabDash({ goTab }) {
         </div>
         <div style={{marginTop:8,fontSize:11,color:t.textDim,fontStyle:"italic"}}>Click any row to jump to its detailed analysis →</div>
         <div style={{marginTop:6,fontSize:10,color:t.textDim}}>Data dates vary by metric. Hover info buttons for sources.</div>
+      </Card>
+      <Card style={{marginTop:20,padding:14,background:t.bgCardAlt}}>
+        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
+          <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:t.green,boxShadow:`0 0 6px ${t.green}`}} />
+          <span style={{fontSize:10,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1}}>Live Data Sources</span>
+        </div>
+        <div style={{fontSize:10,color:t.textDim,lineHeight:1.8}}>
+          FRED (Federal Reserve Economic Data) · multpl.com · currentmarketvaluation.com · FactSet · S&P Global · FINRA · ICE BofA · CBOE · S&P CoreLogic Case-Shiller · IIF Global Debt Monitor
+        </div>
+        <div style={{fontSize:9,color:t.textDim,marginTop:6,fontStyle:"italic"}}>
+          Data refreshes automatically on each page load. FRED metrics update daily. Scraped metrics cached for 12 hours.
+        </div>
       </Card>
     </div>
   );
@@ -1529,7 +1575,10 @@ function TabReport() {
           <div className="gradient-divider" style={{height:1,background:`linear-gradient(90deg, transparent, ${t.accent}, transparent)`,margin:"12px 0"}} />
           <div style={{fontSize:10,color:t.textDim,lineHeight:1.7}}>
             <p style={{margin:"0 0 4px"}}>Lead Analyst: Dachi Gubadze | Research Date: March 18, 2026 | Composite Score: {OS}/100</p>
-            <p style={{margin:"0 0 4px"}}>Data: FRED, FactSet, Shiller, S&P Global, FINRA, ICE BofA, CBOE, Case-Shiller, IIF</p>
+            <p style={{margin:"0 0 4px",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+  <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:t.green,boxShadow:`0 0 6px ${t.green}`}} />
+  Live Data: FRED API · multpl.com · currentmarketvaluation.com · FactSet · S&P Global · FINRA · ICE BofA · CBOE · Case-Shiller · IIF
+</p>
           </div>
           <div style={{display:"inline-block",padding:"6px 16px",borderRadius:20,background:t.accentBg,border:`1px solid ${t.accent}33`}}>
             <span style={{fontSize:10,fontWeight:700,color:t.accent,letterSpacing:1}}>END OF REPORT</span>
@@ -1576,6 +1625,13 @@ export default function App() {
         }
         m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
         m.sig = sigFromScore(m.sc);
+        // Update chart data point
+        // For M2 and Fed BS, use raw value (trillions), not GDP ratio
+        if (s.idx === 13 || s.idx === 14) {
+          updateChart(s.idx, val); // val is already in trillions from parse
+        } else {
+          updateChart(s.idx, m.nv);
+        }
       });
 
       // Compute ERP from 10Y Treasury + Forward P/E (idx 3)
@@ -1591,6 +1647,7 @@ export default function App() {
         m.asOf = dgs10.date;
         m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
         m.sig = sigFromScore(m.sc);
+        updateChart(3, erp);
       }
 
       OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
@@ -1619,6 +1676,7 @@ export default function App() {
         m.asOf = data.timestamp.split('T')[0];
         m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
         m.sig = sigFromScore(m.sc);
+        updateChart(entry.idx, entry.value);
       });
 
       // Recompute ERP if we got a fresh Forward P/E and have 10Y Treasury
@@ -1632,6 +1690,7 @@ export default function App() {
         MS[3].nv = erp;
         MS[3].sc = riskScore(MS[3].nv, MS[3].na, MS[3].nc, MS[3].dir);
         MS[3].sig = sigFromScore(MS[3].sc);
+        updateChart(3, erp);
       }
 
       OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
@@ -1669,8 +1728,9 @@ export default function App() {
           </div>
           </div>
           {lastUpdated && (
-            <div style={{fontSize:9,color:t.textDim,textAlign:"center",padding:"2px 0"}}>
-              Live data via FRED API · Updated {lastUpdated.toLocaleString()}
+            <div style={{fontSize:9,color:t.green,textAlign:"center",padding:"3px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+              <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:t.green,boxShadow:`0 0 6px ${t.green}`}} />
+              Live data · FRED API + Web Sources · {lastUpdated.toLocaleTimeString()}
             </div>
           )}
         </div>
