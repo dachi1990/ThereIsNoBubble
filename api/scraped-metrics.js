@@ -72,6 +72,13 @@ export default async function handler(req, res) {
     if (val) results.epsGrowth = { value: val, source: 'currentmarketvaluation.com', metric: 'S&P 500 EPS Growth', idx: 10 };
   } catch {}
 
+  // 19. Capex / Operating Cash Flow
+  try {
+    const html = await fetchText('https://www.currentmarketvaluation.com/models/capex.php');
+    const val = extractNum(html, /capex.*?operating.*?([\d.]+)%/i) || extractNum(html, /capital.*?([\d.]+)%/i);
+    if (val) results.capexCf = { value: val, source: 'currentmarketvaluation.com', metric: 'Capex / Operating Cash Flow', idx: 19 };
+  } catch {}
+
   // Return whatever we got
   const timestamp = new Date().toISOString();
   res.status(200).json({

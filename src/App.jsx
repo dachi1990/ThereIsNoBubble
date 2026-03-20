@@ -47,6 +47,8 @@ let fedB=[{y:"2008",v:0.9},{y:"2012",v:2.9},{y:"2016",v:4.5},{y:"2019",v:3.8},{y
 let vixD=[{y:"1995",v:12.5},{y:"2000",v:33},{y:"2004",v:14},{y:"2008",v:80},{y:"2013",v:12},{y:"2017",v:9.1},{y:"2020",v:82.7},{y:"2024",v:15},{y:"2026",v:22.4}];
 let csD=[{y:"1990",v:77},{y:"2000",v:100},{y:"2006",v:190},{y:"2009",v:140},{y:"2015",v:170},{y:"2020",v:220},{y:"2022",v:305},{y:"2026",v:327.5}];
 let gdD=[{y:"2000",v:230},{y:"2008",v:305},{y:"2012",v:310},{y:"2020",v:360},{y:"2022",v:340},{y:"2026",v:308}];
+let capexGdpD=[{y:"1995",v:12.6},{y:"2000",v:14.6},{y:"2005",v:12.5},{y:"2007",v:13.6},{y:"2008",v:13.1},{y:"2010",v:11.8},{y:"2015",v:13.6},{y:"2020",v:13.3},{y:"2022",v:13.6},{y:"2025",v:13.9}];
+let capexCfD=[{y:"1995",v:35},{y:"2000",v:55},{y:"2003",v:32},{y:"2007",v:45},{y:"2009",v:30},{y:"2015",v:38},{y:"2020",v:35},{y:"2022",v:40},{y:"2025",v:42}];
 const epsQ=[{q:"Q3'24",g:5.8},{q:"Q4'24",g:13.2},{q:"Q1'25",g:12.8},{q:"Q2'25",g:11.5},{q:"Q3'25",g:10.2},{q:"Q4'25",g:14.5},{q:"Q1'26E",g:11.6},{q:"Q2'26E",g:16},{q:"Q3'26E",g:16.9},{q:"Q4'26E",g:15.9}];
 
 /* ══════════════ CHART UPDATE MAP ══════════════ */
@@ -68,6 +70,8 @@ const CHART_MAP = {
   15: () => vixD,
   16: () => csD,
   17: () => gdD,
+  18: () => capexGdpD,
+  19: () => capexCfD,
 };
 
 function updateChart(idx, val) {
@@ -112,7 +116,7 @@ let MS = [
     calc:"Top 10 Market Caps ÷ Total S&P 500 Cap × 100",
     src:"S&P / SlickCharts",srcUrl:"https://www.slickcharts.com/sp500",asOf:"Mar 14, 2026",freq:"weekly"},
   {nm:"FINRA Margin Debt",cur:"$1.28T",c00:"$278B",c08:"$381B",avg:"$347B",dir:1,nv:1280,na:347,nc:381,sc:riskScore(1280,347,381,1),sig:sigFromScore(riskScore(1280,347,381,1)),tab:2,
-    info:"Money borrowed to buy stocks. You have $100K, borrow $100K more from your broker = margin debt. $1.28T borrowed nationwide — a record. Danger: if stocks drop, brokers demand repayment ('margin call'), forcing selling → prices drop → more margin calls. A cascade.",
+    info:"Money borrowed to buy stocks. You have $100K, borrow $100K more from your broker = margin debt. $1.28T borrowed nationwide — a record. Danger: if stocks drop, brokers demand repayment ('margin call'), forcing selling → prices drop → more margin calls. A cascade.\n\n⚠️ IMPORTANT: This nominal figure is NOT inflation-adjusted and naturally grows with the economy. For a meaningful cross-era comparison, see Margin Debt / Market Cap (1.85%), which shows leverage is actually BELOW both 2000 (2.5%) and 2008 (2.7%) levels.",
     calc:"Total dollars borrowed from brokers to buy securities",
     src:"FINRA",srcUrl:"https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics",asOf:"Jan 2026",freq:"monthly"},
   {nm:"Margin Debt / Mkt Cap",cur:"1.85%",c00:"2.5%",c08:"2.7%",avg:"2.0%",dir:1,nv:1.85,na:2.0,nc:2.7,sc:riskScore(1.85,2.0,2.7,1),sig:sigFromScore(riskScore(1.85,2.0,2.7,1)),tab:2,
@@ -163,6 +167,14 @@ let MS = [
     info:"All debt worldwide vs. global GDP. The world earns $100, owes $308. Like a family earning $100K owing $308K. Doesn't cause crises directly but makes them WORSE: less fiscal room to respond, higher refinancing costs.",
     calc:"Global Govt + Corp + Household Debt ÷ Global GDP × 100",
     src:"IIF Global Debt Monitor",srcUrl:"https://www.reuters.com/business/finance/government-spending-lifts-global-debt-record-348-trillion-2025-says-iif-2026-02-25/",asOf:"2025 annual",freq:"annual"},
+  {nm:"Capex / GDP",cur:"13.9%",c00:"14.6%",c08:"13.1%",avg:"13.0%",dir:1,nv:13.9,na:13.0,nc:14.6,sc:riskScore(13.9,13.0,14.6,1),sig:sigFromScore(riskScore(13.9,13.0,14.6,1)),tab:2,
+    info:"Private nonresidential fixed investment as a percentage of GDP — measures how aggressively corporations are investing relative to the economy. At 13.9%, approaching the dot-com peak of 14.6% when companies massively overinvested in telecom infrastructure. The current AI capex boom ($300B+ committed by hyperscalers) is driving this higher. Overinvestment becomes dangerous when spending exceeds what the economy can productively absorb.",
+    calc:"FRED PNFI ÷ Nominal GDP × 100",
+    src:"FRED PNFI / GDP",srcUrl:"https://fred.stlouisfed.org/series/PNFI",asOf:"Q4 2025",freq:"quarterly"},
+  {nm:"Capex / Operating Cash Flow",cur:"42%",c00:"55%",c08:"45%",avg:"38%",dir:1,nv:42,na:38,nc:55,sc:riskScore(42,38,55,1),sig:sigFromScore(riskScore(42,38,55,1)),tab:2,
+    info:"How much of their operating cash flow S&P 500 companies reinvest as capital expenditure. At 42%, companies plow nearly half their cash into capex — primarily AI infrastructure. During the dot-com bubble this hit 55% as companies overbuilt fiber optic networks. When this exceeds ~50%, it signals overinvestment risk: companies spending more than they can sustain.",
+    calc:"S&P 500 Aggregate Capex ÷ Aggregate Operating Cash Flow × 100",
+    src:"S&P Global / FactSet",srcUrl:"https://www.factset.com",asOf:"Q4 2025",freq:"quarterly"},
 ];
 let OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
 let OS = Math.round(OS_SUM / MS.length);
@@ -187,6 +199,7 @@ const FRED_SERIES = [
   { series: 'BOGZ1FL154190006Q', idx: 9, parse: v => parseFloat(v), fmt: v => `${v.toFixed(0)}%` },
   { series: 'DGS10', idx: -2, parse: v => parseFloat(v), fmt: null },
   { series: 'FEDFUNDS', idx: -3, parse: v => parseFloat(v), fmt: null },
+  { series: 'PNFI', idx: -4, parse: v => parseFloat(v), fmt: null },
 ];
 
 async function fetchFredSeries(seriesId, apiKey) {
@@ -452,7 +465,7 @@ function TabDash({ goTab }) {
   const reds = MS.filter(m => m.sig === "red");
   const radarD = [
     {s:"Equity", sc: Math.round([0,1,2,3].reduce((a,i) => a + MS[i].sc, 0) / 4)},
-    {s:"Mkt Str.", sc: Math.round([4,5,6].reduce((a,i) => a + MS[i].sc, 0) / 3)},
+    {s:"Mkt Str.", sc: Math.round([4,5,6,18,19].reduce((a,i) => a + MS[i].sc, 0) / 5)},
     {s:"Credit", sc: Math.round([7,8,9].reduce((a,i) => a + MS[i].sc, 0) / 3)},
     {s:"Macro", sc: Math.round([10,11].reduce((a,i) => a + MS[i].sc, 0) / 2)},
     {s:"Money", sc: Math.round([12,13,14].reduce((a,i) => a + MS[i].sc, 0) / 3)},
@@ -469,7 +482,7 @@ function TabDash({ goTab }) {
   Live Multi-Factor Analysis
 </div>
         <h1 className="main-title" style={{fontSize:32,fontWeight:900,color:t.text,margin:"6px 0",letterSpacing:-1.5}}>Bubble Risk Monitor</h1>
-        <p className="main-subtitle" style={{color:t.textMuted,fontSize:13,maxWidth:560,margin:"0 auto"}}>18 indicators compared against the Dot-Com Bubble (2000) and Global Financial Crisis (2008).</p>
+        <p className="main-subtitle" style={{color:t.textMuted,fontSize:13,maxWidth:560,margin:"0 auto"}}>20 indicators compared against the Dot-Com Bubble (2000) and Global Financial Crisis (2008).</p>
       </div>
 
       <Card style={{marginBottom:16}}>
@@ -551,7 +564,7 @@ function TabDash({ goTab }) {
       </Card>
 
       <Card>
-        <h3 style={{margin:"0 0 14px",fontSize:15,fontWeight:700,color:t.text}}>Complete Scorecard — 18 Metrics</h3>
+        <h3 style={{margin:"0 0 14px",fontSize:15,fontWeight:700,color:t.text}}>Complete Scorecard — 20 Metrics</h3>
         <div className="table-responsive" style={{overflowX:"auto"}}>
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
             <thead>
@@ -638,12 +651,14 @@ function TabMktStr() {
     <div>
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Market Structure & Breadth</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>How narrow is the rally and how much leverage exists?</p>
-      <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+      <div className="grid-5-col" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:10,marginBottom:16}}>
         <Card><StatBox label="Top 10" value="37.5%" sub="vs 19% avg" color={t.red} /></Card>
         <Card><StatBox label="Margin Debt" value="$1.28T" sub="Record" color={t.red} /></Card>
         <Card><StatBox label="Margin/Cap" value="1.85%" sub="Below 2000" color={t.green} /></Card>
+        <Card><StatBox label="Capex/GDP" value={MS[18].cur} color={sigColor(MS[18].sig,t)} /></Card>
+        <Card><StatBox label="Capex/OpCF" value={MS[19].cur} color={sigColor(MS[19].sig,t)} /></Card>
       </div>
-      {[4,5,6].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
+      {[4,5,6,18,19].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
       <ChartCard title="Top 10 Concentration (1990–2026)" signal="red" interp="At 37.5%, exceeds 2000's 27%. But top 10 generate 32.5% of earnings — the premium is earned. Idiosyncratic risk is real: one NVIDIA miss moves the index.">
         <AC data={conc} color={t.purple} id="coF" name="Top 10" unit="%" yFmt={v => `${v}%`} refY={27} refLabel="2000: 27%" refColor={t.yellow} />
       </ChartCard>
@@ -662,9 +677,15 @@ function TabMktStr() {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
+      <ChartCard title="Capex / GDP (%)" signal={MS[18].sig} interp="At 13.9%, approaching the dot-com overinvestment peak of 14.6%. The AI infrastructure boom is the primary driver. Crossing 14% sustained historically signals overinvestment.">
+        <AC data={capexGdpD} color={t.orange} id="cxF" name="Capex/GDP" unit="%" yFmt={v => `${v}%`} refY={14.6} refLabel="2000 Peak" refColor={t.red} />
+      </ChartCard>
+      <ChartCard title="Capex / Operating Cash Flow (%)" signal={MS[19].sig} interp="At 42%, companies reinvest nearly half their cash flow. Dot-com peak was 55%. AI capex is elevated but still within sustainable bounds — crossing 50% would signal danger.">
+        <AC data={capexCfD} color={t.purple} id="cfF" name="Capex/OpCF" unit="%" yFmt={v => `${v}%`} refY={55} refLabel="2000 Peak" refColor={t.red} />
+      </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
         <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
-        {[4,5,6].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
+        {[4,5,6,18,19].map(i => <SrcNote key={`src${i}`} m={MS[i]} />)}
       </Card>
     </div>
   );
@@ -855,7 +876,7 @@ function TabReport() {
   const reds = MS.filter(m => m.sig === "red");
   const radarD = [
     {s:"Equity Val.", sc: Math.round([0,1,2,3].reduce((a,i) => a + MS[i].sc, 0) / 4)},
-    {s:"Mkt Structure", sc: Math.round([4,5,6].reduce((a,i) => a + MS[i].sc, 0) / 3)},
+    {s:"Mkt Structure", sc: Math.round([4,5,6,18,19].reduce((a,i) => a + MS[i].sc, 0) / 5)},
     {s:"Credit/Debt", sc: Math.round([7,8,9].reduce((a,i) => a + MS[i].sc, 0) / 3)},
     {s:"Macro", sc: Math.round([10,11].reduce((a,i) => a + MS[i].sc, 0) / 2)},
     {s:"Monetary", sc: Math.round([12,13,14].reduce((a,i) => a + MS[i].sc, 0) / 3)},
@@ -866,7 +887,7 @@ function TabReport() {
   const _catAvg = (idxs) => Math.round(idxs.reduce((a,i) => a + MS[i].sc, 0) / idxs.length);
   const catScores = [
     {name:"Equity Valuation",sc:_catAvg([0,1,2,3]),sig:sigFromScore(_catAvg([0,1,2,3])),metrics:[0,1,2,3],data:capeData,color:t.red,id:"rCape",dataName:"CAPE",refY:17.4,refLabel:"Avg: 17.4"},
-    {name:"Market Structure",sc:_catAvg([4,5,6]),sig:sigFromScore(_catAvg([4,5,6])),metrics:[4,5,6],data:conc,color:t.purple,id:"rConc",dataName:"Top 10 %",refY:27,refLabel:"2000: 27%",yFmt:v=>`${v}%`},
+    {name:"Market Structure",sc:_catAvg([4,5,6,18,19]),sig:sigFromScore(_catAvg([4,5,6,18,19])),metrics:[4,5,6,18,19],data:conc,color:t.purple,id:"rConc",dataName:"Top 10 %",refY:27,refLabel:"2000: 27%",yFmt:v=>`${v}%`},
     {name:"Credit & Debt",sc:_catAvg([7,8,9]),sig:sigFromScore(_catAvg([7,8,9])),metrics:[7,8,9],data:hyD,color:t.orange,id:"rHY",dataName:"HY Spread %",refY:4.9,refLabel:"20Y Avg",yFmt:v=>`${v}%`},
     {name:"Macro Fundamentals",sc:_catAvg([10,11]),sig:sigFromScore(_catAvg([10,11])),metrics:[10,11],data:null,color:t.green,id:"rEps"},
     {name:"Monetary Policy",sc:_catAvg([12,13,14]),sig:sigFromScore(_catAvg([12,13,14])),metrics:[12,13,14],data:m2D,color:t.cyan,id:"rM2",dataName:"M2 ($T)",yFmt:v=>`$${v}T`},
@@ -891,7 +912,8 @@ function TabReport() {
     "Market Structure": [
       "The concentration of the S&P 500 has reached levels unprecedented in the modern era, with the top 10 constituents commanding approximately 37.5% of total index market capitalization — exceeding the dot-com peak of 27% by a substantial margin. However, this concentration is not a bug in the market — it is a feature of the AI era. These companies are simultaneously building the railroads, the electricity grid, and the telephone network of artificial intelligence. NVIDIA is manufacturing the computational substrate. Microsoft, Google, Amazon, and Meta are constructing the cloud infrastructure, training the foundation models, and deploying the AI platforms upon which the next economy will run. The concentration should be high because winner-take-most dynamics in platform technologies are the natural and rational outcome — the same dynamics that concentrated value in Standard Oil, AT&T, and the original railroad conglomerates during prior industrial revolutions. The passive investment revolution has amplified this dynamic, but it has amplified it in the correct direction: toward the companies that will capture the largest share of AI-driven value creation.",
       "However, a critical counterargument deserves equal analytical weight: the top 10 companies now generate approximately 32.5% of total S&P 500 earnings, meaningfully narrowing the gap between their market capitalization share and their fundamental contribution. This is categorically different from 2000, when the largest companies commanded outsized valuations on speculative narratives rather than demonstrable cash generation. FINRA margin debt has reached a record $1.28 trillion in nominal terms, yet when measured as a percentage of total market capitalization — the more analytically meaningful metric — it registers at just 1.85%, below both the 2000 level (2.5%) and the 2008 level (2.7%).",
-      "The real risk in market structure is not that the top 10 are too big — it is that everyone else may be too small to survive. Traditional software companies occupying mid-cap and small-cap indices face displacement by AI-native alternatives that can replicate their functionality at a fraction of the cost. The $600B+ traditional software industry — Salesforce, ServiceNow, Atlassian, Adobe, and hundreds of smaller SaaS vendors — faces existential disruption as AI agents and natural-language programming make packaged software increasingly obsolete. This creative destruction will manifest as a structural reweighting of indices, not a broad market crash. The vulnerability lies in the mechanics of passive rebalancing and the potential for cascading de-grossing in concentrated positions: a scenario in which institutional investors simultaneously reduce exposure to mega-cap technology — whether triggered by regulatory action, earnings disappointment, or geopolitical disruption — could generate non-linear price dislocations given the sheer weight of these positions. We score market structure risk at 67/100, reflecting genuine structural fragility tempered by the fundamental reality that concentration in AI infrastructure companies is the rational market response to the most significant technological transformation in economic history."
+      "The real risk in market structure is not that the top 10 are too big — it is that everyone else may be too small to survive. Traditional software companies occupying mid-cap and small-cap indices face displacement by AI-native alternatives that can replicate their functionality at a fraction of the cost. The $600B+ traditional software industry — Salesforce, ServiceNow, Atlassian, Adobe, and hundreds of smaller SaaS vendors — faces existential disruption as AI agents and natural-language programming make packaged software increasingly obsolete. This creative destruction will manifest as a structural reweighting of indices, not a broad market crash. The vulnerability lies in the mechanics of passive rebalancing and the potential for cascading de-grossing in concentrated positions: a scenario in which institutional investors simultaneously reduce exposure to mega-cap technology — whether triggered by regulatory action, earnings disappointment, or geopolitical disruption — could generate non-linear price dislocations given the sheer weight of these positions. We score market structure risk at 67/100, reflecting genuine structural fragility tempered by the fundamental reality that concentration in AI infrastructure companies is the rational market response to the most significant technological transformation in economic history.",
+      "The addition of capital expenditure metrics provides crucial quantitative grounding for the overinvestment thesis. Private nonresidential fixed investment stands at 13.9% of GDP, approaching but not yet exceeding the 14.6% peak during the dot-com era. The S&P 500 capex-to-operating-cash-flow ratio of 42% indicates companies reinvest nearly half their cash generation — primarily into AI infrastructure. While below the 55% dot-com peak that preceded widespread write-downs, this warrants monitoring. The question is not whether AI capex is high — it manifestly is — but whether productivity gains will justify the investment within a commercially reasonable timeframe. History suggests transformative technologies ultimately deliver, but the timing mismatch between investment and returns has historically created significant drawdown periods."
     ],
     "Credit & Debt": [
       "Credit markets present perhaps the most compelling evidence against a systemic bubble classification. The household debt-to-income ratio stands at 92%, well below historical averages and dramatically below the 133% level that presaged the 2008 financial crisis. This single metric may be the most important data point in the entire analysis: consumer balance sheets are fundamentally sound. Average FICO scores hover near 740 (vs. approximately 700 pre-GFC), over 95% of outstanding mortgages carry fixed rates (eliminating the adjustable-rate time bomb of 2006-2008), and bank capital ratios under Basel III requirements provide substantially greater systemic resilience.",
@@ -1010,7 +1032,7 @@ function TabReport() {
             <span style={{padding:"4px 14px",borderRadius:20,fontSize:11,fontWeight:800,letterSpacing:1,background:t.yellowBg,color:t.yellow,border:`1px solid ${t.yellowBorder}`}}>VERDICT: ELEVATED — NOT A BUBBLE</span>
             <span style={{fontSize:12,fontWeight:700,color:t.yellow}}>{OS}/100</span>
           </div>
-          {prose("This report presents a comprehensive, multi-dimensional analysis of systemic bubble risk in U.S. equity markets as of March 2026. Synthesizing 18 quantitative metrics across 8 analytical categories — equity valuation, market structure, credit conditions, macroeconomic fundamentals, monetary policy, investor sentiment, housing markets, and global structural risk — we arrive at a composite risk score of " + OS + " on a 0-100 scale. This positions the current market environment firmly in the \"Elevated Caution\" zone, materially above the historical median of approximately 35-40 but decisively below the 80+ threshold that has historically preceded systemic market dislocations.")}
+          {prose("This report presents a comprehensive, multi-dimensional analysis of systemic bubble risk in U.S. equity markets as of March 2026. Synthesizing 20 quantitative metrics across 8 analytical categories — equity valuation, market structure, credit conditions, macroeconomic fundamentals, monetary policy, investor sentiment, housing markets, and global structural risk — we arrive at a composite risk score of " + OS + " on a 0-100 scale. This positions the current market environment firmly in the \"Elevated Caution\" zone, materially above the historical median of approximately 35-40 but decisively below the 80+ threshold that has historically preceded systemic market dislocations.")}
           {prose("The core finding of this analysis is that the U.S. equity market in March 2026 is expensive by virtually every traditional valuation metric, but it is not in a bubble in the classical sense of that term. A bubble, properly defined, requires a fundamental disconnect between asset prices and underlying economic reality — a condition in which prices are sustained purely by speculative momentum and the expectation of further price appreciation rather than by cash flows, earnings growth, or rational discount rate assumptions. The evidence does not support this characterization. S&P 500 earnings per share are growing at 15.3% year-over-year on real 8%+ revenue expansion. The Magnificent Seven technology companies collectively generate over $400 billion in annual free cash flow. The equity risk premium, while slim at 0.6%, remains positive — a critical distinction from the dot-com peak when investors accepted negative risk premiums.")}
           {prose("However, the absence of a bubble does not equate to the absence of risk. Valuations at current levels — CAPE at 38.8x, Buffett Indicator at 217% — provide minimal margin of safety against earnings disappointments, exogenous shocks, or shifts in monetary policy expectations. The unprecedented concentration of the S&P 500, with the top 10 constituents representing 37.5% of total market capitalization, creates fragility that traditional diversification frameworks fail to capture. Global debt-to-GDP at 308% constrains the capacity of policymakers to respond to future crises. The market is priced for perfection in an imperfect world.")}
           {prose("However, this analysis must be situated within the defining variable of our era: the AI revolution. We are witnessing the onset of the most transformative technological shift in human history — a phase change comparable to the First and Second Industrial Revolutions compressed into five years. The internet connected information; artificial intelligence creates intelligence itself. This is not an incremental improvement in computing. It is a fundamental reconfiguration of how economic value is generated, captured, and distributed. Our composite score of ~" + OS + " is \"elevated\" by the standards of traditional valuation frameworks — but those frameworks were built for an industrial economy in which cognitive labor was exclusively human. If AI delivers even a fraction of its projected potential — automating knowledge work across legal, medical, financial, engineering, and creative domains — then current equity prices are not a bubble. They are early pricing of a civilizational transformation whose magnitude the market has only begun to discount.")}
@@ -1032,8 +1054,8 @@ function TabReport() {
 
         {/* ═══════ SECTION 3: METHODOLOGY & SCORING FRAMEWORK ═══════ */}
         {sectionNum(2, "Methodology & Scoring Framework")}
-        {prose("Our analytical framework employs a systematic, multi-factor scoring methodology designed to quantify systemic market risk while accounting for structural shifts in market composition, monetary regimes, and economic architecture. Each of the 18 constituent metrics is scored on a 0-100 scale through a composite evaluation that incorporates four dimensions: (1) the current reading relative to its long-run historical average, (2) the proximity of the current reading to values observed at confirmed bubble peaks (specifically the dot-com peak of 2000 and the GFC peak of 2007-2008), (3) the rate of change and directional momentum of the metric, and (4) qualitative structural adjustments that account for regime changes in corporate profitability, monetary policy, and market microstructure.")}
-        {prose("The composite score is calculated as the unweighted arithmetic mean of all 18 individual metric scores. While more sophisticated weighting schemes (e.g., factor-loading-based, principal component-derived) could theoretically improve predictive accuracy, the unweighted approach provides transparency, reproducibility, and resistance to overfitting — qualities we consider essential for a framework intended to inform investment decisions under conditions of fundamental uncertainty. The traffic-light classification (Green/Healthy, Yellow/Caution, Red/Elevated) represents a qualitative overlay informed by the quantitative scores but incorporating contextual judgment that purely mechanical scoring cannot capture.")}
+        {prose("Our analytical framework employs a systematic, multi-factor scoring methodology designed to quantify systemic market risk while accounting for structural shifts in market composition, monetary regimes, and economic architecture. Each of the 20 constituent metrics is scored on a 0-100 scale through a composite evaluation that incorporates four dimensions: (1) the current reading relative to its long-run historical average, (2) the proximity of the current reading to values observed at confirmed bubble peaks (specifically the dot-com peak of 2000 and the GFC peak of 2007-2008), (3) the rate of change and directional momentum of the metric, and (4) qualitative structural adjustments that account for regime changes in corporate profitability, monetary policy, and market microstructure.")}
+        {prose("The composite score is calculated as the unweighted arithmetic mean of all 20 individual metric scores. While more sophisticated weighting schemes (e.g., factor-loading-based, principal component-derived) could theoretically improve predictive accuracy, the unweighted approach provides transparency, reproducibility, and resistance to overfitting — qualities we consider essential for a framework intended to inform investment decisions under conditions of fundamental uncertainty. The traffic-light classification (Green/Healthy, Yellow/Caution, Red/Elevated) represents a qualitative overlay informed by the quantitative scores but incorporating contextual judgment that purely mechanical scoring cannot capture.")}
         {prose("A critical limitation of this framework — and indeed of all historical comparison-based valuation models — is that it benchmarks current conditions against crisis periods that occurred before the AI era. The 1929, 2000, and 2008 dislocations all took place in economies where cognitive labor was exclusively human, software was expensive to build and distribute, and productivity growth was constrained by biological limits on human output. No prior analytical framework accounts for a technology that can replicate, augment, and eventually surpass cognitive labor across virtually every economic domain. This means our historical comparisons may systematically overstate risk by anchoring to a world that no longer exists. We flag this not to dismiss the framework's utility — historical patterns remain the best available guide — but to acknowledge that if AI represents a genuine phase change in economic capability, then backward-looking metrics may be measuring the wrong baseline.")}
 
         <Card style={{marginBottom:20,padding:18}}>
@@ -1090,7 +1112,7 @@ function TabReport() {
                 <span style={{padding:"4px 14px",borderRadius:20,fontSize:10,fontWeight:700,letterSpacing:1,background:t.yellowBg,color:t.yellow,border:`1px solid ${t.yellowBorder}`}}>ELEVATED — NOT A BUBBLE</span>
               </div>
               <div style={{marginTop:10,fontSize:11,color:t.textDim,lineHeight:1.5}}>
-                Score reflects unweighted average of 18 metrics.<br />
+                Score reflects unweighted average of 20 metrics.<br />
                 Range: {Math.min(...MS.map(m=>m.sc))} (lowest) to {Math.max(...MS.map(m=>m.sc))} (highest)
               </div>
             </div>
@@ -1491,7 +1513,7 @@ function TabReport() {
         {/* ═══════ SECTION 11: CONCLUSION ═══════ */}
         {sectionNum(10, "Conclusion")}
         <Card style={{marginBottom:20,borderLeft:`4px solid ${t.accent}`,padding:24}}>
-          {prose("After exhaustive analysis of 18 quantitative metrics spanning eight analytical categories, extensive historical comparison against the most significant market dislocations of the past century, and rigorous scenario modeling, we arrive at a definitive assessment: the U.S. equity market in March 2026 is not in a bubble. It is in the early stages of the most transformative technological revolution in human history.")}
+          {prose("After exhaustive analysis of 20 quantitative metrics spanning eight analytical categories, extensive historical comparison against the most significant market dislocations of the past century, and rigorous scenario modeling, we arrive at a definitive assessment: the U.S. equity market in March 2026 is not in a bubble. It is in the early stages of the most transformative technological revolution in human history.")}
           {prose("The AI revolution is the First and Second Industrial Revolutions compressed into five years. The steam engine mechanized physical labor over the course of a century. Electrification transformed manufacturing over decades. The internet connected information over twenty years. Artificial intelligence creates intelligence itself — and it is doing so at the exponential pace of Moore's Law rather than the linear pace of industrial adoption. This is not an iteration on prior technologies. It is a phase change in human civilization: the first technology capable of replicating, augmenting, and eventually surpassing the cognitive capabilities that have defined economic production since the Enlightenment. The implications for asset prices, corporate earnings, and economic structure are not merely significant — they are without historical precedent.")}
           {prose("Traditional valuation metrics — the CAPE at 38.8x, the Buffett Indicator at 217%, the forward P/E at 20.9x — are backward-looking tools designed to measure an industrial economy. They compare current prices to historical earnings generated by human labor, historical GDP produced by human productivity, and historical growth rates constrained by biological limits on cognitive output. These frameworks have no mechanism to price a technology that can automate legal research, medical diagnostics, software engineering, financial analysis, content creation, and scientific discovery simultaneously, at near-zero marginal cost, and at global scale. Applying CAPE ratios developed in the 1990s to an economy undergoing an intelligence revolution is like using horse-drawn carriage metrics to evaluate the early automobile industry. The framework is not wrong — it is obsolete.")}
           {prose("The quantitative evidence supports this reframing. S&P 500 earnings per share are growing at 15.3% — nearly double the historical average of 8% — and this growth is underpinned by genuine revenue expansion, not financial engineering. The Magnificent Seven generate over $400 billion in annual free cash flow and are investing $300B+ in AI infrastructure that will compound productivity gains across every sector of the economy. Household balance sheets are the strongest in three decades. Credit markets show no systemic stress. The banking system is well-capitalized. The Fed is easing from a position of strength. These are not the conditions of a bubble. These are the conditions of an economy at the threshold of a productivity supercycle.")}
@@ -1517,7 +1539,7 @@ function TabReport() {
             </div>
             <div>
               <div style={{fontSize:10,fontWeight:700,color:t.text,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>Methodology Notes</div>
-              {["Scoring range: 0 (min risk) to 100 (max risk)","Composite: unweighted arithmetic mean of 18 metrics","Historical comparisons: 2000 peak, 2008 peak, LT average","Rate adjustment: CAPE adjusted using Shiller excess CAPE yield","Margin debt: normalized to total market capitalization","ERP: implied from Gordon Growth Model applied to S&P 500","Scenario probabilities: Bayesian posterior estimates","All data as of March 14, 2026 unless otherwise noted"].map((s,i)=>(
+              {["Scoring range: 0 (min risk) to 100 (max risk)","Composite: unweighted arithmetic mean of 20 metrics","Historical comparisons: 2000 peak, 2008 peak, LT average","Rate adjustment: CAPE adjusted using Shiller excess CAPE yield","Margin debt: normalized to total market capitalization","ERP: implied from Gordon Growth Model applied to S&P 500","Scenario probabilities: Bayesian posterior estimates","All data as of March 14, 2026 unless otherwise noted"].map((s,i)=>(
                 <div key={i} style={{fontSize:11,color:t.textMuted,padding:"3px 0",borderBottom:`1px solid ${t.border}22`}}>{s}</div>
               ))}
             </div>
@@ -1650,6 +1672,21 @@ export default function App() {
         updateChart(3, erp);
       }
 
+      // Compute Capex/GDP from PNFI and GDP
+      const pnfiData = results['PNFI'];
+      if (pnfiData && gdpData) {
+        const ratioVal = (pnfiData.parsed / (gdp * 1000)) * 100;
+        const m = MS[18];
+        if (m) {
+          m.cur = ratioVal.toFixed(1) + '%';
+          m.nv = ratioVal;
+          m.asOf = pnfiData.date;
+          m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
+          m.sig = sigFromScore(m.sc);
+          updateChart(18, ratioVal);
+        }
+      }
+
       OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
       OS = Math.round(OS_SUM / MS.length);
 
@@ -1667,6 +1704,8 @@ export default function App() {
         4: v => `${v.toFixed(1)}%`,              // Top 10
         5: v => v >= 1000 ? `$${(v/1000).toFixed(2)}T` : `$${v.toFixed(0)}B`, // Margin Debt
         10: v => `+${v.toFixed(1)}%`,            // EPS Growth
+        18: v => `${v.toFixed(1)}%`,             // Capex/GDP
+        19: v => `${v.toFixed(0)}%`,             // Capex/OpCF
       };
       Object.values(data.metrics).forEach(entry => {
         const m = MS[entry.idx];
