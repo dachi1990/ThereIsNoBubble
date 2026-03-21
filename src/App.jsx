@@ -50,6 +50,8 @@ let csD=[{y:"1990",v:77},{y:"2000",v:100},{y:"2006",v:190},{y:"2009",v:140},{y:"
 let gdD=[{y:"2000",v:230},{y:"2008",v:305},{y:"2012",v:310},{y:"2020",v:360},{y:"2022",v:340},{y:"2026",v:308}];
 let capexGdpD=[{y:"1995",v:12.6},{y:"2000",v:14.6},{y:"2005",v:12.5},{y:"2007",v:13.6},{y:"2008",v:13.1},{y:"2010",v:11.8},{y:"2015",v:13.6},{y:"2020",v:13.3},{y:"2022",v:13.6},{y:"2025",v:13.9}];
 let capexCfD=[{y:"1995",v:35},{y:"2000",v:55},{y:"2003",v:32},{y:"2007",v:45},{y:"2009",v:30},{y:"2015",v:38},{y:"2020",v:35},{y:"2022",v:40},{y:"2025",v:42}];
+let gdpGrowthD=[{y:"1990",v:1.9},{y:"1995",v:2.7},{y:"2000",v:1.0},{y:"2003",v:2.9},{y:"2007",v:2.0},{y:"2008",v:-0.1},{y:"2009",v:-2.6},{y:"2015",v:2.9},{y:"2020",v:-2.2},{y:"2021",v:5.8},{y:"2022",v:1.9},{y:"2024",v:2.8},{y:"2026",v:2.0}];
+let fedFundsD=[{y:"1995",v:5.8},{y:"2000",v:6.5},{y:"2003",v:1.0},{y:"2006",v:5.25},{y:"2008",v:2.0},{y:"2009",v:0.2},{y:"2016",v:0.5},{y:"2019",v:2.4},{y:"2021",v:0.1},{y:"2023",v:5.3},{y:"2025",v:4.4},{y:"2026",v:3.6}];
 const epsQ=[{q:"Q3'24",g:5.8},{q:"Q4'24",g:13.2},{q:"Q1'25",g:12.8},{q:"Q2'25",g:11.5},{q:"Q3'25",g:10.2},{q:"Q4'25",g:14.5},{q:"Q1'26E",g:11.6},{q:"Q2'26E",g:16},{q:"Q3'26E",g:16.9},{q:"Q4'26E",g:15.9}];
 
 /* ══════════════ CHART UPDATE MAP ══════════════ */
@@ -67,6 +69,8 @@ const CHART_MAP = {
   7: () => ycD,
   8: () => hyD,
   9: () => hhD,
+  11: () => gdpGrowthD,
+  12: () => fedFundsD,
   13: () => m2D,
   14: () => fedB,
   15: () => vixD,
@@ -182,6 +186,28 @@ let OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
 let OS = Math.round(OS_SUM / MS.length);
 
 const tabNames = ["Dashboard","Equity Valuation","Market Structure","Credit & Debt","Macro","Monetary Policy","Sentiment","Housing","Global Risk","Report"];
+const METRIC_SCROLL_TARGETS = [
+  { tab:1, anchorId:"metric-cape" },
+  { tab:1, anchorId:"metric-forward-pe" },
+  { tab:1, anchorId:"metric-buffett" },
+  { tab:1, anchorId:"metric-erp" },
+  { tab:2, anchorId:"metric-top-10-concentration" },
+  { tab:2, anchorId:"metric-margin-debt" },
+  { tab:2, anchorId:"metric-margin-debt-market-cap" },
+  { tab:3, anchorId:"metric-yield-curve" },
+  { tab:3, anchorId:"metric-hy-credit-spread" },
+  { tab:3, anchorId:"metric-household-debt-income" },
+  { tab:4, anchorId:"metric-eps-growth" },
+  { tab:4, anchorId:"metric-real-gdp-growth" },
+  { tab:5, anchorId:"metric-fed-funds-rate" },
+  { tab:5, anchorId:"metric-m2-money-supply" },
+  { tab:5, anchorId:"metric-fed-balance-sheet" },
+  { tab:6, anchorId:"metric-vix" },
+  { tab:7, anchorId:"metric-case-shiller" },
+  { tab:8, anchorId:"metric-global-debt-gdp" },
+  { tab:2, anchorId:"metric-capex-gdp" },
+  { tab:2, anchorId:"metric-capex-operating-cash-flow" },
+];
 
 /* ══════════════ CONTEXT ══════════════ */
 const Ctx = createContext(themes.dark);
@@ -367,9 +393,10 @@ function ChartTip({ active, payload, label }) {
   );
 }
 
-function ChartCard({ title, sub, children, signal, interp }) {
+function ChartCard({ title, sub, children, signal, interp, anchorId }) {
   const t = useT();
   return (
+    <section id={anchorId} style={{margin:0,scrollMarginTop:140}}>
     <Card style={{marginBottom:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14,flexWrap:"wrap",gap:8}}>
         <div>
@@ -385,6 +412,7 @@ function ChartCard({ title, sub, children, signal, interp }) {
         </div>
       )}
     </Card>
+    </section>
   );
 }
 
@@ -464,7 +492,7 @@ function SrcNote({ m }) {
 }
 
 /* ══════════════ TABS ══════════════ */
-function TabDash({ goTab }) {
+function TabDash({ goToMetric }) {
   const t = useT();
   const [methOpen, setMethOpen] = useState(false);
   const greens = MS.filter(m => m.sig === "green");
@@ -598,7 +626,7 @@ function TabDash({ goTab }) {
             </thead>
             <tbody>
               {MS.map((m, i) => (
-                <tr key={i} onClick={() => goTab(m.tab)} className="table-row-hover" style={{borderBottom:`1px solid ${t.border}`,cursor:"pointer"}}
+                <tr key={i} onClick={() => goToMetric(i)} className="table-row-hover" style={{borderBottom:`1px solid ${t.border}`,cursor:"pointer"}}
                   onMouseEnter={e => e.currentTarget.style.background = t.bgHover}
                   onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
                   <td style={{padding:"9px 8px",color:t.text,fontWeight:600}}>
@@ -647,16 +675,16 @@ function TabEquity() {
         <Card><StatBox label="ERP" value="0.6%" sub="vs 4.0% avg" color={t.red} /></Card>
       </div>
       {[0,1,2,3].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <ChartCard title="Shiller CAPE Ratio (1920–2026)" signal="red" interp="CAPE at 38.8 is 2nd-highest in 154 years. Doesn't adjust for today's lower rates (4.2% vs 6.5% in 2000) or higher-margin tech models. Expensive but not irrational when rate-adjusted.">
+      <ChartCard anchorId="metric-cape" title="Shiller CAPE Ratio (1920–2026)" signal="red" interp="CAPE at 38.8 is 2nd-highest in 154 years. Doesn't adjust for today's lower rates (4.2% vs 6.5% in 2000) or higher-margin tech models. Expensive but not irrational when rate-adjusted.">
         <AC data={capeData} color={t.red} id="cF" name="CAPE" refY={17.4} refLabel="Avg: 17.4" />
       </ChartCard>
-      <ChartCard title="Forward P/E (1995–2026)" signal="yellow" interp="At 20.9x, above 10Y avg of 18.9 but below 2000's 25.5x. Strongest 'not a bubble' argument: today's 15.3% earnings growth is real, backed by $400B+ Mag 7 FCF.">
+      <ChartCard anchorId="metric-forward-pe" title="Forward P/E (1995–2026)" signal="yellow" interp="At 20.9x, above 10Y avg of 18.9 but below 2000's 25.5x. Strongest 'not a bubble' argument: today's 15.3% earnings growth is real, backed by $400B+ Mag 7 FCF.">
         <AC data={fwdPE} color={t.yellow} id="fF" name="Fwd P/E" refY={16.7} refLabel="25Y Avg" domainY={[8,30]} />
       </ChartCard>
-      <ChartCard title="Buffett Indicator (1970–2026)" signal="red" interp="At 217%, highest ever. But S&P earns 40% abroad (GDP = domestic only) and margins doubled from 6% to 12%. Still demands respect as a mean-reversion signal.">
+      <ChartCard anchorId="metric-buffett" title="Buffett Indicator (1970–2026)" signal="red" interp="At 217%, highest ever. But S&P earns 40% abroad (GDP = domestic only) and margins doubled from 6% to 12%. Still demands respect as a mean-reversion signal.">
         <AC data={buffett} color={t.red} id="bF" name="Mkt Cap/GDP" unit="%" yFmt={v => `${v}%`} refY={90} refLabel="Avg: 90%" />
       </ChartCard>
-      <ChartCard title="Equity Risk Premium (1995–2026)" signal="red" interp="ERP at 0.6% is razor-thin but positive. In 1999 it went NEGATIVE. Today investors are barely compensated for equity risk — not as extreme as 2000 but a clear warning sign.">
+      <ChartCard anchorId="metric-erp" title="Equity Risk Premium (1995–2026)" signal="red" interp="ERP at 0.6% is razor-thin but positive. In 1999 it went NEGATIVE. Today investors are barely compensated for equity risk — not as extreme as 2000 but a clear warning sign.">
         <AC data={erpD} color={t.blue} id="eF" name="ERP" unit="%" yFmt={v => `${v}%`} refY={0} refLabel="Zero (Danger)" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -681,10 +709,10 @@ function TabMktStr() {
         <Card><StatBox label="Capex/OpCF" value={MS[19].cur} color={sigColor(MS[19].sig,t)} /></Card>
       </div>
       {[4,5,6,18,19].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <ChartCard title="Top 10 Concentration (1990–2026)" signal="red" interp="At 37.5%, exceeds 2000's 27%. But top 10 generate 32.5% of earnings — the premium is earned. Idiosyncratic risk is real: one NVIDIA miss moves the index.">
+      <ChartCard anchorId="metric-top-10-concentration" title="Top 10 Concentration (1990–2026)" signal="red" interp="At 37.5%, exceeds 2000's 27%. But top 10 generate 32.5% of earnings — the premium is earned. Idiosyncratic risk is real: one NVIDIA miss moves the index.">
         <AC data={conc} color={t.purple} id="coF" name="Top 10" unit="%" yFmt={v => `${v}%`} refY={27} refLabel="2000: 27%" refColor={t.yellow} />
       </ChartCard>
-      <ChartCard title="FINRA Margin Debt ($B) — Nominal, Not Inflation-Adjusted" signal="red" interp="⚠️ Nominal margin debt will always hit 'records' due to inflation and market growth. The raw $1.28T is misleading — see the normalized chart below (Margin Debt / Market Cap) for the meaningful comparison.">
+      <ChartCard anchorId="metric-margin-debt" title="FINRA Margin Debt ($B) — Nominal, Not Inflation-Adjusted" signal="red" interp="⚠️ Nominal margin debt will always hit 'records' due to inflation and market growth. The raw $1.28T is misleading — see the normalized chart below (Margin Debt / Market Cap) for the meaningful comparison.">
         <ResponsiveContainer>
           <BarChart data={mDebt}>
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
@@ -702,13 +730,13 @@ function TabMktStr() {
       <Card style={{marginBottom:8,padding:"10px 16px",background:t.greenBg,border:`1px solid ${t.greenBorder}`,borderRadius:10}}>
         <p style={{margin:0,fontSize:12,color:t.green,fontWeight:600}}>👇 The chart below is the meaningful measure — margin debt RELATIVE to market size. At 1.85%, leverage is actually below both 2000 and 2008 levels.</p>
       </Card>
-      <ChartCard title="Margin Debt / Market Cap (%) — The Normalized View" signal="green" interp="At 1.85%, margin leverage relative to market size is BELOW the 2000 level (2.5%) and the 2008 level (2.7%). This is the metric that matters — raw dollar amounts are misleading because the market and economy have grown enormously. Current leverage is moderate.">
+      <ChartCard anchorId="metric-margin-debt-market-cap" title="Margin Debt / Market Cap (%) — The Normalized View" signal="green" interp="At 1.85%, margin leverage relative to market size is BELOW the 2000 level (2.5%) and the 2008 level (2.7%). This is the metric that matters — raw dollar amounts are misleading because the market and economy have grown enormously. Current leverage is moderate.">
         <AC data={mDebtPct} color={t.green} id="mdPctF" name="Margin/MktCap" unit="%" yFmt={v => `${v}%`} refY={2.5} refLabel="2000: 2.5%" refColor={t.red} domainY={[0,3.5]} />
       </ChartCard>
-      <ChartCard title="Capex / GDP (%)" signal={MS[18].sig} interp="At 13.9%, approaching the dot-com overinvestment peak of 14.6%. The AI infrastructure boom is the primary driver. Crossing 14% sustained historically signals overinvestment.">
+      <ChartCard anchorId="metric-capex-gdp" title="Capex / GDP (%)" signal={MS[18].sig} interp="At 13.9%, approaching the dot-com overinvestment peak of 14.6%. The AI infrastructure boom is the primary driver. Crossing 14% sustained historically signals overinvestment.">
         <AC data={capexGdpD} color={t.orange} id="cxF" name="Capex/GDP" unit="%" yFmt={v => `${v}%`} refY={14.6} refLabel="2000 Peak" refColor={t.red} />
       </ChartCard>
-      <ChartCard title="Capex / Operating Cash Flow (%)" signal={MS[19].sig} interp="At 42%, companies reinvest nearly half their cash flow. Dot-com peak was 55%. AI capex is elevated but still within sustainable bounds — crossing 50% would signal danger.">
+      <ChartCard anchorId="metric-capex-operating-cash-flow" title="Capex / Operating Cash Flow (%)" signal={MS[19].sig} interp="At 42%, companies reinvest nearly half their cash flow. Dot-com peak was 55%. AI capex is elevated but still within sustainable bounds — crossing 50% would signal danger.">
         <AC data={capexCfD} color={t.purple} id="cfF" name="Capex/OpCF" unit="%" yFmt={v => `${v}%`} refY={55} refLabel="2000 Peak" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -731,7 +759,7 @@ function TabCredit() {
         <Card><StatBox label="HH Debt/Inc" value="92%" sub="vs 133% (2008)" color={t.green} /></Card>
       </div>
       {[7,8,9].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <ChartCard title="Yield Curve: 10Y − 2Y" signal="green" interp="Deeply inverted 2022-24, re-steepened to +52bp. The economy absorbed rate hikes without recession. A healthy positive slope.">
+      <ChartCard anchorId="metric-yield-curve" title="Yield Curve: 10Y − 2Y" signal="green" interp="Deeply inverted 2022-24, re-steepened to +52bp. The economy absorbed rate hikes without recession. A healthy positive slope.">
         <ResponsiveContainer>
           <ComposedChart data={ycD}>
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
@@ -746,10 +774,10 @@ function TabCredit() {
           </ComposedChart>
         </ResponsiveContainer>
       </ChartCard>
-      <ChartCard title="HY Credit Spreads" signal="yellow" interp="At 3.2%, below 20Y avg of 4.9%. Calm — possibly too calm. Before 2008 spreads were 2.6% → exploded to 21.8%.">
+      <ChartCard anchorId="metric-hy-credit-spread" title="HY Credit Spreads" signal="yellow" interp="At 3.2%, below 20Y avg of 4.9%. Calm — possibly too calm. Before 2008 spreads were 2.6% → exploded to 21.8%.">
         <AC data={hyD} color={t.orange} id="hF" name="HY Spread" unit="%" yFmt={v => `${v}%`} refY={4.9} refLabel="20Y Avg" />
       </ChartCard>
-      <ChartCard title="Household Debt-to-Income" signal="green" interp="At 92%, well below historical averages. The single strongest 'not a bubble' argument. FICO ~740, 95%+ fixed-rate. Consumer is healthy.">
+      <ChartCard anchorId="metric-household-debt-income" title="Household Debt-to-Income" signal="green" interp="At 92%, well below historical averages. The single strongest 'not a bubble' argument. FICO ~740, 95%+ fixed-rate. Consumer is healthy.">
         <AC data={hhD} color={t.green} id="hhF" name="Debt/Inc" unit="%" yFmt={v => `${v}%`} domainY={[40,140]} refY={133} refLabel="2008 Peak" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -777,7 +805,7 @@ function TabMacro() {
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.green}}>Assessment: Fundamentally Sound</h3>
         <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>EPS growing 15.3% on real 8% revenue. GDP expanding at 2.0%, unemployment stable, inflation cooling. In 2000 earnings fell; in 2008 the economy contracted. Today, reality follows the prices.</p>
       </Card>
-      <ChartCard title="S&P 500 Earnings Growth" signal="green" interp="Six consecutive quarters of double-digit growth. CY 2026 consensus: 15.3%. This durability is unlike any prior bubble peak.">
+      <ChartCard anchorId="metric-eps-growth" title="S&P 500 Earnings Growth" signal="green" interp="Six consecutive quarters of double-digit growth. CY 2026 consensus: 15.3%. This durability is unlike any prior bubble peak.">
         <ResponsiveContainer>
           <BarChart data={epsQ}>
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
@@ -789,6 +817,9 @@ function TabMacro() {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+      </ChartCard>
+      <ChartCard anchorId="metric-real-gdp-growth" title="Real GDP Growth (YoY)" signal="green" interp="GDP growth near long-run trend is a key reason this looks expensive rather than terminal. Unlike 2008, the economy is still expanding.">
+        <AC data={gdpGrowthD} color={t.green} id="gdpF" name="GDP Growth" unit="%" yFmt={v => `${v}%`} refY={2.5} refLabel="Long-Run Avg" />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
         <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
@@ -810,10 +841,13 @@ function TabMoney() {
         <Card><StatBox label="Fed BS" value="$6.6T" sub="Down from $9T" color={t.yellow} /></Card>
       </div>
       {[12,13,14].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <ChartCard title="M2 Money Supply ($T)" signal="yellow" interp="Exploded +40% during COVID. Now $22.4T growing 4.6% YoY. Liquidity remains historically elevated.">
+      <ChartCard anchorId="metric-fed-funds-rate" title="Fed Funds Rate (%)" signal="green" interp="Policy is restrictive versus the post-GFC era, but still well below the 2000 tightening peak. The Fed is no longer actively choking liquidity.">
+        <AC data={fedFundsD} color={t.green} id="ffF" name="Fed Funds" unit="%" yFmt={v => `${v}%`} refY={3.5} refLabel="Long-Run Avg" />
+      </ChartCard>
+      <ChartCard anchorId="metric-m2-money-supply" title="M2 Money Supply ($T)" signal="yellow" interp="Exploded +40% during COVID. Now $22.4T growing 4.6% YoY. Liquidity remains historically elevated.">
         <AC data={m2D} color={t.cyan} id="m2F" name="M2 ($T)" yFmt={v => `$${v}T`} />
       </ChartCard>
-      <ChartCard title="Fed Balance Sheet ($T)" signal="yellow" interp="Peaked $8.8T, now $6.6T via QT. Still 7x pre-2008. Orderly unwinding. Risk: forced pivot to QE.">
+      <ChartCard anchorId="metric-fed-balance-sheet" title="Fed Balance Sheet ($T)" signal="yellow" interp="Peaked $8.8T, now $6.6T via QT. Still 7x pre-2008. Orderly unwinding. Risk: forced pivot to QE.">
         <AC data={fedB} color={t.purple} id="feF" name="Fed BS ($T)" yFmt={v => `$${v}T`} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -836,7 +870,7 @@ function TabSent() {
         <Card><StatBox label="IPOs" value="Subdued" color={t.green} /></Card>
       </div>
       <Explainer title={MS[15].nm} info={MS[15].info} calc={MS[15].calc} />
-      <ChartCard title="VIX (1995–2026)" signal="yellow" interp="VIX 22.4 near average. Pre-bubble VIX was LOW (9-11) = complacency. Today's moderate reading is healthier. Meme mania has cooled.">
+      <ChartCard anchorId="metric-vix" title="VIX (1995–2026)" signal="yellow" interp="VIX 22.4 near average. Pre-bubble VIX was LOW (9-11) = complacency. Today's moderate reading is healthier. Meme mania has cooled.">
         <AC data={vixD} color={t.yellow} id="vF" name="VIX" refY={20} refLabel="Avg ~20" />
       </ChartCard>
       <Card style={{borderLeft:`3px solid ${t.green}`}}>
@@ -863,7 +897,7 @@ function TabHousing() {
         <Card><StatBox label="Avg FICO" value="~740" color={t.green} /></Card>
       </div>
       <Explainer title={MS[16].nm} info={MS[16].info} calc={MS[16].calc} />
-      <ChartCard title="Case-Shiller HPI (1990–2026)" signal="yellow" interp="Near all-time highs at 327.5 but driven by supply shortage, not reckless lending. FICO ~740, 95% fixed-rate. Growth decelerating to 1.3%.">
+      <ChartCard anchorId="metric-case-shiller" title="Case-Shiller HPI (1990–2026)" signal="yellow" interp="Near all-time highs at 327.5 but driven by supply shortage, not reckless lending. FICO ~740, 95% fixed-rate. Growth decelerating to 1.3%.">
         <AC data={csD} color={t.orange} id="csF" name="HPI" refY={190} refLabel="2006 Peak" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -886,7 +920,7 @@ function TabGlobal() {
         <Card><StatBox label="Geopolitical" value="Elevated" color={t.yellow} /></Card>
       </div>
       <Explainer title={MS[17].nm} info={MS[17].info} calc={MS[17].calc} />
-      <ChartCard title="Global Debt-to-GDP" signal="red" interp="At 308%, elevated but off prior highs. Doesn't cause bubbles alone but makes downturns worse. Less fiscal room. Structural vulnerability, not trigger.">
+      <ChartCard anchorId="metric-global-debt-gdp" title="Global Debt-to-GDP" signal="red" interp="At 308%, elevated but off prior highs. Doesn't cause bubbles alone but makes downturns worse. Less fiscal room. Structural vulnerability, not trigger.">
         <AC data={gdD} color={t.red} id="gdF" name="Debt/GDP" unit="%" yFmt={v => `${v}%`} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -1649,15 +1683,53 @@ export default function App() {
   const [tab, setTab] = useState(() => pathToTab(window.location.pathname));
   const [isDark, setIsDark] = useState(false);
   const [fade, setFade] = useState(false);
-  const scrollRef = useRef(null);
+  const headerRef = useRef(null);
+  const pendingScrollTargetRef = useRef(null);
   const t = isDark ? themes.dark : themes.light;
   const [fredData, setFredData] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
+  const getHeaderOffset = () => (headerRef.current?.getBoundingClientRect().height || 0) + 20;
+  const scrollToAnchor = (anchorId, behavior = "smooth") => {
+    const target = document.getElementById(anchorId);
+    if (!target) return false;
+    const top = window.scrollY + target.getBoundingClientRect().top - getHeaderOffset();
+    window.scrollTo({ top: Math.max(top, 0), behavior });
+    return true;
+  };
+
   useEffect(() => { setFade(true); const x = setTimeout(() => setFade(false), 200); return () => clearTimeout(x); }, [tab]);
-  useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [tab]);
+  useEffect(() => {
+    let rafA = 0;
+    let rafB = 0;
+
+    if (!pendingScrollTargetRef.current) {
+      window.scrollTo({ top:0, behavior:"auto" });
+      return undefined;
+    }
+
+    rafA = window.requestAnimationFrame(() => {
+      rafB = window.requestAnimationFrame(() => {
+        const target = pendingScrollTargetRef.current;
+        pendingScrollTargetRef.current = null;
+        if (target?.anchorId) scrollToAnchor(target.anchorId, target.behavior);
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(rafA);
+      window.cancelAnimationFrame(rafB);
+    };
+  }, [tab]);
   useEffect(() => { if (TAB_PATHS[tab] !== window.location.pathname) window.history.pushState(null, "", TAB_PATHS[tab]); }, [tab]);
-  useEffect(() => { const fn = () => setTab(pathToTab(window.location.pathname)); window.addEventListener("popstate", fn); return () => window.removeEventListener("popstate", fn); }, []);
+  useEffect(() => {
+    const fn = () => {
+      pendingScrollTargetRef.current = null;
+      setTab(pathToTab(window.location.pathname));
+    };
+    window.addEventListener("popstate", fn);
+    return () => window.removeEventListener("popstate", fn);
+  }, []);
 
   useEffect(() => {
     const key = import.meta.env.VITE_FRED_API_KEY;
@@ -1770,7 +1842,20 @@ export default function App() {
     }).catch(err => console.warn('Scraped metrics fetch failed:', err));
   }, []);
 
-  const goTab = (i) => setTab(i);
+  const goTab = (i) => {
+    pendingScrollTargetRef.current = null;
+    setTab(i);
+  };
+  const goToMetric = (metricIdx) => {
+    const target = METRIC_SCROLL_TARGETS[metricIdx];
+    if (!target) return;
+    if (target.tab === tab) {
+      scrollToAnchor(target.anchorId);
+      return;
+    }
+    pendingScrollTargetRef.current = { anchorId: target.anchorId, behavior:"smooth" };
+    setTab(target.tab);
+  };
 
   const ActiveTab = TAB_COMPS[tab];
 
@@ -1778,7 +1863,7 @@ export default function App() {
     <Ctx.Provider value={t}>
       <div style={{minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'Outfit',system-ui,sans-serif",transition:"background 0.4s,color 0.4s"}}>
         {/* Header */}
-        <div className="header-glass" style={{"--header-bg":t.bg,borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
+        <div ref={headerRef} className="header-glass" style={{"--header-bg":t.bg,borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
           <div className="header-inner" style={{maxWidth:1200,margin:"0 auto",padding:"10px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
               <div style={{width:6,height:6,borderRadius:"50%",background:t.accent,boxShadow:`0 0 12px ${t.accent}66`}} />
@@ -1794,7 +1879,7 @@ export default function App() {
           <div className="tab-bar-outer" style={{position:"relative",maxWidth:1200,margin:"0 auto"}}>
           <div className="tab-bar-wrap" style={{padding:"0 20px",display:"flex",overflowX:"auto"}}>
             {tabNames.map((n,i) => (
-              <button key={i} onClick={() => setTab(i)} className={"tab-btn" + (tab===i ? " active" : "")} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
+              <button key={i} onClick={() => goTab(i)} className={"tab-btn" + (tab===i ? " active" : "")} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
             ))}
           </div>
           </div>
@@ -1807,8 +1892,8 @@ export default function App() {
         </div>
 
         {/* Content */}
-        <div ref={scrollRef} className={(fade ? "" : "animate-fade-in") + " content-wrap"} style={{maxWidth:1200,margin:"0 auto",padding:"20px 20px 50px"}}>
-          {tab === 0 ? <TabDash goTab={goTab} /> : ActiveTab ? <ActiveTab /> : null}
+        <div className={(fade ? "" : "animate-fade-in") + " content-wrap"} style={{maxWidth:1200,margin:"0 auto",padding:"20px 20px 50px"}}>
+          {tab === 0 ? <TabDash goToMetric={goToMetric} /> : ActiveTab ? <ActiveTab /> : null}
         </div>
 
       </div>
