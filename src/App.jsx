@@ -910,10 +910,11 @@ function TabGlobal() {
   );
 }
 
-function TabDataHealth({ dataHealth, refreshMetrics, isRefreshing }) {
+function TabDataHealth({ dataHealth, refreshMetrics, isRefreshing, dataError }) {
   const t = useT();
   const summary = dataHealth?.summary;
   const metrics = dataHealth?.metrics || [];
+  const activeError = dataError || dataHealth?.error || "";
 
   return (
     <div>
@@ -957,6 +958,15 @@ function TabDataHealth({ dataHealth, refreshMetrics, isRefreshing }) {
         </div>
       </Card>
 
+      {activeError && (
+        <Card style={{marginBottom:16,background:t.redBg,border:`1px solid ${t.redBorder}`}}>
+          <div style={{fontSize:11,fontWeight:700,color:t.red,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>Data Fetch Error</div>
+          <div style={{fontSize:12,color:t.text,lineHeight:1.7}}>
+            The app could not load the live metrics payload. {activeError}
+          </div>
+        </Card>
+      )}
+
       <Card>
         <div className="table-responsive" style={{overflowX:"auto"}}>
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12,minWidth:920}}>
@@ -968,7 +978,7 @@ function TabDataHealth({ dataHealth, refreshMetrics, isRefreshing }) {
               </tr>
             </thead>
             <tbody>
-              {metrics.map((metric) => (
+              {metrics.length ? metrics.map((metric) => (
                 <tr key={metric.id} style={{borderBottom:`1px solid ${t.border}`}}>
                   <td style={{padding:"10px 8px",color:t.text,fontWeight:600}}>{metric.name}</td>
                   <td style={{padding:"10px 8px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{metric.pipeline}</td>
@@ -982,7 +992,13 @@ function TabDataHealth({ dataHealth, refreshMetrics, isRefreshing }) {
                     {metric.notes?.length ? metric.notes.join(" ") : "Healthy."}
                   </td>
                 </tr>
-              ))}
+              )) : (
+                <tr>
+                  <td colSpan={7} style={{padding:"14px 8px",color:t.textMuted,fontSize:12}}>
+                    {activeError ? "No live metric records could be loaded." : "No health records returned yet."}
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -1748,6 +1764,7 @@ export default function App() {
   const t = isDark ? themes.dark : themes.light;
   const [lastUpdated, setLastUpdated] = useState(null);
   const [dataHealth, setDataHealth] = useState(null);
+  const [dataHealthError, setDataHealthError] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const getHeaderOffset = () => (headerRef.current?.getBoundingClientRect().height || 0) + 20;
@@ -1794,9 +1811,19 @@ export default function App() {
 
   const refreshMetrics = async () => {
     setIsRefreshing(true);
+    setDataHealthError("");
     try {
-      const response = await fetch("/api/metrics", { cache:"no-store" });
+      const response = await fetch("/api/metrics", {
+        cache:"no-store",
+        headers:{ Accept:"application/json" },
+      });
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error("Metrics endpoint returned HTML instead of JSON. Check Vercel API routing for /api/metrics.");
+      }
+
       const payload = await response.json();
+      if (!response.ok) throw new Error(payload?.error || `Metrics request failed with HTTP ${response.status}`);
       if (!payload?.metrics?.length) throw new Error(payload?.error || "Metrics payload was empty");
 
       payload.metrics.forEach(metric => {
@@ -1821,9 +1848,26 @@ export default function App() {
       OS = Math.round(OS_SUM / MS.length);
 
       setDataHealth(payload);
+      setDataHealthError("");
       setLastUpdated(payload.checkedAt ? new Date(payload.checkedAt) : new Date());
     } catch (error) {
       console.warn("Metrics fetch failed:", error);
+      const message = error instanceof Error ? error.message : "Metrics fetch failed.";
+      setDataHealthError(message);
+      setDataHealth({
+        checkedAt: new Date().toISOString(),
+        summary: {
+          status: "error",
+          total: 20,
+          okCount: 0,
+          warnCount: 0,
+          errorCount: 20,
+          updatedCount: 0,
+        },
+        metrics: [],
+        error: message,
+      });
+      setLastUpdated(new Date());
     } finally {
       setIsRefreshing(false);
     }
@@ -1890,7 +1934,7 @@ export default function App() {
           {tab === 0 ? (
             <TabDash goToMetric={goToMetric} dataHealth={dataHealth} />
           ) : tab === 9 ? (
-            <TabDataHealth dataHealth={dataHealth} refreshMetrics={refreshMetrics} isRefreshing={isRefreshing} />
+            <TabDataHealth dataHealth={dataHealth} dataError={dataHealthError} refreshMetrics={refreshMetrics} isRefreshing={isRefreshing} />
           ) : ActiveTab ? (
             <ActiveTab />
           ) : null}
