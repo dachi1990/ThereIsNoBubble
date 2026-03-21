@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, createContext, useContext } from "react";
+import { useState, useEffect, useRef, useId, createContext, useContext } from "react";
 import ReactDOM from "react-dom";
 import { AreaChart, Area, BarChart, Bar, ComposedChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, Line } from "recharts";
 
@@ -43,8 +43,8 @@ let mDebtPct=[{y:"1997",v:2.1},{y:"2000",v:2.5},{y:"2003",v:1.6},{y:"2007",v:2.7
 let ycD=[{y:"1990",v:0.3},{y:"1995",v:1},{y:"2000",v:-0.5},{y:"2007",v:-0.2},{y:"2009",v:2.7},{y:"2013",v:2.4},{y:"2019",v:-0.05},{y:"2023",v:-1},{y:"2025",v:0.3},{y:"2026",v:0.52}];
 let hyD=[{y:"1997",v:3},{y:"2000",v:8},{y:"2007",v:2.6},{y:"2008",v:21.8},{y:"2011",v:5.5},{y:"2015",v:5.5},{y:"2018",v:3.5},{y:"2020",v:10.9},{y:"2024",v:3},{y:"2026",v:3.3}];
 let hhD=[{y:"1990",v:83},{y:"1995",v:90},{y:"2000",v:97},{y:"2005",v:125},{y:"2007",v:133},{y:"2010",v:118},{y:"2015",v:100},{y:"2020",v:95},{y:"2024",v:90},{y:"2026",v:93}];
-let m2D=[{y:"2010",v:8.6},{y:"2014",v:11},{y:"2019",v:15.3},{y:"2020",v:19.1},{y:"2021",v:21.7},{y:"2022",v:21.5},{y:"2024",v:21.2},{y:"2026",v:22.4}];
-let fedB=[{y:"2008",v:0.9},{y:"2012",v:2.9},{y:"2016",v:4.5},{y:"2019",v:3.8},{y:"2020",v:7.4},{y:"2021",v:8.8},{y:"2023",v:7.8},{y:"2026",v:6.7}];
+let m2D=[{y:"1990",v:51.0},{y:"1995",v:52.7},{y:"2000",v:48.7},{y:"2005",v:50.9},{y:"2010",v:59.7},{y:"2015",v:65.4},{y:"2020",v:90.1},{y:"2022",v:81.7},{y:"2026",v:71.4}];
+let fedB=[{y:"2002",v:6.0},{y:"2004",v:6.0},{y:"2008",v:6.2},{y:"2010",v:16.8},{y:"2015",v:24.7},{y:"2019",v:17.8},{y:"2020",v:33.8},{y:"2022",v:34.4},{y:"2026",v:21.2}];
 let vixD=[{y:"1995",v:12.5},{y:"2000",v:33},{y:"2004",v:14},{y:"2008",v:80},{y:"2013",v:12},{y:"2017",v:9.1},{y:"2020",v:82.7},{y:"2024",v:15},{y:"2026",v:24.1}];
 let csD=[{y:"1990",v:77},{y:"2000",v:100},{y:"2006",v:190},{y:"2009",v:140},{y:"2015",v:170},{y:"2020",v:220},{y:"2022",v:305},{y:"2026",v:332.0}];
 let gdD=[{y:"2001",v:190.9},{y:"2008",v:216.6},{y:"2012",v:227.9},{y:"2020",v:285.0},{y:"2022",v:240.3},{y:"2025",v:246.3}];
@@ -52,12 +52,24 @@ let capexGdpD=[{y:"1995",v:12.6},{y:"2000",v:14.6},{y:"2005",v:12.5},{y:"2007",v
 let capexCfD=[{y:"1995",v:120.2},{y:"2000",v:142.3},{y:"2005",v:100.2},{y:"2007",v:121.6},{y:"2009",v:92.2},{y:"2015",v:109.4},{y:"2020",v:113.2},{y:"2022",v:119.4},{y:"2025",v:111.0}];
 let gdpGrowthD=[{y:"1990",v:1.9},{y:"1995",v:2.7},{y:"2000",v:1.0},{y:"2003",v:2.9},{y:"2007",v:2.0},{y:"2008",v:-0.1},{y:"2009",v:-2.6},{y:"2015",v:2.9},{y:"2020",v:-2.2},{y:"2021",v:5.8},{y:"2022",v:1.9},{y:"2024",v:2.8},{y:"2026",v:2.0}];
 let fedFundsD=[{y:"1995",v:5.8},{y:"2000",v:6.5},{y:"2003",v:1.0},{y:"2006",v:5.25},{y:"2008",v:2.0},{y:"2009",v:0.2},{y:"2016",v:0.5},{y:"2019",v:2.4},{y:"2021",v:0.1},{y:"2023",v:5.3},{y:"2025",v:4.4},{y:"2026",v:3.6}];
-const epsQ=[{q:"Q3'24",g:5.8},{q:"Q4'24",g:13.2},{q:"Q1'25",g:12.8},{q:"Q2'25",g:11.5},{q:"Q3'25",g:10.2},{q:"Q4'25",g:14.5},{q:"Q1'26E",g:11.6},{q:"Q2'26E",g:16},{q:"Q3'26E",g:16.9},{q:"Q4'26E",g:15.9}];
+let epsQ=[
+  {period:"1997-Q1",label:"Q1'97",actual:15.0,estimate:null},
+  {period:"1998-Q1",label:"Q1'98",actual:-3.1,estimate:null},
+  {period:"1999-Q1",label:"Q1'99",actual:-4.6,estimate:null},
+  {period:"2000-Q1",label:"Q1'00",actual:27.9,estimate:null},
+  {period:"2001-Q1",label:"Q1'01",actual:-13.4,estimate:null},
+  {period:"2008-Q1",label:"Q1'08",actual:-30.2,estimate:null},
+  {period:"2009-Q1",label:"Q1'09",actual:-88.6,estimate:null},
+  {period:"2020-Q1",label:"Q1'20",actual:-14.8,estimate:null},
+  {period:"2024-Q1",label:"Q1'24",actual:5.6,estimate:null},
+  {period:"2025-Q3",label:"Q3'25",actual:16.9,estimate:16.9},
+  {period:"2026-Q1",label:"Q1'26E",actual:null,estimate:13.0},
+];
 
 /* ══════════════ CHART UPDATE MAP ══════════════ */
 // Maps metric index → chart array and optional value transform
 // For most metrics, chart value = metric nv
-// For M2 (idx 13) and Fed BS (idx 14), chart uses absolute value in $T, not GDP ratio
+// Most charts update only the latest point locally; longer history replacements come from /api/metrics
 const CHART_MAP = {
   0: () => capeData,
   1: () => fwdPE,
@@ -225,6 +237,38 @@ const METRIC_SCROLL_TARGETS = [
 const Ctx = createContext(themes.dark);
 const useT = () => useContext(Ctx);
 
+function SunIcon({ color = "#7c2d12" }) {
+  return (
+    <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="10" cy="10" r="3.5" fill={color} />
+      {[
+        [10, 1.5, 10, 4],
+        [10, 16, 10, 18.5],
+        [1.5, 10, 4, 10],
+        [16, 10, 18.5, 10],
+        [4, 4, 5.8, 5.8],
+        [14.2, 14.2, 16, 16],
+        [4, 16, 5.8, 14.2],
+        [14.2, 5.8, 16, 4],
+      ].map(([x1, y1, x2, y2], i) => (
+        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+      ))}
+    </svg>
+  );
+}
+
+function MoonIcon({ color = "#0f172a" }) {
+  return (
+    <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="M12.8 2.4a7.9 7.9 0 1 0 4.8 14.1A8.6 8.6 0 0 1 12.8 2.4Z"
+        fill={color}
+        opacity="0.95"
+      />
+    </svg>
+  );
+}
+
 /* ══════════════ SMALL COMPONENTS ══════════════ */
 const sigColor = (s, t) => s === "green" ? t.green : s === "yellow" ? t.yellow : t.red;
 const sigBg = (s, t) => s === "green" ? t.greenBg : s === "yellow" ? t.yellowBg : t.redBg;
@@ -371,11 +415,12 @@ function Card({ children, style }) {
 
 function ChartTip({ active, payload, label }) {
   const t = useT();
-  if (!active || !payload?.length) return null;
+  const rows = payload?.filter(p => p.name);
+  if (!active || !rows?.length) return null;
   return (
     <div style={{background:t.tooltipBg,border:`1px solid ${t.border}`,borderRadius:8,padding:"8px 14px",boxShadow:t.shadow}}>
       <p style={{color:t.textDim,fontSize:11,margin:0}}>{label}</p>
-      {payload.map((p, i) => <p key={i} style={{color:p.color,fontSize:13,fontWeight:700,margin:"3px 0 0"}}>{p.name}: {typeof p.value === "number" ? p.value.toLocaleString() : p.value}{p.unit || ""}</p>)}
+      {rows.map((p, i) => <p key={i} style={{color:p.color,fontSize:13,fontWeight:700,margin:"3px 0 0"}}>{p.name}: {typeof p.value === "number" ? p.value.toLocaleString() : p.value}{p.unit || ""}</p>)}
     </div>
   );
 }
@@ -437,7 +482,7 @@ function Gauge({ score }) {
 }
 
 /* ══════════════ AREA CHART HELPER ══════════════ */
-function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY, unit }) {
+function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY, unit, baseValue }) {
   const t = useT();
   const years = data.map(d => d.y);
   const hasDotCom = years.includes("2000");
@@ -459,8 +504,44 @@ function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY, un
         {hasDotCom && <ReferenceLine x="2000" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />}
         {hasGFC && gfcYear && <ReferenceLine x={gfcYear} stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />}
         {refY != null && <ReferenceLine y={refY} stroke={refColor || t.refLabel} strokeDasharray="6 3" label={{value:refLabel,fill:refColor || t.refLabel,fontSize:10,position:"insideTopLeft",dy:-8}} />}
-        <Area type="monotone" dataKey="v" stroke={color} fill={`url(#${id})`} strokeWidth={2.5} name={name} unit={unit} dot={false} />
+        <Area type="monotone" dataKey="v" stroke={color} fill={`url(#${id})`} strokeWidth={2.5} name={name} unit={unit} dot={false} baseValue={baseValue} />
       </AreaChart>
+    </ResponsiveContainer>
+  );
+}
+
+function EpsHistoryChart({ data }) {
+  const t = useT();
+  const fillId = useId().replace(/:/g, "");
+  const series = data.map((row) => ({
+    ...row,
+    shade: row.estimate ?? row.actual,
+  }));
+  return (
+    <ResponsiveContainer>
+      <ComposedChart data={series}>
+        <defs>
+          <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={t.green} stopOpacity={0.2} />
+            <stop offset="100%" stopColor={t.green} stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
+        <XAxis
+          dataKey="period"
+          tick={{fontSize:9,fill:t.textDim}}
+          minTickGap={18}
+          tickFormatter={(value) => value?.endsWith("-Q1") ? value.slice(0, 4) : ""}
+        />
+        <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={(v) => `${v}%`} />
+        <Tooltip content={<ChartTip />} />
+        <ReferenceLine x="2000-Q1" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
+        <ReferenceLine x="2008-Q1" stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
+        <ReferenceLine y={0} stroke={t.refLabel} strokeDasharray="6 3" label={{value:"Zero",fill:t.refLabel,fontSize:10,position:"insideTopLeft",dy:-8}} />
+        <Area type="monotone" dataKey="shade" stroke="none" fill={`url(#${fillId})`} baseValue={0} isAnimationActive={false} />
+        <Line type="monotone" dataKey="actual" stroke={t.green} strokeWidth={2.5} dot={false} connectNulls name="Actual" unit="%" />
+        <Line type="monotone" dataKey="estimate" stroke={t.green} strokeWidth={2.5} strokeDasharray="6 4" dot={false} connectNulls name="Estimate" unit="%" />
+      </ComposedChart>
     </ResponsiveContainer>
   );
 }
@@ -635,7 +716,7 @@ function TabDash({ goToMetric, dataHealth }) {
           </table>
         </div>
         <div style={{marginTop:8,fontSize:11,color:t.textDim,fontStyle:"italic"}}>Click any row to jump to its detailed analysis →</div>
-        <div style={{marginTop:6,fontSize:10,color:t.textDim}}>Data dates vary by metric. Hover info buttons for sources.</div>
+        <div style={{marginTop:6,fontSize:10,color:t.textDim}}>Data dates vary by metric. Click info icons for details.</div>
       </Card>
       <Card style={{marginTop:20,padding:14,background:t.bgCardAlt}}>
         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
@@ -796,21 +877,11 @@ function TabMacro() {
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.green}}>Assessment: Fundamentally Sound</h3>
         <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>EPS is growing {MS[10].cur} while real GDP is running at {MS[11].cur}. In 2000 earnings fell; in 2008 the economy contracted. Today, reality still supports prices better than it did in the major historical bubbles.</p>
       </Card>
-      <ChartCard anchorId="metric-eps-growth" title="S&P 500 Earnings Growth" signal={MS[10].sig} interp={`Consensus earnings growth is currently ${MS[10].cur}. That durability remains one of the clearest differences versus the 2000 and 2008 peaks.`}>
-        <ResponsiveContainer>
-          <BarChart data={epsQ}>
-            <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
-            <XAxis dataKey="q" tick={{fontSize:9,fill:t.textDim}} />
-            <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={v => `${v}%`} />
-            <Tooltip content={<ChartTip />} cursor={false} />
-            <Bar dataKey="g" name="EPS Growth" unit="%" radius={[6,6,0,0]} activeBar={{fillOpacity:1}}>
-              {epsQ.map((d,i) => <Cell key={i} fill={i >= 6 ? t.blue : t.green} fillOpacity={0.7} />)}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+      <ChartCard anchorId="metric-eps-growth" title="S&P 500 Earnings Growth (1997–2026)" sub="Historical quarterly growth with the latest consensus estimate when available" signal={MS[10].sig} interp={`Consensus earnings growth is currently ${MS[10].cur}. The longer history now shows clearly that today still looks much stronger than the 2001-02 and 2008-09 earnings collapses.`}>
+        <EpsHistoryChart data={epsQ} />
       </ChartCard>
       <ChartCard anchorId="metric-real-gdp-growth" title="Real GDP Growth (YoY)" signal={MS[11].sig} interp={`GDP growth at ${MS[11].cur} is close enough to trend that this still looks expensive rather than terminal. Unlike 2008, the economy is still expanding.`}>
-        <AC data={gdpGrowthD} color={t.green} id="gdpF" name="GDP Growth" unit="%" yFmt={v => `${v}%`} refY={2.5} refLabel="Long-Run Avg" />
+        <AC data={gdpGrowthD} color={t.green} id="gdpF" name="GDP Growth" unit="%" yFmt={v => `${v}%`} refY={2.5} refLabel="Long-Run Avg" baseValue={0} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
         <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
@@ -835,11 +906,11 @@ function TabMoney() {
       <ChartCard anchorId="metric-fed-funds-rate" title="Fed Funds Rate (%)" signal={MS[12].sig} interp={`Policy at ${MS[12].cur} is restrictive versus the post-GFC era, but still well below the 2000 tightening peak. The Fed is no longer actively choking liquidity.`}>
         <AC data={fedFundsD} color={t.green} id="ffF" name="Fed Funds" unit="%" yFmt={v => `${v}%`} refY={3.5} refLabel="Long-Run Avg" />
       </ChartCard>
-      <ChartCard anchorId="metric-m2-money-supply" title="M2 Money Supply ($T)" signal={MS[13].sig} interp={`M2 now stands at ${MS[13].cur}. Liquidity remains historically elevated even after the post-pandemic normalization.`}>
-        <AC data={m2D} color={t.cyan} id="m2F" name="M2 ($T)" yFmt={v => `$${v}T`} />
+      <ChartCard anchorId="metric-m2-money-supply" title="M2 / GDP (%)" sub="Chart matches the way this metric is actually scored" signal={MS[13].sig} interp={`M2 currently equals about ${MS[13].nv.toFixed(1)}% of GDP. That is still elevated versus the dot-com era, but well below the pandemic peak.`}>
+        <AC data={m2D} color={t.cyan} id="m2F" name="M2 / GDP" unit="%" yFmt={v => `${v}%`} refY={60} refLabel="Long-Run Avg" />
       </ChartCard>
-      <ChartCard anchorId="metric-fed-balance-sheet" title="Fed Balance Sheet ($T)" signal={MS[14].sig} interp={`The balance sheet is now ${MS[14].cur} after quantitative tightening. It remains far above pre-2008 levels, but the unwind has stayed orderly so far.`}>
-        <AC data={fedB} color={t.purple} id="feF" name="Fed BS ($T)" yFmt={v => `$${v}T`} />
+      <ChartCard anchorId="metric-fed-balance-sheet" title="Fed Balance Sheet / GDP (%)" sub="Chart matches the way this metric is actually scored" signal={MS[14].sig} interp={`The Fed balance sheet currently equals about ${MS[14].nv.toFixed(1)}% of GDP. It remains far above pre-2008 levels, but it is well below the 2020-22 extreme.`}>
+        <AC data={fedB} color={t.purple} id="feF" name="Fed BS / GDP" unit="%" yFmt={v => `${v}%`} refY={6} refLabel="Pre-QE Avg" />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
         <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
@@ -1040,7 +1111,7 @@ function TabReport() {
     {name:"Market Structure",sc:_catAvg([4,5,6,18,19]),sig:sigFromScore(_catAvg([4,5,6,18,19])),metrics:[4,5,6,18,19],data:conc,color:t.purple,id:"rConc",dataName:"Top 10 %",refY:27,refLabel:"2000: 27%",yFmt:v=>`${v}%`},
     {name:"Credit & Debt",sc:_catAvg([7,8,9]),sig:sigFromScore(_catAvg([7,8,9])),metrics:[7,8,9],data:hyD,color:t.orange,id:"rHY",dataName:"HY Spread %",refY:4.9,refLabel:"20Y Avg",yFmt:v=>`${v}%`},
     {name:"Macro Fundamentals",sc:_catAvg([10,11]),sig:sigFromScore(_catAvg([10,11])),metrics:[10,11],data:null,color:t.green,id:"rEps"},
-    {name:"Monetary Policy",sc:_catAvg([12,13,14]),sig:sigFromScore(_catAvg([12,13,14])),metrics:[12,13,14],data:m2D,color:t.cyan,id:"rM2",dataName:"M2 ($T)",yFmt:v=>`$${v}T`},
+    {name:"Monetary Policy",sc:_catAvg([12,13,14]),sig:sigFromScore(_catAvg([12,13,14])),metrics:[12,13,14],data:m2D,color:t.cyan,id:"rM2",dataName:"M2 / GDP %",yFmt:v=>`${v}%`},
     {name:"Sentiment",sc:MS[15].sc,sig:MS[15].sig,metrics:[15],data:vixD,color:t.yellow,id:"rVix",dataName:"VIX",refY:20,refLabel:"Avg ~20"},
     {name:"Housing",sc:MS[16].sc,sig:MS[16].sig,metrics:[16],data:csD,color:t.orange,id:"rCS",dataName:"Case-Shiller",refY:190,refLabel:"2006 Peak"},
     {name:"Global Risk",sc:MS[17].sc,sig:MS[17].sig,metrics:[17],data:gdD,color:t.red,id:"rGD",dataName:"Debt/GDP %",yFmt:v=>`${v}%`},
@@ -1394,17 +1465,7 @@ function TabReport() {
               {/* Special chart for Macro — bar chart of EPS */}
               {cat.name === "Macro Fundamentals" && (
                 <div style={{height:220,marginTop:10}}>
-                  <ResponsiveContainer>
-                    <BarChart data={epsQ}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
-                      <XAxis dataKey="q" tick={{fontSize:9,fill:t.textDim}} />
-                      <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={v => `${v}%`} />
-                      <Tooltip content={<ChartTip />} cursor={false} />
-                      <Bar dataKey="g" name="EPS Growth" unit="%" radius={[6,6,0,0]} activeBar={{fillOpacity:1}}>
-                        {epsQ.map((d,i) => <Cell key={i} fill={i >= 6 ? t.blue : t.green} fillOpacity={0.7} />)}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <EpsHistoryChart data={epsQ} />
                 </div>
               )}
             </Card>
@@ -1436,7 +1497,7 @@ function TabReport() {
                     <span>{r.m1}</span><span style={{color:t.textDim,margin:"0 4px"}}>vs.</span><span>{r.m2}</span>
                   </td>
                   <td style={{padding:"8px 6px"}}>
-                    <span style={{padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:700,color:r.dir==="Confirming"?t.accent:r.dir==="Diverging"?t.orange:t.yellow,background:r.dir==="Confirming"?t.accentBg:r.dir==="Diverging"?`${t.orange}15`:`${t.yellow}15`}}>{r.dir}</span>
+                    <span style={{display:"inline-flex",alignItems:"center",justifyContent:"center",minWidth:92,padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:700,lineHeight:1.3,textAlign:"center",color:r.dir==="Confirming"?t.accent:r.dir==="Diverging"?t.orange:t.yellow,background:r.dir==="Confirming"?t.accentBg:r.dir==="Diverging"?`${t.orange}15`:`${t.yellow}15`}}>{r.dir}</span>
                   </td>
                   <td style={{padding:"8px 6px",color:t.textMuted,fontSize:10,lineHeight:1.4}}>{r.note}</td>
                   <td style={{padding:"8px 6px"}}><Badge signal={r.sig} /></td>
@@ -1622,7 +1683,7 @@ function TabReport() {
                 <tr key={i} style={{borderBottom:`1px solid ${t.border}44`}}>
                   <td style={{padding:"8px 6px",color:t.text,fontWeight:600,fontSize:11}}>{a.asset}</td>
                   <td style={{padding:"8px 6px"}}>
-                    <span style={{padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:700,color:a.color,background:a.color===t.green?t.greenBg:a.color===t.red?t.redBg:t.yellowBg}}>{a.weight}</span>
+                    <span style={{display:"inline-flex",alignItems:"center",justifyContent:"center",minWidth:110,padding:"2px 8px",borderRadius:4,fontSize:10,fontWeight:700,lineHeight:1.3,textAlign:"center",color:a.color,background:a.color===t.green?t.greenBg:a.color===t.red?t.redBg:t.yellowBg}}>{a.weight}</span>
                   </td>
                   <td style={{padding:"8px 6px",fontSize:16,color:a.color,fontWeight:700}}>{a.dir}</td>
                   <td style={{padding:"8px 6px",color:t.textMuted,fontSize:10,lineHeight:1.4}}>{a.rationale}</td>
@@ -1853,8 +1914,19 @@ export default function App() {
         m.pipeline = metric.pipeline;
         m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
         m.sig = sigFromScore(m.sc);
-        updateChart(metric.idx, metric.chartValue ?? metric.value);
+        const nextChartValue = [13,14].includes(metric.idx) ? metric.value : (metric.chartValue ?? metric.value);
+        updateChart(metric.idx, nextChartValue);
       });
+
+      if (payload.histories?.m2Ratio?.length) {
+        m2D = payload.histories.m2Ratio;
+      }
+      if (payload.histories?.fedBalanceSheetRatio?.length) {
+        fedB = payload.histories.fedBalanceSheetRatio;
+      }
+      if (payload.histories?.earningsGrowth?.length) {
+        epsQ = payload.histories.earningsGrowth;
+      }
 
       OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
       OS = Math.round(OS_SUM / MS.length);
@@ -1908,6 +1980,16 @@ export default function App() {
   const dataHealthSignal = healthToSignal(dataHealth?.summary?.status || "warn");
   const liveSummary = dataHealth?.summary;
   const calendarDate = formatCalendarDate(lastUpdated || new Date());
+  const themeToggleBg = isDark
+    ? "linear-gradient(135deg,#1e293b,#334155)"
+    : "linear-gradient(135deg,#fff3d6,#fde68a)";
+  const themeToggleBorder = isDark ? t.border : "#e5c98a";
+  const themeKnobBg = isDark
+    ? "linear-gradient(135deg,#fde68a,#f59e0b)"
+    : "linear-gradient(135deg,#fbbf24,#f97316)";
+  const themeKnobShadow = isDark
+    ? "0 4px 10px rgba(251,191,36,0.25)"
+    : "0 4px 10px rgba(249,115,22,0.22)";
 
   return (
     <Ctx.Provider value={t}>
@@ -1916,13 +1998,45 @@ export default function App() {
         <div ref={headerRef} className="header-glass" style={{"--header-bg":t.bg,borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
           <div className="header-inner" style={{maxWidth:1200,margin:"0 auto",padding:"10px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
             <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <div style={{width:6,height:6,borderRadius:"50%",background:t.accent,boxShadow:`0 0 12px ${t.accent}66`}} />
+              <div style={{width:6,height:6,borderRadius:"50%",background:t.text,boxShadow:`0 0 12px ${t.text}22`}} />
               <span style={{fontSize:11,fontWeight:700,letterSpacing:2.5}}>BUBBLE RISK MONITOR</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
               <span style={{fontSize:10,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.5}}>{calendarDate}</span>
-              <button onClick={() => setIsDark(!isDark)} style={{position:"relative",width:50,height:26,borderRadius:13,border:`1px solid ${t.border}`,cursor:"pointer",padding:0,background:isDark?"linear-gradient(135deg,#1e293b,#334155)":"linear-gradient(135deg,#dbeafe,#c7d2fe)",transition:"all 0.3s"}}>
-                <div style={{position:"absolute",top:2,left:isDark?26:2,width:20,height:20,borderRadius:"50%",background:isDark?"#fbbf24":"#4f46e5",transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}}>{isDark?"☾":"☀"}</div>
+              <button
+                onClick={() => setIsDark(!isDark)}
+                aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+                style={{
+                  position:"relative",
+                  width:50,
+                  height:26,
+                  borderRadius:13,
+                  border:`1px solid ${themeToggleBorder}`,
+                  cursor:"pointer",
+                  padding:0,
+                  background:themeToggleBg,
+                  boxShadow:isDark ? "none" : "inset 0 0 0 1px rgba(255,255,255,0.4)",
+                  transition:"all 0.3s"
+                }}
+              >
+                <div
+                  style={{
+                    position:"absolute",
+                    top:2,
+                    left:isDark ? 26 : 2,
+                    width:20,
+                    height:20,
+                    borderRadius:"50%",
+                    background:themeKnobBg,
+                    boxShadow:themeKnobShadow,
+                    transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",
+                    display:"flex",
+                    alignItems:"center",
+                    justifyContent:"center"
+                  }}
+                >
+                  {isDark ? <MoonIcon color="#0f172a" /> : <SunIcon color="#7c2d12" />}
+                </div>
               </button>
             </div>
           </div>

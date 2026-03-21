@@ -119,6 +119,30 @@ function extractFirstNumber(html, patterns) {
   return null;
 }
 
+function roundValue(value, digits = 2) {
+  const factor = 10 ** digits;
+  return Math.round(value * factor) / factor;
+}
+
+function parseFredCsvRows(csv, parse) {
+  return csv
+    .trim()
+    .split(/\r?\n/)
+    .slice(1)
+    .map((line) => {
+      const separator = line.indexOf(",");
+      const date = line.slice(0, separator);
+      const raw = line.slice(separator + 1);
+      return { date, raw };
+    })
+    .filter((row) => row.date && row.raw && row.raw !== ".")
+    .map((row) => ({
+      ...row,
+      parsed: parse(row.raw),
+    }))
+    .filter((row) => Number.isFinite(row.parsed));
+}
+
 async function fetchFredSeries(seriesId) {
   const csv = await fetchText(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesId}`);
   const rows = csv.trim().split(/\r?\n/).slice(1);
@@ -130,6 +154,11 @@ async function fetchFredSeries(seriesId) {
   }
 
   throw new Error(`FRED ${seriesId}: missing observation`);
+}
+
+async function fetchFredSeriesHistory(seriesId, parse) {
+  const csv = await fetchText(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesId}`);
+  return parseFredCsvRows(csv, parse);
 }
 
 async function fetchAllFred() {
@@ -147,6 +176,162 @@ async function fetchAllFred() {
   );
 
   return Object.fromEntries(entries);
+}
+
+function findLatestObservationOnOrBefore(rows, targetDate) {
+  let latest = null;
+  for (const row of rows) {
+    if (row.date > targetDate) break;
+    latest = row;
+  }
+  return latest;
+}
+
+function buildAnnualRatioHistory({ numeratorRows, denominatorRows, startYear }) {
+  const latestNumeratorByYear = new Map();
+  numeratorRows.forEach((row) => {
+    const year = Number(row.date.slice(0, 4));
+    if (year < startYear) return;
+    latestNumeratorByYear.set(year, row);
+  });
+
+  return [...latestNumeratorByYear.entries()]
+    .map(([year, row]) => {
+      const denominator = findLatestObservationOnOrBefore(denominatorRows, row.date);
+      if (!denominator) return null;
+      return {
+        y: String(year),
+        v: roundValue((row.parsed / denominator.parsed) * 100, 1),
+      };
+    })
+    .filter(Boolean);
+}
+
+function periodFromDate(date) {
+  const year = Number(date.slice(0, 4));
+  const month = Number(date.slice(5, 7));
+  const quarter = Math.floor((month - 1) / 3) + 1;
+  return `${year}-Q${quarter}`;
+}
+
+function shortQuarterLabel(period, isEstimate = false) {
+  const [yearPart, quarterPart] = period.split("-Q");
+  return `Q${quarterPart}'${yearPart.slice(2)}${isEstimate ? "E" : ""}`;
+}
+
+function parseQuarterPeriod(period) {
+  const match = period?.match(/^(\d{4})-Q([1-4])$/);
+  if (!match) return null;
+  return {
+    year: Number(match[1]),
+    quarter: Number(match[2]),
+  };
+}
+
+function compareQuarterPeriods(left, right) {
+  const a = parseQuarterPeriod(left);
+  const b = parseQuarterPeriod(right);
+  if (!a || !b) return 0;
+  if (a.year !== b.year) return a.year - b.year;
+  return a.quarter - b.quarter;
+}
+
+async function fetchM2RatioHistory() {
+  const [m2Rows, gdpRows] = await Promise.all([
+    fetchFredSeriesHistory(FRED_SERIES.m2.series, FRED_SERIES.m2.parse),
+    fetchFredSeriesHistory(FRED_SERIES.gdp.series, FRED_SERIES.gdp.parse),
+  ]);
+
+  return buildAnnualRatioHistory({
+    numeratorRows: m2Rows,
+    denominatorRows: gdpRows,
+    startYear: 1990,
+  });
+}
+
+async function fetchFedBalanceSheetRatioHistory() {
+  const [walclRows, gdpRows] = await Promise.all([
+    fetchFredSeriesHistory(FRED_SERIES.walcl.series, FRED_SERIES.walcl.parse),
+    fetchFredSeriesHistory(FRED_SERIES.gdp.series, FRED_SERIES.gdp.parse),
+  ]);
+
+  return buildAnnualRatioHistory({
+    numeratorRows: walclRows,
+    denominatorRows: gdpRows,
+    startYear: 2002,
+  });
+}
+
+async function fetchMultplEarningsGrowthHistory() {
+  const html = await fetchText("https://www.multpl.com/s-p-500-earnings-growth/table/by-quarter");
+  const rows = [...html.matchAll(/<tr class="(?:odd|even)">\s*<td>([^<]+)<\/td>\s*<td>\s*(?:&#x2002;)?\s*(-?[\d.]+)%\s*<\/td>/g)]
+    .map((match) => ({
+      date: new Date(`${match[1]} UTC`),
+      value: parseFloat(match[2]),
+    }))
+    .filter((row) => !Number.isNaN(row.date.getTime()) && Number.isFinite(row.value) && row.date.getUTCFullYear() >= 1997)
+    .sort((left, right) => left.date - right.date)
+    .map((row) => {
+      const isoDate = row.date.toISOString().slice(0, 10);
+      const period = periodFromDate(isoDate);
+      return {
+        period,
+        label: shortQuarterLabel(period),
+        actual: roundValue(row.value, 2),
+        estimate: null,
+      };
+    });
+
+  return rows;
+}
+
+function extractEarningsEstimatePointFromYardeni(html, checkedAt) {
+  const normalized = normalizeScrapeText(html);
+  const match = normalized.match(
+    /consensus proforma (Q[1-4]) earnings growth forecast[\s\S]{0,220}?(?:weakened|improved|rose|fell)\s+to\s+([0-9]+(?:\.[0-9]+)?)%/i,
+  ) || normalized.match(
+    /(Q[1-4])[\s\S]{0,120}?earnings growth forecast[\s\S]{0,160}?(?:weakened|improved|rose|fell)\s+to\s+([0-9]+(?:\.[0-9]+)?)%/i,
+  );
+  if (!match) return null;
+
+  const quarter = match[1];
+  const value = parseFloat(match[2]);
+  if (!Number.isFinite(value)) return null;
+
+  const quarterYearMatch = normalized.match(new RegExp(`${quarter}-?(20\\d{2})`, "i"));
+  const year = quarterYearMatch?.[1] ? Number(quarterYearMatch[1]) : new Date(checkedAt).getUTCFullYear();
+  const quarterNumber = quarter.replace("Q", "");
+  const period = `${year}-Q${quarterNumber}`;
+
+  return {
+    period,
+    label: shortQuarterLabel(period, true),
+    actual: null,
+    estimate: roundValue(value, 2),
+  };
+}
+
+async function fetchEarningsGrowthHistory() {
+  const checkedAt = new Date().toISOString();
+  const [actualRows, yardeniHtml] = await Promise.all([
+    fetchMultplEarningsGrowthHistory(),
+    fetchText("https://archive.yardeni.com/morning-briefing-2026/"),
+  ]);
+
+  const estimatePoint = extractEarningsEstimatePointFromYardeni(yardeniHtml, checkedAt);
+  if (!estimatePoint || !actualRows.length) return actualRows;
+
+  const history = actualRows.map((row) => ({ ...row }));
+  const lastActual = history[history.length - 1];
+  if (compareQuarterPeriods(estimatePoint.period, lastActual.period) > 0) {
+    history[history.length - 1] = {
+      ...lastActual,
+      estimate: lastActual.actual,
+    };
+    history.push(estimatePoint);
+  }
+
+  return history;
 }
 
 function buildMetricPayload({
@@ -640,11 +825,21 @@ export async function collectMetricsData() {
     .sort((left, right) => left.idx - right.idx);
 
   const summary = summarizeMetrics(assessedMetrics);
+  const [m2RatioHistory, fedBalanceSheetRatioHistory, earningsGrowthHistory] = await Promise.all([
+    fetchM2RatioHistory().catch(() => []),
+    fetchFedBalanceSheetRatioHistory().catch(() => []),
+    fetchEarningsGrowthHistory().catch(() => []),
+  ]);
 
   return {
     checkedAt: formatIsoDate(checkedAt),
     summary,
     metrics: assessedMetrics,
+    histories: {
+      m2Ratio: m2RatioHistory,
+      fedBalanceSheetRatio: fedBalanceSheetRatioHistory,
+      earningsGrowth: earningsGrowthHistory,
+    },
   };
 }
 
