@@ -1,15 +1,5 @@
 {
   "rewrites": [
     { "source": "/((?!api/|assets/).*)", "destination": "/index.html" }
-  ],
-  "crons": [
-    {
-      "path": "/api/metrics",
-      "schedule": "15 */6 * * *"
-    },
-    {
-      "path": "/api/data-health",
-      "schedule": "45 */6 * * *"
-    }
   ]
 }

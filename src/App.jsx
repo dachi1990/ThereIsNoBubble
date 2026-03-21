@@ -948,7 +948,7 @@ function TabDataHealth({ dataHealth, refreshMetrics, isRefreshing, dataError }) 
           <div>
             <h3 style={{margin:"0 0 6px",fontSize:15,fontWeight:700,color:t.text}}>Monitoring Setup</h3>
             <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>
-              The app now pulls all 20 metrics from a single backend pipeline. Vercel warms the metrics and health endpoints every 6 hours, and GitHub Actions runs a scheduled health check every 6 hours with optional webhook alerts.
+              The app now pulls all 20 metrics from a single backend pipeline. GitHub Actions runs a scheduled health check every 6 hours with optional webhook alerts, and the Data Health tab shows the last live fetch status directly in the app.
             </p>
           </div>
           <div style={{textAlign:"right"}}>
