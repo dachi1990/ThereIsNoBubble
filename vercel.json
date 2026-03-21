@@ -5,8 +5,12 @@
   ],
   "crons": [
     {
-      "path": "/api/scraped-metrics",
-      "schedule": "0 6 * * *"
+      "path": "/api/metrics",
+      "schedule": "15 */6 * * *"
+    },
+    {
+      "path": "/api/data-health",
+      "schedule": "45 */6 * * *"
     }
   ]
 }

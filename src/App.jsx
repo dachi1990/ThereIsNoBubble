@@ -33,23 +33,23 @@ const themes = {
 };
 
 /* ══════════════ DATA ══════════════ */
-let capeData=[{y:"1920",v:5},{y:"1929",v:32.6},{y:"1932",v:5.6},{y:"1950",v:12},{y:"1966",v:24.1},{y:"1982",v:6.6},{y:"1990",v:17},{y:"1995",v:23},{y:"2000",v:44.2},{y:"2002",v:22},{y:"2007",v:27.5},{y:"2009",v:13.3},{y:"2015",v:26},{y:"2020",v:31},{y:"2022",v:28},{y:"2024",v:36},{y:"2026",v:38.8}];
-let fwdPE=[{y:"1995",v:14.5},{y:"1999",v:25.5},{y:"2000",v:26},{y:"2003",v:16},{y:"2007",v:15.2},{y:"2009",v:10.5},{y:"2013",v:15},{y:"2020",v:22},{y:"2022",v:17},{y:"2024",v:21},{y:"2026",v:20.9}];
-let buffett=[{y:"1970",v:75},{y:"1982",v:33},{y:"1990",v:58},{y:"1995",v:92},{y:"2000",v:148},{y:"2002",v:80},{y:"2007",v:110},{y:"2009",v:60},{y:"2015",v:120},{y:"2020",v:170},{y:"2021",v:200},{y:"2025",v:230},{y:"2026",v:217}];
-let erpD=[{y:"1995",v:4},{y:"1999",v:0.5},{y:"2000",v:-0.5},{y:"2004",v:3.5},{y:"2009",v:8},{y:"2015",v:4},{y:"2020",v:4.5},{y:"2022",v:2.5},{y:"2026",v:0.6}];
-let conc=[{y:"1990",v:16},{y:"1995",v:17},{y:"2000",v:27},{y:"2005",v:19},{y:"2010",v:20},{y:"2015",v:19},{y:"2020",v:28},{y:"2024",v:37},{y:"2025",v:41},{y:"2026",v:37.5}];
-let mDebt=[{y:"1997",v:132},{y:"2000",v:278},{y:"2007",v:381},{y:"2009",v:173},{y:"2014",v:451},{y:"2018",v:568},{y:"2021",v:936},{y:"2023",v:743},{y:"2026",v:1279}];
-let mDebtPct=[{y:"1997",v:2.1},{y:"2000",v:2.5},{y:"2003",v:1.6},{y:"2007",v:2.7},{y:"2009",v:1.5},{y:"2014",v:1.9},{y:"2018",v:2.0},{y:"2021",v:1.7},{y:"2023",v:1.8},{y:"2026",v:1.85}];
+let capeData=[{y:"1920",v:5},{y:"1929",v:32.6},{y:"1932",v:5.6},{y:"1950",v:12},{y:"1966",v:24.1},{y:"1982",v:6.6},{y:"1990",v:17},{y:"1995",v:23},{y:"2000",v:44.2},{y:"2002",v:22},{y:"2007",v:27.5},{y:"2009",v:13.3},{y:"2015",v:26},{y:"2020",v:31},{y:"2022",v:28},{y:"2024",v:36},{y:"2026",v:37.5}];
+let fwdPE=[{y:"1995",v:14.5},{y:"1999",v:25.5},{y:"2000",v:26},{y:"2003",v:16},{y:"2007",v:15.2},{y:"2009",v:10.5},{y:"2013",v:15},{y:"2020",v:22},{y:"2022",v:17},{y:"2024",v:21},{y:"2026",v:21.8}];
+let buffett=[{y:"1970",v:75},{y:"1982",v:33},{y:"1990",v:58},{y:"1995",v:92},{y:"2000",v:148},{y:"2002",v:80},{y:"2007",v:110},{y:"2009",v:60},{y:"2015",v:120},{y:"2020",v:170},{y:"2021",v:200},{y:"2025",v:220},{y:"2026",v:230}];
+let erpD=[{y:"1995",v:4},{y:"1999",v:0.5},{y:"2000",v:-0.5},{y:"2004",v:3.5},{y:"2009",v:8},{y:"2015",v:4},{y:"2020",v:4.5},{y:"2022",v:2.5},{y:"2026",v:0.3}];
+let conc=[{y:"1990",v:16},{y:"1995",v:17},{y:"2000",v:27},{y:"2005",v:19},{y:"2010",v:20},{y:"2015",v:19},{y:"2020",v:28},{y:"2024",v:37},{y:"2025",v:41},{y:"2026",v:37.2}];
+let mDebt=[{y:"1997",v:132},{y:"2000",v:278},{y:"2007",v:381},{y:"2009",v:173},{y:"2014",v:451},{y:"2018",v:568},{y:"2021",v:936},{y:"2023",v:743},{y:"2026",v:1214}];
+let mDebtPct=[{y:"1997",v:2.1},{y:"2000",v:2.5},{y:"2003",v:1.6},{y:"2007",v:2.7},{y:"2009",v:1.5},{y:"2014",v:1.9},{y:"2018",v:2.0},{y:"2021",v:1.7},{y:"2023",v:1.8},{y:"2026",v:1.68}];
 let ycD=[{y:"1990",v:0.3},{y:"1995",v:1},{y:"2000",v:-0.5},{y:"2007",v:-0.2},{y:"2009",v:2.7},{y:"2013",v:2.4},{y:"2019",v:-0.05},{y:"2023",v:-1},{y:"2025",v:0.3},{y:"2026",v:0.52}];
-let hyD=[{y:"1997",v:3},{y:"2000",v:8},{y:"2007",v:2.6},{y:"2008",v:21.8},{y:"2011",v:5.5},{y:"2015",v:5.5},{y:"2018",v:3.5},{y:"2020",v:10.9},{y:"2024",v:3},{y:"2026",v:3.2}];
-let hhD=[{y:"1990",v:83},{y:"1995",v:90},{y:"2000",v:97},{y:"2005",v:125},{y:"2007",v:133},{y:"2010",v:118},{y:"2015",v:100},{y:"2020",v:95},{y:"2024",v:90},{y:"2026",v:92}];
+let hyD=[{y:"1997",v:3},{y:"2000",v:8},{y:"2007",v:2.6},{y:"2008",v:21.8},{y:"2011",v:5.5},{y:"2015",v:5.5},{y:"2018",v:3.5},{y:"2020",v:10.9},{y:"2024",v:3},{y:"2026",v:3.3}];
+let hhD=[{y:"1990",v:83},{y:"1995",v:90},{y:"2000",v:97},{y:"2005",v:125},{y:"2007",v:133},{y:"2010",v:118},{y:"2015",v:100},{y:"2020",v:95},{y:"2024",v:90},{y:"2026",v:93}];
 let m2D=[{y:"2010",v:8.6},{y:"2014",v:11},{y:"2019",v:15.3},{y:"2020",v:19.1},{y:"2021",v:21.7},{y:"2022",v:21.5},{y:"2024",v:21.2},{y:"2026",v:22.4}];
-let fedB=[{y:"2008",v:0.9},{y:"2012",v:2.9},{y:"2016",v:4.5},{y:"2019",v:3.8},{y:"2020",v:7.4},{y:"2021",v:8.8},{y:"2023",v:7.8},{y:"2026",v:6.6}];
-let vixD=[{y:"1995",v:12.5},{y:"2000",v:33},{y:"2004",v:14},{y:"2008",v:80},{y:"2013",v:12},{y:"2017",v:9.1},{y:"2020",v:82.7},{y:"2024",v:15},{y:"2026",v:22.4}];
-let csD=[{y:"1990",v:77},{y:"2000",v:100},{y:"2006",v:190},{y:"2009",v:140},{y:"2015",v:170},{y:"2020",v:220},{y:"2022",v:305},{y:"2026",v:327.5}];
-let gdD=[{y:"2000",v:230},{y:"2008",v:305},{y:"2012",v:310},{y:"2020",v:360},{y:"2022",v:340},{y:"2026",v:308}];
+let fedB=[{y:"2008",v:0.9},{y:"2012",v:2.9},{y:"2016",v:4.5},{y:"2019",v:3.8},{y:"2020",v:7.4},{y:"2021",v:8.8},{y:"2023",v:7.8},{y:"2026",v:6.7}];
+let vixD=[{y:"1995",v:12.5},{y:"2000",v:33},{y:"2004",v:14},{y:"2008",v:80},{y:"2013",v:12},{y:"2017",v:9.1},{y:"2020",v:82.7},{y:"2024",v:15},{y:"2026",v:24.1}];
+let csD=[{y:"1990",v:77},{y:"2000",v:100},{y:"2006",v:190},{y:"2009",v:140},{y:"2015",v:170},{y:"2020",v:220},{y:"2022",v:305},{y:"2026",v:332.0}];
+let gdD=[{y:"2001",v:190.9},{y:"2008",v:216.6},{y:"2012",v:227.9},{y:"2020",v:285.0},{y:"2022",v:240.3},{y:"2025",v:246.3}];
 let capexGdpD=[{y:"1995",v:12.6},{y:"2000",v:14.6},{y:"2005",v:12.5},{y:"2007",v:13.6},{y:"2008",v:13.1},{y:"2010",v:11.8},{y:"2015",v:13.6},{y:"2020",v:13.3},{y:"2022",v:13.6},{y:"2025",v:13.9}];
-let capexCfD=[{y:"1995",v:35},{y:"2000",v:55},{y:"2003",v:32},{y:"2007",v:45},{y:"2009",v:30},{y:"2015",v:38},{y:"2020",v:35},{y:"2022",v:40},{y:"2025",v:42}];
+let capexCfD=[{y:"1995",v:120.2},{y:"2000",v:142.3},{y:"2005",v:100.2},{y:"2007",v:121.6},{y:"2009",v:92.2},{y:"2015",v:109.4},{y:"2020",v:113.2},{y:"2022",v:119.4},{y:"2025",v:111.0}];
 let gdpGrowthD=[{y:"1990",v:1.9},{y:"1995",v:2.7},{y:"2000",v:1.0},{y:"2003",v:2.9},{y:"2007",v:2.0},{y:"2008",v:-0.1},{y:"2009",v:-2.6},{y:"2015",v:2.9},{y:"2020",v:-2.2},{y:"2021",v:5.8},{y:"2022",v:1.9},{y:"2024",v:2.8},{y:"2026",v:2.0}];
 let fedFundsD=[{y:"1995",v:5.8},{y:"2000",v:6.5},{y:"2003",v:1.0},{y:"2006",v:5.25},{y:"2008",v:2.0},{y:"2009",v:0.2},{y:"2016",v:0.5},{y:"2019",v:2.4},{y:"2021",v:0.1},{y:"2023",v:5.3},{y:"2025",v:4.4},{y:"2026",v:3.6}];
 const epsQ=[{q:"Q3'24",g:5.8},{q:"Q4'24",g:13.2},{q:"Q1'25",g:12.8},{q:"Q2'25",g:11.5},{q:"Q3'25",g:10.2},{q:"Q4'25",g:14.5},{q:"Q1'26E",g:11.6},{q:"Q2'26E",g:16},{q:"Q3'26E",g:16.9},{q:"Q4'26E",g:15.9}];
@@ -101,50 +101,50 @@ const sigFromScore = sc => sc <= 33 ? "green" : sc <= 66 ? "yellow" : "red";
 
 /* ══════════════ METRICS ══════════════ */
 let MS = [
-  {nm:"Shiller CAPE Ratio",cur:"38.8",c00:"44.2",c08:"27.5",avg:"17.4",dir:1,nv:38.8,na:17.4,nc:44.2,sc:riskScore(38.8,17.4,44.2,1),sig:sigFromScore(riskScore(38.8,17.4,44.2,1)),tab:1,
-    info:"How many years of profits are you paying for? Take the S&P 500 price ÷ 10-year average inflation-adjusted earnings. Example: A lemonade stand earning $10/year — if you pay $388, the CAPE is 38.8. You're paying ~39 years' profits upfront. Average is ~17.4, so at 38.8 you pay more than double the normal price.",
+  {nm:"Shiller CAPE Ratio",cur:"37.5",c00:"44.2",c08:"27.5",avg:"17.4",dir:1,nv:37.5,na:17.4,nc:44.2,sc:riskScore(37.5,17.4,44.2,1),sig:sigFromScore(riskScore(37.5,17.4,44.2,1)),tab:1,
+    info:"How many years of profits are you paying for? Take the S&P 500 price ÷ 10-year average inflation-adjusted earnings. Example: A lemonade stand earning $10/year — if you pay $375, the CAPE is 37.5. You're paying nearly 38 years' profits upfront. Average is ~17.4, so at 37.5 you pay more than double the normal price.",
     calc:"S&P 500 Price ÷ 10Y Avg Inflation-Adj EPS",
     src:"Multpl / Shiller",srcUrl:"https://www.multpl.com/shiller-pe",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Forward P/E",cur:"20.9",c00:"25.5",c08:"15.2",avg:"16.7",dir:1,nv:20.9,na:16.7,nc:25.5,sc:riskScore(20.9,16.7,25.5,1),sig:sigFromScore(riskScore(20.9,16.7,25.5,1)),tab:1,
-    info:"How much you pay for NEXT year's expected profits. If Apple earns $7/share next year and trades at $146, its P/E is ~21x. For the S&P 500 at 20.9x, you pay $20.90 per $1 of expected earnings. Unlike 2000, today's expectations are backed by real 8%+ revenue growth.",
+  {nm:"Forward P/E",cur:"21.8",c00:"25.5",c08:"15.2",avg:"16.7",dir:1,nv:21.8,na:16.7,nc:25.5,sc:riskScore(21.8,16.7,25.5,1),sig:sigFromScore(riskScore(21.8,16.7,25.5,1)),tab:1,
+    info:"How much you pay for NEXT year's expected profits. If Apple earns $7/share next year and trades at $153, its P/E is ~21.8x. For the S&P 500 at 21.8x, you pay $21.80 per $1 of expected earnings. Unlike 2000, today's expectations are backed by real earnings growth.",
     calc:"S&P 500 Price ÷ Next-12-Month Expected EPS",
-    src:"FactSet Earnings Insight",srcUrl:"https://www.factset.com/earningsinsight",asOf:"Mar 12, 2026",freq:"weekly"},
-  {nm:"Buffett Indicator",cur:"217%",c00:"148%",c08:"110%",avg:"90%",dir:1,nv:217,na:90,nc:148,sc:riskScore(217,90,148,1),sig:sigFromScore(riskScore(217,90,148,1)),tab:1,
-    info:"Buffett's favorite: total stock market value vs. the entire economy. If all companies are worth $60T but the economy produces $28T/year = 217%. Like a restaurant valued at 2x annual revenue. BUT: companies earn 40% overseas, and GDP only counts domestic, so the ratio structurally overstates.",
+    src:"Yardeni Research Morning Briefing",srcUrl:"https://archive.yardeni.com/morning-briefing-2026/",asOf:"Mar 21, 2026",freq:"weekly"},
+  {nm:"Buffett Indicator",cur:"230%",c00:"148%",c08:"110%",avg:"90%",dir:1,nv:230,na:90,nc:148,sc:riskScore(230,90,148,1),sig:sigFromScore(riskScore(230,90,148,1)),tab:1,
+    info:"Buffett's favorite: total stock market value vs. the entire economy. If all companies are worth $67T but the economy produces $29T/year = 230%. Like a restaurant valued at 2.3x annual revenue. BUT: companies earn a large share overseas, and GDP only counts domestic output, so the ratio structurally overstates.",
     calc:"Total US Market Cap ÷ US GDP × 100",
     src:"GuruFocus",srcUrl:"https://www.gurufocus.com/stock-market-valuations.php",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Equity Risk Premium (Fwd EY − 10Y)",cur:"0.6%",c00:"−0.5%",c08:"2.0%",avg:"4.0%",dir:-1,nv:0.6,na:4.0,nc:-0.5,sc:riskScore(0.6,4.0,-0.5,-1),sig:sigFromScore(riskScore(0.6,4.0,-0.5,-1)),tab:1,
-    info:"The 'bonus return' stocks offer over safe bonds, measured as forward earnings yield minus the 10-year Treasury yield. If the S&P 500 forward earnings yield is 4.8% and the 10Y Treasury pays 4.2%, the ERP is 0.6%. In 2000, this went NEGATIVE — investors accepted LESS return from risky stocks than safe bonds. Today at 0.6%, razor-thin: you're barely paid for taking equity risk.",
+  {nm:"Equity Risk Premium (Fwd EY − 10Y)",cur:"0.3%",c00:"−0.5%",c08:"2.0%",avg:"4.0%",dir:-1,nv:0.3,na:4.0,nc:-0.5,sc:riskScore(0.3,4.0,-0.5,-1),sig:sigFromScore(riskScore(0.3,4.0,-0.5,-1)),tab:1,
+    info:"The 'bonus return' stocks offer over safe bonds, measured as forward earnings yield minus the 10-year Treasury yield. If the S&P 500 forward earnings yield is 4.6% and the 10Y Treasury pays 4.3%, the ERP is 0.3%. In 2000, this went NEGATIVE — investors accepted LESS return from risky stocks than safe bonds. Today, the premium is still positive, but razor-thin.",
     calc:"Forward Earnings Yield − 10Y Treasury Yield",
-    src:"FactSet / Treasury.gov",srcUrl:"https://www.multpl.com/10-year-treasury-rate",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Top 10 Concentration",cur:"37.5%",c00:"27%",c08:"20%",avg:"19%",dir:1,nv:37.5,na:19,nc:27,sc:riskScore(37.5,19,27,1),sig:sigFromScore(riskScore(37.5,19,27,1)),tab:2,
-    info:"What % of the S&P 500 is just the 10 biggest companies. Imagine 500 students where the top 10 hold 37.5% of all lunch money. If one has a bad day, everyone suffers. Apple + MSFT + NVIDIA alone ≈ 20%. Most concentrated market ever — but they also produce 32.5% of all earnings.",
+    src:"Derived from Yardeni + FRED DGS10",srcUrl:"https://archive.yardeni.com/morning-briefing-2026/",asOf:"Mar 19, 2026",freq:"daily"},
+  {nm:"Top 10 Concentration",cur:"37.2%",c00:"27%",c08:"20%",avg:"19%",dir:1,nv:37.2,na:19,nc:27,sc:riskScore(37.2,19,27,1),sig:sigFromScore(riskScore(37.2,19,27,1)),tab:2,
+    info:"What % of the S&P 500 is just the 10 biggest companies. Imagine 500 students where the top 10 hold 37.2% of all lunch money. If one has a bad day, everyone suffers. Apple + Microsoft + NVIDIA alone still account for a huge share of the index. Concentration remains historically extreme.",
     calc:"Top 10 Market Caps ÷ Total S&P 500 Cap × 100",
     src:"S&P / SlickCharts",srcUrl:"https://www.slickcharts.com/sp500",asOf:"Mar 14, 2026",freq:"weekly"},
-  {nm:"FINRA Margin Debt",cur:"$1.28T",c00:"$278B",c08:"$381B",avg:"$347B",dir:1,nv:1280,na:347,nc:381,sc:riskScore(1280,347,381,1),sig:sigFromScore(riskScore(1280,347,381,1)),tab:2,
-    info:"Money borrowed to buy stocks. You have $100K, borrow $100K more from your broker = margin debt. $1.28T borrowed nationwide — a record. Danger: if stocks drop, brokers demand repayment ('margin call'), forcing selling → prices drop → more margin calls. A cascade.\n\n⚠️ IMPORTANT: This nominal figure is NOT inflation-adjusted and naturally grows with the economy. For a meaningful cross-era comparison, see Margin Debt / Market Cap (1.85%), which shows leverage is actually BELOW both 2000 (2.5%) and 2008 (2.7%) levels.",
+  {nm:"FINRA Margin Debt",cur:"$1.21T",c00:"$278B",c08:"$381B",avg:"$347B",dir:1,nv:1214,na:347,nc:381,sc:riskScore(1214,347,381,1),sig:sigFromScore(riskScore(1214,347,381,1)),tab:2,
+    info:"Money borrowed to buy stocks. You have $100K, borrow $100K more from your broker = margin debt. Roughly $1.21T is currently borrowed nationwide. Danger: if stocks drop, brokers demand repayment ('margin call'), forcing selling → prices drop → more margin calls. A cascade.\n\n⚠️ IMPORTANT: This nominal figure is NOT inflation-adjusted and naturally grows with the economy. For a meaningful cross-era comparison, see Margin Debt / Market Cap, which shows leverage is still below 2000 and 2008 levels.",
     calc:"Total dollars borrowed from brokers to buy securities",
     src:"FINRA",srcUrl:"https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics",asOf:"Jan 2026",freq:"monthly"},
-  {nm:"Margin Debt / Mkt Cap",cur:"1.85%",c00:"2.5%",c08:"2.7%",avg:"2.0%",dir:1,nv:1.85,na:2.0,nc:2.7,sc:riskScore(1.85,2.0,2.7,1),sig:sigFromScore(riskScore(1.85,2.0,2.7,1)),tab:2,
-    info:"Borrowed money RELATIVE to market size — the fairer measure. Borrowing $100K is risky at $500K portfolio (20%) but modest at $5M (2%). At 1.85%, today's leverage is BELOW both 2000 (2.5%) and 2008 (2.7%). Less aggressive than headlines suggest.",
+  {nm:"Margin Debt / Mkt Cap",cur:"1.68%",c00:"2.5%",c08:"2.7%",avg:"2.0%",dir:1,nv:1.68,na:2.0,nc:2.7,sc:riskScore(1.68,2.0,2.7,1),sig:sigFromScore(riskScore(1.68,2.0,2.7,1)),tab:2,
+    info:"Borrowed money RELATIVE to market size — the fairer measure. Borrowing $100K is risky at $500K portfolio (20%) but modest at $5M (2%). At 1.68%, today's leverage is BELOW both 2000 (2.5%) and 2008 (2.7%). Less aggressive than the raw nominal debt number suggests.",
     calc:"Margin Debt ÷ Total Market Cap × 100",
     src:"FINRA / market cap",srcUrl:"https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics",asOf:"Jan 2026",freq:"monthly"},
   {nm:"Yield Curve (10Y−2Y)",cur:"+52bp",c00:"−50bp",c08:"−20bp",avg:"+100bp",dir:-1,nv:0.52,na:1.0,nc:-0.5,sc:riskScore(0.52,1.0,-0.5,-1),sig:sigFromScore(riskScore(0.52,1.0,-0.5,-1)),tab:3,
     info:"Difference between long-term and short-term bond rates. Normally long rates are higher. When short > long ('inverted'), recession follows in 12-24 months. Like a 2-year CD paying 4.5% while a 10-year pays only 4.0% — something's off. Today at +52bp, positively sloped — a healthy sign.",
     calc:"10Y Treasury Yield − 2Y Treasury Yield (100bp = 1%)",
     src:"FRED T10Y2Y",srcUrl:"https://fred.stlouisfed.org/series/T10Y2Y",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"HY Credit Spread",cur:"3.2%",c00:"8.0%",c08:"21.8%",avg:"4.9%",dir:-1,nv:3.2,na:4.9,nc:2.0,sc:riskScore(3.2,4.9,2.0,-1),sig:sigFromScore(riskScore(3.2,4.9,2.0,-1)),tab:3,
+  {nm:"HY Credit Spread",cur:"3.3%",c00:"8.0%",c08:"21.8%",avg:"4.9%",dir:-1,nv:3.3,na:4.9,nc:2.0,sc:riskScore(3.3,4.9,2.0,-1),sig:sigFromScore(riskScore(3.3,4.9,2.0,-1)),tab:3,
     info:"Extra interest risky companies pay vs. the government. Govt borrows at 4%, junk-rated company at 7.2% — spread = 3.2%. Tight spread = investors feel safe. Before 2008, spreads were 2.6% — then exploded to 21.8%. Today's 3.2% signals calm, possibly too calm.",
     calc:"High-Yield Bond Yield − Treasury Yield",
     src:"FRED BAMLH0A0HYM2",srcUrl:"https://fred.stlouisfed.org/series/BAMLH0A0HYM2",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Household Debt/Income",cur:"92%",c00:"97%",c08:"133%",avg:"100%",dir:1,nv:92,na:100,nc:133,sc:riskScore(92,100,133,1),sig:sigFromScore(riskScore(92,100,133,1)),tab:3,
-    info:"How much families owe vs. earn (FRED Z.1 Financial Accounts series). Earn $100K, owe $92K total = 92%. In 2008, 133% — families owed MORE than a year's income. At 92%, consumers remain in strong shape. Arguably the strongest 'not a bubble' data point: the consumer isn't overleveraged.",
+  {nm:"Household Debt/Income",cur:"93%",c00:"97%",c08:"133%",avg:"100%",dir:1,nv:93,na:100,nc:133,sc:riskScore(93,100,133,1),sig:sigFromScore(riskScore(93,100,133,1)),tab:3,
+    info:"How much families owe vs. earn (FRED Z.1 Financial Accounts series). Earn $100K, owe $93K total = 93%. In 2008, 133% — families owed MORE than a year's income. At 93%, consumers remain in strong shape. Arguably the strongest 'not a bubble' data point: the consumer isn't overleveraged.",
     calc:"Total Household Debt ÷ Disposable Income × 100",
     src:"FRED Z.1",srcUrl:"https://fred.stlouisfed.org/series/BOGZ1FL154190006Q",asOf:"Q3 2025",freq:"quarterly"},
-  {nm:"S&P 500 EPS Growth (Est.)",cur:"+15.3%",c00:"−2%",c08:"−30%",avg:"+8%",dir:-1,nv:15.3,na:8,nc:-30,sc:riskScore(15.3,8,-30,-1),sig:sigFromScore(riskScore(15.3,8,-30,-1)),tab:4,
-    info:"How fast company profits grow year-over-year. Earned $200/share last year, $230 this year = +15%. High prices are only 'bubbly' if earnings don't keep up. At +15.3%, nearly double the average. In 2000, earnings FELL. In 2008, they collapsed −30%.",
+  {nm:"S&P 500 EPS Growth (Est.)",cur:"+15.2%",c00:"−2%",c08:"−30%",avg:"+8%",dir:-1,nv:15.2,na:8,nc:-30,sc:riskScore(15.2,8,-30,-1),sig:sigFromScore(riskScore(15.2,8,-30,-1)),tab:4,
+    info:"How fast company profits grow year-over-year. Earned $200/share last year, $230 this year = +15%. High prices are only 'bubbly' if earnings don't keep up. At +15.2%, nearly double the average. In 2000, earnings FELL. In 2008, they collapsed −30%.",
     calc:"Current Year EPS ÷ Prior Year EPS − 1",
-    src:"FactSet Earnings Insight",srcUrl:"https://www.factset.com/earningsinsight",asOf:"Mar 12, 2026",freq:"weekly"},
+    src:"Yardeni Research Morning Briefing",srcUrl:"https://archive.yardeni.com/morning-briefing-2026/",asOf:"Mar 21, 2026",freq:"weekly"},
   {nm:"Real GDP Growth (YoY)",cur:"2.0%",c00:"1.0%",c08:"−4.3%",avg:"2.5%",dir:-1,nv:2.0,na:2.5,nc:-4.3,sc:riskScore(2.0,2.5,-4.3,-1),sig:sigFromScore(riskScore(2.0,2.5,-4.3,-1)),tab:4,
     info:"Real (inflation-adjusted) growth of the entire US economy, year-over-year. At 2.0%, the economy is expanding slightly below its long-run average of 2.5%. Before 2008, GDP SHRANK 4.3%. Today the economy grows at a solid pace, meaning the real economy supports stock prices.",
     calc:"Change in Inflation-Adjusted GDP (annualized %)",
@@ -157,35 +157,35 @@ let MS = [
     info:"All money in the economy: cash, checking, savings. Think of M2 as 'water' in the economic pool. During COVID the Fed pumped 40% more in ($15T → $21.7T). More money chasing same goods = higher prices. At $22.4T growing 4.6%/yr (above GDP), the pool is still very full.",
     calc:"Currency + checking + savings + money market funds",
     src:"FRED M2SL",srcUrl:"https://fred.stlouisfed.org/series/M2SL",asOf:"Jan 2026",freq:"monthly"},
-  {nm:"Fed Balance Sheet",cur:"$6.6T",c00:"$0.6T",c08:"$0.9T",avg:"N/A",dir:1,nv:21.3,na:6,nc:37.8,scoreNote:"Scored as Fed BS/GDP ratio",sc:riskScore(21.3,6,37.8,1),sig:sigFromScore(riskScore(21.3,6,37.8,1)),tab:5,
-    info:"How much the Fed 'owns' — bonds bought to pump money in. Imagine a giant shopping cart: $0.9T before 2008, then $8.8T by 2022 via buying sprees. Now slowly putting things back ($6.6T). More buying = higher prices. The unwinding is orderly but slow.",
+  {nm:"Fed Balance Sheet",cur:"$6.7T",c00:"$0.6T",c08:"$0.9T",avg:"N/A",dir:1,nv:21.2,na:6,nc:37.8,scoreNote:"Scored as Fed BS/GDP ratio",sc:riskScore(21.2,6,37.8,1),sig:sigFromScore(riskScore(21.2,6,37.8,1)),tab:5,
+    info:"How much the Fed 'owns' — bonds bought to pump money in. Imagine a giant shopping cart: $0.9T before 2008, then $8.8T by 2022 via buying sprees. Now slowly putting things back ($6.7T). More buying = higher prices. The unwinding is orderly but slow.",
     calc:"Total Fed assets (bonds, MBS, etc.)",
     src:"FRED WALCL",srcUrl:"https://fred.stlouisfed.org/series/WALCL",asOf:"Mar 11, 2026",freq:"weekly"},
-  {nm:"VIX",cur:"22.4",c00:"33",c08:"80",avg:"19",dir:-1,nv:22.4,na:19,nc:10,sc:riskScore(22.4,19,10,-1),sig:sigFromScore(riskScore(22.4,19,10,-1)),tab:6,
-    info:"The 'fear gauge': expected market swings over 30 days from options prices. VIX 22.4 = market expects ~22% annual moves. Below 12 = dangerously calm. Above 30 = fear. Pre-bubble VIX was LOW (9-11 in 2006-07) = complacency. Today's 22.4 is actually healthier.",
+  {nm:"VIX",cur:"24.1",c00:"33",c08:"80",avg:"19",dir:-1,nv:24.1,na:19,nc:10,sc:riskScore(24.1,19,10,-1),sig:sigFromScore(riskScore(24.1,19,10,-1)),tab:6,
+    info:"The 'fear gauge': expected market swings over 30 days from options prices. VIX 24.1 = market expects roughly 24% annual moves. Below 12 = dangerously calm. Above 30 = fear. Pre-bubble VIX was LOW (9-11 in 2006-07) = complacency. Today's reading is actually healthier than an ultra-low VIX.",
     calc:"From S&P 500 options; annualized expected volatility",
     src:"FRED VIXCLS",srcUrl:"https://fred.stlouisfed.org/series/VIXCLS",asOf:"Mar 17, 2026",freq:"daily"},
-  {nm:"Case-Shiller HPI",cur:"327.5",c00:"100",c08:"190→140",avg:"N/A",dir:1,nv:327.5,na:150,nc:305,sc:riskScore(327.5,150,305,1),sig:sigFromScore(riskScore(327.5,150,305,1)),tab:7,
-    info:"Home prices across 20 cities, indexed to 100 in 2000. At 327.5, homes cost 3.3x what they did then. In 2006 it peaked at 190 before crashing. But the driver is different: 2006 = reckless lending; today = housing SHORTAGE. FICO ~740 (vs ~700), 95% fixed-rate.",
+  {nm:"Case-Shiller HPI",cur:"332.0",c00:"100",c08:"190→140",avg:"N/A",dir:1,nv:332.0,na:150,nc:305,sc:riskScore(332.0,150,305,1),sig:sigFromScore(riskScore(332.0,150,305,1)),tab:7,
+    info:"Home prices across 20 cities, indexed to 100 in 2000. At 332.0, homes cost 3.3x what they did then. In 2006 it peaked near 190 before crashing. But the driver is different: 2006 = reckless lending; today = housing shortage. FICO ~740 (vs ~700), 95% fixed-rate.",
     calc:"Repeat-sale index tracking same homes, 20 metros",
     src:"FRED CSUSHPINSA",srcUrl:"https://fred.stlouisfed.org/series/CSUSHPINSA",asOf:"Dec 2025",freq:"monthly (2mo lag)"},
-  {nm:"Global Debt/GDP",cur:"308%",c00:"230%",c08:"305%",avg:"N/A",dir:1,nv:308,na:230,nc:340,sc:riskScore(308,230,340,1),sig:sigFromScore(riskScore(308,230,340,1)),tab:8,
-    info:"All debt worldwide vs. global GDP. The world earns $100, owes $308. Like a family earning $100K owing $308K. Doesn't cause crises directly but makes them WORSE: less fiscal room to respond, higher refinancing costs.",
-    calc:"Global Govt + Corp + Household Debt ÷ Global GDP × 100",
-    src:"IIF Global Debt Monitor",srcUrl:"https://www.reuters.com/business/finance/government-spending-lifts-global-debt-record-348-trillion-2025-says-iif-2026-02-25/",asOf:"2025 annual",freq:"annual"},
+  {nm:"Global Debt/GDP (BIS Proxy)",cur:"246.3%",c00:"190.9%*",c08:"216.6%",avg:"227.8%",dir:1,nv:246.3,na:227.8,nc:285.0,sc:riskScore(246.3,227.8,285.0,1),sig:sigFromScore(riskScore(246.3,227.8,285.0,1)),tab:8,
+    info:"A BIS-based proxy for global leverage using total credit to the non-financial sector across all reporting economies, expressed as a percentage of GDP. It captures sovereign, household, and corporate leverage across the BIS reporting aggregate. The latest reading is 246.3% of GDP. This proxy is lower than IIF-style global total debt measures, but it is fully dynamic, sourced directly from BIS, and methodologically transparent.",
+    calc:"BIS Total Credit to Non-Financial Sector (All Reporting Economies, Market Value) ÷ GDP × 100",
+    src:"BIS Total Credit Dashboard",srcUrl:"https://data.bis.org/topics/TOTAL_CREDIT/tables-and-dashboards",asOf:"2025-Q3",freq:"quarterly"},
   {nm:"Capex / GDP",cur:"13.9%",c00:"14.6%",c08:"13.1%",avg:"13.0%",dir:1,nv:13.9,na:13.0,nc:14.6,sc:riskScore(13.9,13.0,14.6,1),sig:sigFromScore(riskScore(13.9,13.0,14.6,1)),tab:2,
     info:"Private nonresidential fixed investment as a percentage of GDP — measures how aggressively corporations are investing relative to the economy. At 13.9%, approaching the dot-com peak of 14.6% when companies massively overinvested in telecom infrastructure. The current AI capex boom ($300B+ committed by hyperscalers) is driving this higher. Overinvestment becomes dangerous when spending exceeds what the economy can productively absorb.",
     calc:"FRED PNFI ÷ Nominal GDP × 100",
     src:"FRED PNFI / GDP",srcUrl:"https://fred.stlouisfed.org/series/PNFI",asOf:"Q4 2025",freq:"quarterly"},
-  {nm:"Capex / Operating Cash Flow",cur:"42%",c00:"55%",c08:"45%",avg:"38%",dir:1,nv:42,na:38,nc:55,sc:riskScore(42,38,55,1),sig:sigFromScore(riskScore(42,38,55,1)),tab:2,
-    info:"How much of their operating cash flow S&P 500 companies reinvest as capital expenditure. At 42%, companies plow nearly half their cash into capex — primarily AI infrastructure. During the dot-com bubble this hit 55% as companies overbuilt fiber optic networks. When this exceeds ~50%, it signals overinvestment risk: companies spending more than they can sustain.",
-    calc:"S&P 500 Aggregate Capex ÷ Aggregate Operating Cash Flow × 100",
-    src:"S&P Global / FactSet",srcUrl:"https://www.factset.com",asOf:"Q4 2025",freq:"quarterly"},
+  {nm:"Capex / Operating Cash Flow (FRED Proxy)",cur:"111%",c00:"142.3%",c08:"135.2%",avg:"120.0%",dir:1,nv:111.0,na:120.0,nc:142.3,sc:riskScore(111.0,120.0,142.3,1),sig:sigFromScore(riskScore(111.0,120.0,142.3,1)),tab:2,
+    info:"A dynamic proxy for capex intensity using private nonresidential fixed investment divided by corporate net cash flow with IVA (inventory valuation adjustment). It is broader than the original S&P 500-only metric, but it updates automatically from FRED and tracks whether corporate capex is outrunning internally generated cash.",
+    calc:"FRED PNFI ÷ FRED CNCF × 100",
+    src:"FRED PNFI / CNCF",srcUrl:"https://fred.stlouisfed.org/series/CNCF",asOf:"Q4 2025",freq:"quarterly"},
 ];
 let OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
 let OS = Math.round(OS_SUM / MS.length);
 
-const tabNames = ["Dashboard","Equity Valuation","Market Structure","Credit & Debt","Macro","Monetary Policy","Sentiment","Housing","Global Risk","Report"];
+const tabNames = ["Dashboard","Equity Valuation","Market Structure","Credit & Debt","Macro","Monetary Policy","Sentiment","Housing","Global Risk","Data Health","Report"];
 const METRIC_SCROLL_TARGETS = [
   { tab:1, anchorId:"metric-cape" },
   { tab:1, anchorId:"metric-forward-pe" },
@@ -213,52 +213,23 @@ const METRIC_SCROLL_TARGETS = [
 const Ctx = createContext(themes.dark);
 const useT = () => useContext(Ctx);
 
-/* ══════════════ FRED API ══════════════ */
-const FRED_SERIES = [
-  { series: 'VIXCLS', idx: 15, parse: v => parseFloat(v), fmt: v => v.toFixed(1) },
-  { series: 'T10Y2Y', idx: 7, parse: v => parseFloat(v), fmt: v => `${v >= 0 ? "+" : ""}${Math.round(v * 100)}bp` },
-  { series: 'BAMLH0A0HYM2', idx: 8, parse: v => parseFloat(v), fmt: v => `${v.toFixed(1)}%` },
-  { series: 'DFF', idx: 12, parse: v => parseFloat(v), fmt: v => `${v.toFixed(1)}%` },
-  { series: 'WALCL', idx: 14, parse: v => parseFloat(v) / 1e6, fmt: v => `$${v.toFixed(1)}T`, scoreNv: (v, gdp) => (v / gdp) * 100 },
-  { series: 'M2SL', idx: 13, parse: v => parseFloat(v) / 1e3, fmt: v => `$${v.toFixed(1)}T`, scoreNv: (v, gdp) => (v / gdp) * 100 },
-  { series: 'CSUSHPISA', idx: 16, parse: v => parseFloat(v), fmt: v => v.toFixed(1) },
-  { series: 'GDP', idx: -1, parse: v => parseFloat(v) / 1e3, fmt: null },
-  { series: 'A191RO1Q156NBEA', idx: 11, parse: v => parseFloat(v), fmt: v => `${v.toFixed(1)}%` },
-  { series: 'BOGZ1FL154190006Q', idx: 9, parse: v => parseFloat(v), fmt: v => `${v.toFixed(0)}%` },
-  { series: 'DGS10', idx: -2, parse: v => parseFloat(v), fmt: null },
-  { series: 'FEDFUNDS', idx: -3, parse: v => parseFloat(v), fmt: null },
-  { series: 'PNFI', idx: -4, parse: v => parseFloat(v), fmt: null },
-];
-
-async function fetchFredSeries(seriesId, apiKey) {
-  const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${apiKey}&file_type=json&sort_order=desc&limit=1`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`FRED ${seriesId}: ${res.status}`);
-  const data = await res.json();
-  if (!data.observations?.length) throw new Error(`FRED ${seriesId}: no data`);
-  const val = data.observations[0].value;
-  if (val === '.') throw new Error(`FRED ${seriesId}: missing value`);
-  return { value: val, date: data.observations[0].date };
-}
-
-async function fetchAllFred(apiKey) {
-  const results = {};
-  const promises = FRED_SERIES.map(async s => {
-    try {
-      const { value, date } = await fetchFredSeries(s.series, apiKey);
-      results[s.series] = { raw: value, parsed: s.parse(value), date };
-    } catch (e) {
-      console.warn(e.message);
-    }
-  });
-  await Promise.all(promises);
-  return results;
-}
-
 /* ══════════════ SMALL COMPONENTS ══════════════ */
 const sigColor = (s, t) => s === "green" ? t.green : s === "yellow" ? t.yellow : t.red;
 const sigBg = (s, t) => s === "green" ? t.greenBg : s === "yellow" ? t.yellowBg : t.redBg;
 const sigBd = (s, t) => s === "green" ? t.greenBorder : s === "yellow" ? t.yellowBorder : t.redBorder;
+const healthToSignal = status => status === "error" ? "red" : status === "warn" ? "yellow" : "green";
+const formatDateTime = value => {
+  if (!value) return "N/A";
+  const dt = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(dt.getTime())) return String(value);
+  return dt.toLocaleString([], { month:"short", day:"numeric", year:"numeric", hour:"numeric", minute:"2-digit" });
+};
+const formatCalendarDate = value => {
+  if (!value) return "N/A";
+  const dt = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(dt.getTime())) return String(value);
+  return dt.toLocaleDateString([], { month:"short", day:"numeric", year:"numeric" });
+};
 
 function Badge({ signal }) {
   const t = useT();
@@ -269,6 +240,10 @@ function Badge({ signal }) {
       {signal === "green" ? "HEALTHY" : signal === "yellow" ? "CAUTION" : "ELEVATED"}
     </span>
   );
+}
+
+function HealthBadge({ status }) {
+  return <Badge signal={healthToSignal(status)} />;
 }
 
 function RiskBar({ score }) {
@@ -492,9 +467,13 @@ function SrcNote({ m }) {
 }
 
 /* ══════════════ TABS ══════════════ */
-function TabDash({ goToMetric }) {
+function TabDash({ goToMetric, dataHealth }) {
   const t = useT();
+  const isDarkTheme = t === themes.dark;
+  const methodologyModalBg = isDarkTheme ? "#101522" : t.bgCard;
+  const methodologyInsetBg = isDarkTheme ? "#0b1020" : t.bgCardAlt;
   const [methOpen, setMethOpen] = useState(false);
+  const liveSignal = healthToSignal(dataHealth?.summary?.status || "ok");
   const greens = MS.filter(m => m.sig === "green");
   const reds = MS.filter(m => m.sig === "red");
   const radarD = [
@@ -512,7 +491,7 @@ function TabDash({ goToMetric }) {
     <div>
       <div style={{textAlign:"center",padding:"28px 0 20px"}}>
         <div style={{fontSize:10,color:t.accent,letterSpacing:4,textTransform:"uppercase",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-  <span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:t.green,boxShadow:`0 0 8px ${t.green}`,animation:"pulse-live 2s ease-in-out infinite"}} />
+  <span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:sigColor(liveSignal, t),boxShadow:`0 0 8px ${sigColor(liveSignal, t)}`,animation:"pulse-live 2s ease-in-out infinite"}} />
   Live Multi-Factor Analysis
 </div>
         <h1 className="main-title" style={{fontSize:40,fontWeight:400,color:t.text,margin:"8px 0",letterSpacing:-0.5,fontFamily:"'Instrument Serif',Georgia,serif"}}>Bubble Risk Monitor</h1>
@@ -537,13 +516,13 @@ function TabDash({ goToMetric }) {
             </div>
             {methOpen && ReactDOM.createPortal(
               <div onClick={() => setMethOpen(false)} style={{position:"fixed",top:0,left:0,right:0,bottom:0,zIndex:10000,background:"rgba(0,0,0,0.5)",display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-                <div className="animate-scale-in" onClick={e => e.stopPropagation()} style={{width:"min(440px, calc(100vw - 32px))",maxHeight:"80vh",overflow:"auto",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:14,padding:"20px 22px",boxShadow:t.shadow,textAlign:"left"}}>
+                <div className="animate-scale-in" onClick={e => e.stopPropagation()} style={{width:"min(440px, calc(100vw - 32px))",maxHeight:"80vh",overflow:"auto",background:methodologyModalBg,border:`1px solid ${t.border}`,borderRadius:14,padding:"20px 22px",boxShadow:t.shadow,textAlign:"left"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
                     <div style={{fontSize:13,fontWeight:700,color:t.accent,letterSpacing:0.5}}>Composite Score Methodology</div>
                     <button onClick={() => setMethOpen(false)} style={{background:"none",border:"none",color:t.textDim,cursor:"pointer",fontSize:18,padding:0,lineHeight:1}}>×</button>
                   </div>
                   <div style={{fontSize:12,color:t.textMuted,marginBottom:8,lineHeight:1.6}}>Each metric scored 0–100 based on where its current value sits between the historical average (score 0) and the worst crisis-era peak (score 100).</div>
-                  <div style={{fontSize:11,color:t.textDim,marginBottom:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace",padding:"8px 10px",background:t.bgCardAlt,borderRadius:8,border:`1px solid ${t.border}`}}>Formula: (Current − Avg) / (Crisis − Avg) × 100, clamped 0–100. For metrics where lower = riskier, the formula inverts.</div>
+                  <div style={{fontSize:11,color:t.textDim,marginBottom:14,lineHeight:1.5,fontFamily:"'JetBrains Mono',monospace",padding:"8px 10px",background:methodologyInsetBg,borderRadius:8,border:`1px solid ${t.border}`}}>Formula: (Current − Avg) / (Crisis − Avg) × 100, clamped 0–100. For metrics where lower = riskier, the formula inverts.</div>
                   <div style={{marginBottom:14}}>
                     {MS.map((m,i) => (
                       <div key={i} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:`1px solid ${t.border}`,gap:8}}>
@@ -610,7 +589,7 @@ function TabDash({ goToMetric }) {
 
       <Card style={{marginBottom:16}}>
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.accent}}>THESIS: Stretched but Not a Bubble</h3>
-        <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>Valuations (CAPE 38.8, Buffett 217%) are extreme, but today's mega-caps produce massive real earnings. Household balance sheets are healthy (92% vs 133% in 2008). ERP remains positive at 0.6% (vs negative in 2000). Credit shows no systemic stress. Expensive but fundamentally supported.</p>
+        <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>Valuations (CAPE {MS[0].cur}, Buffett {MS[2].cur}) are extreme, but household balance sheets remain healthy ({MS[9].cur} vs {MS[9].c08} in 2008). ERP remains positive at {MS[3].cur} versus {MS[3].c00} around the dot-com peak. Expensive, concentrated, and still fundamentally supported.</p>
       </Card>
 
       <Card>
@@ -648,14 +627,14 @@ function TabDash({ goToMetric }) {
       </Card>
       <Card style={{marginTop:20,padding:14,background:t.bgCardAlt}}>
         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}>
-          <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:t.green,boxShadow:`0 0 6px ${t.green}`}} />
+          <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:sigColor(liveSignal, t),boxShadow:`0 0 6px ${sigColor(liveSignal, t)}`}} />
           <span style={{fontSize:10,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1}}>Live Data Sources</span>
         </div>
         <div style={{fontSize:10,color:t.textDim,lineHeight:1.8}}>
-          FRED (Federal Reserve Economic Data) · multpl.com · currentmarketvaluation.com · FactSet · S&P Global · FINRA · ICE BofA · CBOE · S&P CoreLogic Case-Shiller · IIF Global Debt Monitor
+          FRED CSV feeds · multpl.com · currentmarketvaluation.com · Yardeni Research · Slickcharts · BIS Total Credit Dashboard
         </div>
         <div style={{fontSize:9,color:t.textDim,marginTop:6,fontStyle:"italic"}}>
-          Data refreshes automatically on each page load. FRED metrics update daily. Scraped metrics cached for 12 hours.
+          20/20 metrics now refresh through one backend pipeline. Automated health checks run every 6 hours and surface failures in the Data Health tab.
         </div>
       </Card>
     </div>
@@ -669,22 +648,22 @@ function TabEquity() {
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Equity Valuation Metrics</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Are equity prices justified by fundamentals?</p>
       <div className="grid-4-col" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
-        <Card><StatBox label="CAPE" value="38.8" sub="vs 17.4 avg" color={t.red} /></Card>
-        <Card><StatBox label="Fwd P/E" value="20.9" sub="vs 18.9 10Y" color={t.yellow} /></Card>
-        <Card><StatBox label="Buffett" value="217%" sub="vs 90% avg" color={t.red} /></Card>
-        <Card><StatBox label="ERP" value="0.6%" sub="vs 4.0% avg" color={t.red} /></Card>
+        <Card><StatBox label="CAPE" value={MS[0].cur} sub={`vs ${MS[0].avg} avg`} color={sigColor(MS[0].sig,t)} /></Card>
+        <Card><StatBox label="Fwd P/E" value={MS[1].cur} sub={`vs ${MS[1].avg} avg`} color={sigColor(MS[1].sig,t)} /></Card>
+        <Card><StatBox label="Buffett" value={MS[2].cur} sub={`vs ${MS[2].avg} avg`} color={sigColor(MS[2].sig,t)} /></Card>
+        <Card><StatBox label="ERP" value={MS[3].cur} sub={`vs ${MS[3].avg} avg`} color={sigColor(MS[3].sig,t)} /></Card>
       </div>
       {[0,1,2,3].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <ChartCard anchorId="metric-cape" title="Shiller CAPE Ratio (1920–2026)" signal="red" interp="CAPE at 38.8 is 2nd-highest in 154 years. Doesn't adjust for today's lower rates (4.2% vs 6.5% in 2000) or higher-margin tech models. Expensive but not irrational when rate-adjusted.">
+      <ChartCard anchorId="metric-cape" title="Shiller CAPE Ratio (1920–2026)" signal={MS[0].sig} interp={`CAPE at ${MS[0].cur} remains among the highest readings in the dataset. It still doesn't adjust for today's rate regime or higher-margin tech business models, so the signal is stretched but not automatically irrational.`}>
         <AC data={capeData} color={t.red} id="cF" name="CAPE" refY={17.4} refLabel="Avg: 17.4" />
       </ChartCard>
-      <ChartCard anchorId="metric-forward-pe" title="Forward P/E (1995–2026)" signal="yellow" interp="At 20.9x, above 10Y avg of 18.9 but below 2000's 25.5x. Strongest 'not a bubble' argument: today's 15.3% earnings growth is real, backed by $400B+ Mag 7 FCF.">
+      <ChartCard anchorId="metric-forward-pe" title="Forward P/E (1995–2026)" signal={MS[1].sig} interp={`At ${MS[1].cur}x, the market remains above its long-run average but below the dot-com peak. The key offset is that expected earnings growth is still running at ${MS[10].cur}.`}>
         <AC data={fwdPE} color={t.yellow} id="fF" name="Fwd P/E" refY={16.7} refLabel="25Y Avg" domainY={[8,30]} />
       </ChartCard>
-      <ChartCard anchorId="metric-buffett" title="Buffett Indicator (1970–2026)" signal="red" interp="At 217%, highest ever. But S&P earns 40% abroad (GDP = domestic only) and margins doubled from 6% to 12%. Still demands respect as a mean-reversion signal.">
+      <ChartCard anchorId="metric-buffett" title="Buffett Indicator (1970–2026)" signal={MS[2].sig} interp={`At ${MS[2].cur}, the Buffett Indicator remains historically extreme. Even after adjusting for global revenues and structurally higher margins, it still deserves respect as a mean-reversion warning.`}>
         <AC data={buffett} color={t.red} id="bF" name="Mkt Cap/GDP" unit="%" yFmt={v => `${v}%`} refY={90} refLabel="Avg: 90%" />
       </ChartCard>
-      <ChartCard anchorId="metric-erp" title="Equity Risk Premium (1995–2026)" signal="red" interp="ERP at 0.6% is razor-thin but positive. In 1999 it went NEGATIVE. Today investors are barely compensated for equity risk — not as extreme as 2000 but a clear warning sign.">
+      <ChartCard anchorId="metric-erp" title="Equity Risk Premium (1995–2026)" signal={MS[3].sig} interp={`ERP at ${MS[3].cur} is still positive, but investors are barely being paid for equity risk. That is less extreme than 2000, but it remains one of the clearest valuation warning lights.`}>
         <AC data={erpD} color={t.blue} id="eF" name="ERP" unit="%" yFmt={v => `${v}%`} refY={0} refLabel="Zero (Danger)" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -702,17 +681,17 @@ function TabMktStr() {
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Market Structure & Breadth</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>How narrow is the rally and how much leverage exists?</p>
       <div className="grid-5-col" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:10,marginBottom:16}}>
-        <Card><StatBox label="Top 10" value="37.5%" sub="vs 19% avg" color={t.red} /></Card>
-        <Card><StatBox label="Margin Debt" value="$1.28T" sub="Record" color={t.red} /></Card>
-        <Card><StatBox label="Margin/Cap" value="1.85%" sub="Below 2000" color={t.green} /></Card>
+        <Card><StatBox label="Top 10" value={MS[4].cur} sub={`vs ${MS[4].avg} avg`} color={sigColor(MS[4].sig,t)} /></Card>
+        <Card><StatBox label="Margin Debt" value={MS[5].cur} sub="Nominal" color={sigColor(MS[5].sig,t)} /></Card>
+        <Card><StatBox label="Margin/Cap" value={MS[6].cur} sub={`vs ${MS[6].c00} in 2000`} color={sigColor(MS[6].sig,t)} /></Card>
         <Card><StatBox label="Capex/GDP" value={MS[18].cur} color={sigColor(MS[18].sig,t)} /></Card>
         <Card><StatBox label="Capex/OpCF" value={MS[19].cur} color={sigColor(MS[19].sig,t)} /></Card>
       </div>
       {[4,5,6,18,19].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <ChartCard anchorId="metric-top-10-concentration" title="Top 10 Concentration (1990–2026)" signal="red" interp="At 37.5%, exceeds 2000's 27%. But top 10 generate 32.5% of earnings — the premium is earned. Idiosyncratic risk is real: one NVIDIA miss moves the index.">
+      <ChartCard anchorId="metric-top-10-concentration" title="Top 10 Concentration (1990–2026)" signal={MS[4].sig} interp={`At ${MS[4].cur}, concentration remains well above the dot-com peak. That creates real idiosyncratic risk even if the largest companies are also delivering unusually strong earnings and cash flow.`}>
         <AC data={conc} color={t.purple} id="coF" name="Top 10" unit="%" yFmt={v => `${v}%`} refY={27} refLabel="2000: 27%" refColor={t.yellow} />
       </ChartCard>
-      <ChartCard anchorId="metric-margin-debt" title="FINRA Margin Debt ($B) — Nominal, Not Inflation-Adjusted" signal="red" interp="⚠️ Nominal margin debt will always hit 'records' due to inflation and market growth. The raw $1.28T is misleading — see the normalized chart below (Margin Debt / Market Cap) for the meaningful comparison.">
+      <ChartCard anchorId="metric-margin-debt" title="FINRA Margin Debt ($B) — Nominal, Not Inflation-Adjusted" signal={MS[5].sig} interp={`⚠️ Nominal margin debt will often hit records over time. The raw ${MS[5].cur} number is less useful than the normalized leverage chart below.`}>
         <ResponsiveContainer>
           <BarChart data={mDebt}>
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
@@ -728,15 +707,15 @@ function TabMktStr() {
         </ResponsiveContainer>
       </ChartCard>
       <Card style={{marginBottom:8,padding:"10px 16px",background:t.greenBg,border:`1px solid ${t.greenBorder}`,borderRadius:10}}>
-        <p style={{margin:0,fontSize:12,color:t.green,fontWeight:600}}>👇 The chart below is the meaningful measure — margin debt RELATIVE to market size. At 1.85%, leverage is actually below both 2000 and 2008 levels.</p>
+        <p style={{margin:0,fontSize:12,color:t.green,fontWeight:600}}>👇 The chart below is the meaningful measure — margin debt relative to market size. At {MS[6].cur}, leverage is still below both 2000 and 2008 levels.</p>
       </Card>
-      <ChartCard anchorId="metric-margin-debt-market-cap" title="Margin Debt / Market Cap (%) — The Normalized View" signal="green" interp="At 1.85%, margin leverage relative to market size is BELOW the 2000 level (2.5%) and the 2008 level (2.7%). This is the metric that matters — raw dollar amounts are misleading because the market and economy have grown enormously. Current leverage is moderate.">
+      <ChartCard anchorId="metric-margin-debt-market-cap" title="Margin Debt / Market Cap (%) — The Normalized View" signal={MS[6].sig} interp={`At ${MS[6].cur}, leverage relative to market size is still below both the 2000 level (${MS[6].c00}) and the 2008 level (${MS[6].c08}). This is the metric that matters.`}>
         <AC data={mDebtPct} color={t.green} id="mdPctF" name="Margin/MktCap" unit="%" yFmt={v => `${v}%`} refY={2.5} refLabel="2000: 2.5%" refColor={t.red} domainY={[0,3.5]} />
       </ChartCard>
-      <ChartCard anchorId="metric-capex-gdp" title="Capex / GDP (%)" signal={MS[18].sig} interp="At 13.9%, approaching the dot-com overinvestment peak of 14.6%. The AI infrastructure boom is the primary driver. Crossing 14% sustained historically signals overinvestment.">
+      <ChartCard anchorId="metric-capex-gdp" title="Capex / GDP (%)" signal={MS[18].sig} interp={`At ${MS[18].cur}, capex intensity is approaching the dot-com overinvestment peak of ${MS[18].c00}. Sustained movement through that level would be a more serious overinvestment warning.`}>
         <AC data={capexGdpD} color={t.orange} id="cxF" name="Capex/GDP" unit="%" yFmt={v => `${v}%`} refY={14.6} refLabel="2000 Peak" refColor={t.red} />
       </ChartCard>
-      <ChartCard anchorId="metric-capex-operating-cash-flow" title="Capex / Operating Cash Flow (%)" signal={MS[19].sig} interp="At 42%, companies reinvest nearly half their cash flow. Dot-com peak was 55%. AI capex is elevated but still within sustainable bounds — crossing 50% would signal danger.">
+      <ChartCard anchorId="metric-capex-operating-cash-flow" title="Capex / Operating Cash Flow (%)" signal={MS[19].sig} interp={`The current proxy reading is ${MS[19].cur}. This broader corporate-sector proxy is fully dynamic and helps flag when capex starts outrunning internally generated cash on a sustained basis.`}>
         <AC data={capexCfD} color={t.purple} id="cfF" name="Capex/OpCF" unit="%" yFmt={v => `${v}%`} refY={55} refLabel="2000 Peak" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -754,12 +733,12 @@ function TabCredit() {
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Credit & Debt Metrics</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Credit is the lifeblood of bubbles. 2008 was a credit crisis.</p>
       <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
-        <Card><StatBox label="Yield Curve" value="+52bp" sub="Positively sloped" color={t.green} /></Card>
-        <Card><StatBox label="HY Spread" value="3.2%" sub="vs 4.9% avg" color={t.yellow} /></Card>
-        <Card><StatBox label="HH Debt/Inc" value="92%" sub="vs 133% (2008)" color={t.green} /></Card>
+        <Card><StatBox label="Yield Curve" value={MS[7].cur} sub="Positively sloped" color={sigColor(MS[7].sig,t)} /></Card>
+        <Card><StatBox label="HY Spread" value={MS[8].cur} sub={`vs ${MS[8].avg} avg`} color={sigColor(MS[8].sig,t)} /></Card>
+        <Card><StatBox label="HH Debt/Inc" value={MS[9].cur} sub={`vs ${MS[9].c08} (2008)`} color={sigColor(MS[9].sig,t)} /></Card>
       </div>
       {[7,8,9].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <ChartCard anchorId="metric-yield-curve" title="Yield Curve: 10Y − 2Y" signal="green" interp="Deeply inverted 2022-24, re-steepened to +52bp. The economy absorbed rate hikes without recession. A healthy positive slope.">
+      <ChartCard anchorId="metric-yield-curve" title="Yield Curve: 10Y − 2Y" signal={MS[7].sig} interp={`The curve has re-steepened to ${MS[7].cur} after the deep 2022-24 inversion. That is a healthier configuration than the one that preceded prior downturns.`}>
         <ResponsiveContainer>
           <ComposedChart data={ycD}>
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
@@ -774,10 +753,10 @@ function TabCredit() {
           </ComposedChart>
         </ResponsiveContainer>
       </ChartCard>
-      <ChartCard anchorId="metric-hy-credit-spread" title="HY Credit Spreads" signal="yellow" interp="At 3.2%, below 20Y avg of 4.9%. Calm — possibly too calm. Before 2008 spreads were 2.6% → exploded to 21.8%.">
+      <ChartCard anchorId="metric-hy-credit-spread" title="HY Credit Spreads" signal={MS[8].sig} interp={`At ${MS[8].cur}, spreads are still below the long-run average of ${MS[8].avg}. Credit remains calm, perhaps too calm, but it is not yet flashing systemic stress.`}>
         <AC data={hyD} color={t.orange} id="hF" name="HY Spread" unit="%" yFmt={v => `${v}%`} refY={4.9} refLabel="20Y Avg" />
       </ChartCard>
-      <ChartCard anchorId="metric-household-debt-income" title="Household Debt-to-Income" signal="green" interp="At 92%, well below historical averages. The single strongest 'not a bubble' argument. FICO ~740, 95%+ fixed-rate. Consumer is healthy.">
+      <ChartCard anchorId="metric-household-debt-income" title="Household Debt-to-Income" signal={MS[9].sig} interp={`At ${MS[9].cur}, household leverage remains well below the 2008 peak. That is still one of the strongest arguments against a credit-driven bubble.`}>
         <AC data={hhD} color={t.green} id="hhF" name="Debt/Inc" unit="%" yFmt={v => `${v}%`} domainY={[40,140]} refY={133} refLabel="2008 Peak" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -795,17 +774,17 @@ function TabMacro() {
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Macro Fundamentals</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Does the real economy support prices?</p>
       <div className="grid-4-col" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
-        <Card><StatBox label="EPS Growth" value="+15.3%" color={t.green} /></Card>
-        <Card><StatBox label="GDP" value="2.0%" color={t.green} /></Card>
+        <Card><StatBox label="EPS Growth" value={MS[10].cur} color={sigColor(MS[10].sig,t)} /></Card>
+        <Card><StatBox label="GDP" value={MS[11].cur} color={sigColor(MS[11].sig,t)} /></Card>
         <Card><StatBox label="Unemp." value="4.4%" color={t.green} /></Card>
         <Card><StatBox label="Core CPI" value="2.6%" color={t.yellow} /></Card>
       </div>
       {[10,11].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
       <Card style={{marginBottom:20}}>
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.green}}>Assessment: Fundamentally Sound</h3>
-        <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>EPS growing 15.3% on real 8% revenue. GDP expanding at 2.0%, unemployment stable, inflation cooling. In 2000 earnings fell; in 2008 the economy contracted. Today, reality follows the prices.</p>
+        <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>EPS is growing {MS[10].cur} while real GDP is running at {MS[11].cur}. In 2000 earnings fell; in 2008 the economy contracted. Today, reality still supports prices better than it did in the major historical bubbles.</p>
       </Card>
-      <ChartCard anchorId="metric-eps-growth" title="S&P 500 Earnings Growth" signal="green" interp="Six consecutive quarters of double-digit growth. CY 2026 consensus: 15.3%. This durability is unlike any prior bubble peak.">
+      <ChartCard anchorId="metric-eps-growth" title="S&P 500 Earnings Growth" signal={MS[10].sig} interp={`Consensus earnings growth is currently ${MS[10].cur}. That durability remains one of the clearest differences versus the 2000 and 2008 peaks.`}>
         <ResponsiveContainer>
           <BarChart data={epsQ}>
             <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
@@ -818,7 +797,7 @@ function TabMacro() {
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
-      <ChartCard anchorId="metric-real-gdp-growth" title="Real GDP Growth (YoY)" signal="green" interp="GDP growth near long-run trend is a key reason this looks expensive rather than terminal. Unlike 2008, the economy is still expanding.">
+      <ChartCard anchorId="metric-real-gdp-growth" title="Real GDP Growth (YoY)" signal={MS[11].sig} interp={`GDP growth at ${MS[11].cur} is close enough to trend that this still looks expensive rather than terminal. Unlike 2008, the economy is still expanding.`}>
         <AC data={gdpGrowthD} color={t.green} id="gdpF" name="GDP Growth" unit="%" yFmt={v => `${v}%`} refY={2.5} refLabel="Long-Run Avg" />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -836,18 +815,18 @@ function TabMoney() {
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Monetary Policy & Liquidity</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>The Fed almost always pops the bubble.</p>
       <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
-        <Card><StatBox label="Fed Funds" value="3.6%" color={t.green} /></Card>
-        <Card><StatBox label="M2" value="$22.4T" sub="+4.6% YoY" color={t.yellow} /></Card>
-        <Card><StatBox label="Fed BS" value="$6.6T" sub="Down from $9T" color={t.yellow} /></Card>
+        <Card><StatBox label="Fed Funds" value={MS[12].cur} color={sigColor(MS[12].sig,t)} /></Card>
+        <Card><StatBox label="M2" value={MS[13].cur} sub="Scored vs GDP" color={sigColor(MS[13].sig,t)} /></Card>
+        <Card><StatBox label="Fed BS" value={MS[14].cur} sub="Scored vs GDP" color={sigColor(MS[14].sig,t)} /></Card>
       </div>
       {[12,13,14].map(i => <Explainer key={i} title={MS[i].nm} info={MS[i].info} calc={MS[i].calc} />)}
-      <ChartCard anchorId="metric-fed-funds-rate" title="Fed Funds Rate (%)" signal="green" interp="Policy is restrictive versus the post-GFC era, but still well below the 2000 tightening peak. The Fed is no longer actively choking liquidity.">
+      <ChartCard anchorId="metric-fed-funds-rate" title="Fed Funds Rate (%)" signal={MS[12].sig} interp={`Policy at ${MS[12].cur} is restrictive versus the post-GFC era, but still well below the 2000 tightening peak. The Fed is no longer actively choking liquidity.`}>
         <AC data={fedFundsD} color={t.green} id="ffF" name="Fed Funds" unit="%" yFmt={v => `${v}%`} refY={3.5} refLabel="Long-Run Avg" />
       </ChartCard>
-      <ChartCard anchorId="metric-m2-money-supply" title="M2 Money Supply ($T)" signal="yellow" interp="Exploded +40% during COVID. Now $22.4T growing 4.6% YoY. Liquidity remains historically elevated.">
+      <ChartCard anchorId="metric-m2-money-supply" title="M2 Money Supply ($T)" signal={MS[13].sig} interp={`M2 now stands at ${MS[13].cur}. Liquidity remains historically elevated even after the post-pandemic normalization.`}>
         <AC data={m2D} color={t.cyan} id="m2F" name="M2 ($T)" yFmt={v => `$${v}T`} />
       </ChartCard>
-      <ChartCard anchorId="metric-fed-balance-sheet" title="Fed Balance Sheet ($T)" signal="yellow" interp="Peaked $8.8T, now $6.6T via QT. Still 7x pre-2008. Orderly unwinding. Risk: forced pivot to QE.">
+      <ChartCard anchorId="metric-fed-balance-sheet" title="Fed Balance Sheet ($T)" signal={MS[14].sig} interp={`The balance sheet is now ${MS[14].cur} after quantitative tightening. It remains far above pre-2008 levels, but the unwind has stayed orderly so far.`}>
         <AC data={fedB} color={t.purple} id="feF" name="Fed BS ($T)" yFmt={v => `$${v}T`} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -865,12 +844,12 @@ function TabSent() {
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Sentiment</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Capturing "irrational exuberance" — or the lack thereof.</p>
       <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
-        <Card><StatBox label="VIX" value="22.4" color={t.yellow} /></Card>
+        <Card><StatBox label="VIX" value={MS[15].cur} color={sigColor(MS[15].sig,t)} /></Card>
         <Card><StatBox label="UMich" value="56.4" sub="Below avg" color={t.yellow} /></Card>
         <Card><StatBox label="IPOs" value="Subdued" color={t.green} /></Card>
       </div>
       <Explainer title={MS[15].nm} info={MS[15].info} calc={MS[15].calc} />
-      <ChartCard anchorId="metric-vix" title="VIX (1995–2026)" signal="yellow" interp="VIX 22.4 near average. Pre-bubble VIX was LOW (9-11) = complacency. Today's moderate reading is healthier. Meme mania has cooled.">
+      <ChartCard anchorId="metric-vix" title="VIX (1995–2026)" signal={MS[15].sig} interp={`VIX at ${MS[15].cur} is above the complacent pre-bubble lows. That suggests caution rather than outright mania.`}>
         <AC data={vixD} color={t.yellow} id="vF" name="VIX" refY={20} refLabel="Avg ~20" />
       </ChartCard>
       <Card style={{borderLeft:`3px solid ${t.green}`}}>
@@ -892,12 +871,12 @@ function TabHousing() {
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Housing</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>2008 was a housing bubble. Is today different?</p>
       <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
-        <Card><StatBox label="Case-Shiller" value="327.5" color={t.yellow} /></Card>
+        <Card><StatBox label="Case-Shiller" value={MS[16].cur} color={sigColor(MS[16].sig,t)} /></Card>
         <Card><StatBox label="YoY" value="+1.3%" color={t.green} /></Card>
         <Card><StatBox label="Avg FICO" value="~740" color={t.green} /></Card>
       </div>
       <Explainer title={MS[16].nm} info={MS[16].info} calc={MS[16].calc} />
-      <ChartCard anchorId="metric-case-shiller" title="Case-Shiller HPI (1990–2026)" signal="yellow" interp="Near all-time highs at 327.5 but driven by supply shortage, not reckless lending. FICO ~740, 95% fixed-rate. Growth decelerating to 1.3%.">
+      <ChartCard anchorId="metric-case-shiller" title="Case-Shiller HPI (1990–2026)" signal={MS[16].sig} interp={`Near all-time highs at ${MS[16].cur}, but still driven more by supply shortage than reckless lending. The housing setup is expensive, not obviously 2006-style fragile.`}>
         <AC data={csD} color={t.orange} id="csF" name="HPI" refY={190} refLabel="2006 Peak" refColor={t.red} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
@@ -915,17 +894,98 @@ function TabGlobal() {
       <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Global & Structural Risk</h2>
       <p style={{color:t.textMuted,fontSize:13,marginBottom:16}}>Systemic vulnerabilities beyond the US market.</p>
       <div className="grid-3-col" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
-        <Card><StatBox label="Global Debt/GDP" value="308%" color={t.red} /></Card>
+        <Card><StatBox label="Global Debt/GDP" value={MS[17].cur} color={sigColor(MS[17].sig,t)} /></Card>
         <Card><StatBox label="US Debt/GDP" value="~124%" color={t.red} /></Card>
         <Card><StatBox label="Geopolitical" value="Elevated" color={t.yellow} /></Card>
       </div>
       <Explainer title={MS[17].nm} info={MS[17].info} calc={MS[17].calc} />
-      <ChartCard anchorId="metric-global-debt-gdp" title="Global Debt-to-GDP" signal="red" interp="At 308%, elevated but off prior highs. Doesn't cause bubbles alone but makes downturns worse. Less fiscal room. Structural vulnerability, not trigger.">
+      <ChartCard anchorId="metric-global-debt-gdp" title="Global Debt-to-GDP" signal={MS[17].sig} interp={`The BIS proxy currently sits at ${MS[17].cur}. It doesn't cause bubbles by itself, but it does measure the amount of leverage already embedded in the global system when shocks arrive.`}>
         <AC data={gdD} color={t.red} id="gdF" name="Debt/GDP" unit="%" yFmt={v => `${v}%`} />
       </ChartCard>
       <Card style={{marginTop:20,padding:16,background:t.bgCardAlt}}>
         <div style={{fontSize:11,fontWeight:700,color:t.textDim,textTransform:"uppercase",letterSpacing:1,marginBottom:10}}>Sources</div>
         <SrcNote m={MS[17]} />
+      </Card>
+    </div>
+  );
+}
+
+function TabDataHealth({ dataHealth, refreshMetrics, isRefreshing }) {
+  const t = useT();
+  const summary = dataHealth?.summary;
+  const metrics = dataHealth?.metrics || [];
+
+  return (
+    <div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:12,marginBottom:16,flexWrap:"wrap"}}>
+        <div>
+          <h2 style={{fontSize:22,fontWeight:800,color:t.text,marginBottom:4}}>Data Health</h2>
+          <p style={{color:t.textMuted,fontSize:13,margin:0}}>Operational view of all 20 live metrics, source freshness, and parser status.</p>
+        </div>
+        <button
+          onClick={refreshMetrics}
+          disabled={isRefreshing}
+          style={{
+            padding:"10px 14px",borderRadius:10,border:`1px solid ${t.border}`,background:t.bgCard,
+            color:t.text,fontSize:12,fontWeight:600,cursor:isRefreshing ? "default" : "pointer",
+            opacity:isRefreshing ? 0.65 : 1,
+          }}
+        >
+          {isRefreshing ? "Refreshing..." : "Refresh Data"}
+        </button>
+      </div>
+
+      <div className="grid-4-col" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:16}}>
+        <Card><StatBox label="Overall" value={summary ? summary.status.toUpperCase() : "LOADING"} color={sigColor(healthToSignal(summary?.status || "warn"), t)} /></Card>
+        <Card><StatBox label="Healthy" value={summary ? `${summary.okCount}` : "0"} color={t.green} /></Card>
+        <Card><StatBox label="Warnings" value={summary ? `${summary.warnCount}` : "0"} color={t.yellow} /></Card>
+        <Card><StatBox label="Errors" value={summary ? `${summary.errorCount}` : "0"} color={t.red} /></Card>
+      </div>
+
+      <Card style={{marginBottom:16}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:10,flexWrap:"wrap"}}>
+          <div>
+            <h3 style={{margin:"0 0 6px",fontSize:15,fontWeight:700,color:t.text}}>Monitoring Setup</h3>
+            <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>
+              The app now pulls all 20 metrics from a single backend pipeline. Vercel warms the metrics and health endpoints every 6 hours, and GitHub Actions runs a scheduled health check every 6 hours with optional webhook alerts.
+            </p>
+          </div>
+          <div style={{textAlign:"right"}}>
+            <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:1,fontWeight:700}}>Last Check</div>
+            <div style={{fontSize:12,color:t.text,fontFamily:"'JetBrains Mono',monospace",marginTop:4}}>{formatDateTime(dataHealth?.checkedAt)}</div>
+          </div>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="table-responsive" style={{overflowX:"auto"}}>
+          <table style={{width:"100%",borderCollapse:"collapse",fontSize:12,minWidth:920}}>
+            <thead>
+              <tr style={{borderBottom:`2px solid ${t.border}`}}>
+                {["Metric","Pipeline","Status","Current","As Of","Source","Notes"].map((label) => (
+                  <th key={label} style={{padding:"9px 8px",textAlign:"left",color:t.textDim,fontWeight:700,fontSize:10,textTransform:"uppercase",letterSpacing:1}}>{label}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {metrics.map((metric) => (
+                <tr key={metric.id} style={{borderBottom:`1px solid ${t.border}`}}>
+                  <td style={{padding:"10px 8px",color:t.text,fontWeight:600}}>{metric.name}</td>
+                  <td style={{padding:"10px 8px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{metric.pipeline}</td>
+                  <td style={{padding:"10px 8px"}}><HealthBadge status={metric.status} /></td>
+                  <td style={{padding:"10px 8px",color:t.text,fontWeight:700,fontFamily:"'JetBrains Mono',monospace"}}>{metric.display || "N/A"}</td>
+                  <td style={{padding:"10px 8px",color:t.textMuted,fontFamily:"'JetBrains Mono',monospace"}}>{metric.asOf || "N/A"}</td>
+                  <td style={{padding:"10px 8px"}}>
+                    <a href={metric.sourceUrl} target="_blank" rel="noreferrer" style={{color:t.accent,textDecoration:"none"}}>{metric.source}</a>
+                  </td>
+                  <td style={{padding:"10px 8px",color:t.textMuted,lineHeight:1.5,fontSize:11}}>
+                    {metric.notes?.length ? metric.notes.join(" ") : "Healthy."}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </Card>
     </div>
   );
@@ -967,15 +1027,15 @@ function TabReport() {
   const prose = (text) => <p style={{margin:"0 0 14px",fontSize:13.5,lineHeight:1.85,color:t.textMuted}}>{text}</p>;
   const catProse = {
     "Equity Valuation": [
-      "Equity valuations stand at their most stretched levels in over two decades, with the Shiller CAPE ratio registering 38.8x — a reading exceeded only by the peak of the dot-com bubble in early 2000 when it reached 44.2x. The Buffett Indicator, which measures total market capitalization against nominal GDP, has surged to 217%, surpassing every prior historical observation including the 2021 speculative peak. These headline figures, taken in isolation, would suggest an imminent and severe market dislocation. However, a deeper examination of the underlying earnings architecture reveals a materially different composition than existed at prior bubble peaks.",
-      "The forward price-to-earnings ratio of 20.9x, while elevated relative to the 25-year average of 16.7x, is accompanied by the strongest fundamental earnings trajectory in at least two decades. S&P 500 earnings per share are growing at 15.3% year-over-year, driven by genuine 8%+ revenue growth rather than financial engineering or accounting manipulation. The Magnificent Seven collectively generate over $400 billion in annual free cash flow — a figure that would have been inconceivable during the dot-com era when many mega-cap technology firms were pre-revenue or operating at significant losses. The equity risk premium, at 0.6%, remains positive — a critical distinction from 1999-2000 when the ERP turned negative, meaning investors were literally paying a premium for the privilege of holding riskier assets.",
+      `Equity valuations remain stretched, with the Shiller CAPE ratio at ${MS[0].cur} versus ${MS[0].c00} at the dot-com peak. The Buffett Indicator sits at ${MS[2].cur}, still near historical extremes. Taken alone, those headline figures imply a highly expensive market. However, the underlying earnings architecture remains materially stronger than it was at prior bubble peaks.`,
+      `The forward price-to-earnings ratio of ${MS[1].cur}x is elevated relative to the long-run average of ${MS[1].avg}, but it is paired with earnings growth of ${MS[10].cur}. The equity risk premium, at ${MS[3].cur}, remains positive — a critical distinction from 1999-2000 when the ERP turned negative.`,
       "The deeper question, however, is whether CAPE and the Buffett Indicator are structurally broken metrics in an AI world — and we believe the evidence increasingly suggests they are. The CAPE ratio's reliance on 10-year trailing earnings inherently underweights what may be a permanent step-change in corporate profitability. If AI drives corporate net margins from today's 12% toward 20%+ over the next 3-5 years — as it compresses labor costs across legal, financial, medical, engineering, and administrative functions — then current earnings represent the floor, not the ceiling, and the CAPE's historical denominator becomes an anachronism. The Buffett Indicator, which compares US market capitalization to domestic GDP, becomes similarly misleading when US-domiciled companies are capturing value from global AI deployment; the numerator reflects worldwide revenue generation while the denominator measures only domestic output. Furthermore, traditional software companies — the SaaS and enterprise incumbents that constitute a significant share of market capitalization — face existential disruption. When AI enables any organization to build custom software through natural language at a fraction of the cost, the entire value proposition of packaged CRM, ERP, and project management tools erodes. The 'expensive' market may actually be mispricing the massive creative destruction ahead: overvaluing software incumbents facing 50-80% revenue declines while still undervaluing the AI infrastructure layer that will replace them. We assign this category an elevated risk score of 78/100 by traditional metrics — but flag that these metrics may be fundamentally inadequate for pricing the AI era."
     ],
     "Market Structure": [
-      "The concentration of the S&P 500 has reached levels unprecedented in the modern era, with the top 10 constituents commanding approximately 37.5% of total index market capitalization — exceeding the dot-com peak of 27% by a substantial margin. However, this concentration is not a bug in the market — it is a feature of the AI era. These companies are simultaneously building the railroads, the electricity grid, and the telephone network of artificial intelligence. NVIDIA is manufacturing the computational substrate. Microsoft, Google, Amazon, and Meta are constructing the cloud infrastructure, training the foundation models, and deploying the AI platforms upon which the next economy will run. The concentration should be high because winner-take-most dynamics in platform technologies are the natural and rational outcome — the same dynamics that concentrated value in Standard Oil, AT&T, and the original railroad conglomerates during prior industrial revolutions. The passive investment revolution has amplified this dynamic, but it has amplified it in the correct direction: toward the companies that will capture the largest share of AI-driven value creation.",
-      "However, a critical counterargument deserves equal analytical weight: the top 10 companies now generate approximately 32.5% of total S&P 500 earnings, meaningfully narrowing the gap between their market capitalization share and their fundamental contribution. This is categorically different from 2000, when the largest companies commanded outsized valuations on speculative narratives rather than demonstrable cash generation. FINRA margin debt has reached a record $1.28 trillion in nominal terms, yet when measured as a percentage of total market capitalization — the more analytically meaningful metric — it registers at just 1.85%, below both the 2000 level (2.5%) and the 2008 level (2.7%).",
+      `The concentration of the S&P 500 remains unprecedented in the modern era, with the top 10 constituents now representing ${MS[4].cur} of the index versus ${MS[4].c00} at the dot-com peak. However, this concentration is not purely speculative; it is tied to the companies building and monetizing the AI infrastructure stack.`,
+      `A critical counterargument still deserves equal weight: today's leading companies also generate a far larger share of actual earnings and cash flow than the mega-caps of 2000. FINRA margin debt stands at ${MS[5].cur} in nominal terms, yet when normalized to market capitalization it is only ${MS[6].cur}, below both the 2000 level (${MS[6].c00}) and the 2008 level (${MS[6].c08}).`,
       "The real risk in market structure is not that the top 10 are too big — it is that everyone else may be too small to survive. Traditional software companies occupying mid-cap and small-cap indices face displacement by AI-native alternatives that can replicate their functionality at a fraction of the cost. The $600B+ traditional software industry — Salesforce, ServiceNow, Atlassian, Adobe, and hundreds of smaller SaaS vendors — faces existential disruption as AI agents and natural-language programming make packaged software increasingly obsolete. This creative destruction will manifest as a structural reweighting of indices, not a broad market crash. The vulnerability lies in the mechanics of passive rebalancing and the potential for cascading de-grossing in concentrated positions: a scenario in which institutional investors simultaneously reduce exposure to mega-cap technology — whether triggered by regulatory action, earnings disappointment, or geopolitical disruption — could generate non-linear price dislocations given the sheer weight of these positions. We score market structure risk at 67/100, reflecting genuine structural fragility tempered by the fundamental reality that concentration in AI infrastructure companies is the rational market response to the most significant technological transformation in economic history.",
-      "The addition of capital expenditure metrics provides crucial quantitative grounding for the overinvestment thesis. Private nonresidential fixed investment stands at 13.9% of GDP, approaching but not yet exceeding the 14.6% peak during the dot-com era. The S&P 500 capex-to-operating-cash-flow ratio of 42% indicates companies reinvest nearly half their cash generation — primarily into AI infrastructure. While below the 55% dot-com peak that preceded widespread write-downs, this warrants monitoring. The question is not whether AI capex is high — it manifestly is — but whether productivity gains will justify the investment within a commercially reasonable timeframe. History suggests transformative technologies ultimately deliver, but the timing mismatch between investment and returns has historically created significant drawdown periods."
+      `The addition of capital expenditure metrics provides crucial quantitative grounding for the overinvestment thesis. Private nonresidential fixed investment stands at ${MS[18].cur} of GDP, approaching but not yet exceeding the dot-com peak of ${MS[18].c00}. The dynamic operating-cash-flow proxy currently reads ${MS[19].cur}. The question is not whether AI capex is high — it manifestly is — but whether productivity gains will justify the investment within a commercially reasonable timeframe.`
     ],
     "Credit & Debt": [
       "Credit markets present perhaps the most compelling evidence against a systemic bubble classification. The household debt-to-income ratio stands at 92%, well below historical averages and dramatically below the 133% level that presaged the 2008 financial crisis. This single metric may be the most important data point in the entire analysis: consumer balance sheets are fundamentally sound. Average FICO scores hover near 740 (vs. approximately 700 pre-GFC), over 95% of outstanding mortgages carry fixed rates (eliminating the adjustable-rate time bomb of 2006-2008), and bank capital ratios under Basel III requirements provide substantially greater systemic resilience.",
@@ -984,26 +1044,26 @@ function TabReport() {
     ],
     "Macro Fundamentals": [
       "The macroeconomic backdrop provides robust support for current asset prices, standing in stark contrast to conditions that preceded prior market dislocations. Real GDP growth of 2.0% is slightly below the long-run potential growth rate of 2.5%, indicating an economy expanding at a solid but measured pace without the overheating dynamics that typically characterize bubble environments. The unemployment rate of 4.4% sits near full employment, while core CPI at 2.6% demonstrates that inflationary pressures are gradually normalizing toward the Federal Reserve's 2% target without requiring additional tightening.",
-      "Most critically, S&P 500 earnings per share are growing at 15.3% year-over-year — nearly double the historical average of approximately 8% — and this may be just the beginning. The historical average growth rate of 8% was established in an era of exclusively human productivity, where output was constrained by the biological limits of the labor force. AI is a deflationary force that simultaneously increases output and reduces costs — a combination that has no precedent in economic history. If AI augments or replaces cognitive work across industries — legal research, medical diagnostics, financial analysis, creative production, software engineering — the sustainable earnings growth rate could step-change permanently higher. Six consecutive quarters of double-digit earnings growth may not be a cyclical peak but the early phase of a structural acceleration. In 2000, aggregate earnings were declining even as the market surged to new highs. In 2008, earnings collapsed by 30% as the credit crisis metastasized through the real economy. Today, reality follows the price trajectory rather than diverging from it — and AI suggests that reality may accelerate further.",
+      `Most critically, S&P 500 earnings per share are growing at ${MS[10].cur} year-over-year — nearly double the historical average of approximately 8% — and this may be just the beginning. Six consecutive quarters of double-digit earnings growth may not be a cyclical peak but the early phase of a structural acceleration.`,
       "The sectoral composition of earnings growth further reinforces this assessment. While AI-related capital expenditure ($300B+ committed by hyperscalers) creates concentration risk around technology sector profitability, the breadth of earnings expansion across healthcare, industrials, and financials provides a diversification buffer that was notably absent during the narrow dot-com mania. It is worth noting that GDP figures likely undercount AI's true economic impact: national accounts measure output in terms of human labor hours and established price indices, but AI-generated output — code written by language models, diagnoses assisted by medical AI, legal documents drafted by intelligent agents — is not fully captured in these frameworks. The real GDP growth rate may be structurally understated in an economy where an increasing share of cognitive output is produced at near-zero marginal cost. We assign macroeconomic risk a score of just 15/100 — the single strongest categorical argument that current market levels reflect fundamental economic reality, and one that may actually understate the bullish case if AI's productivity impact is as transformative as the early evidence suggests."
     ],
     "Monetary Policy": [
       "Federal Reserve policy stands at an inflection point that materially differentiates the current environment from historical bubble peaks. The federal funds rate at 3.6% resides near its long-run neutral estimate, in contrast to the restrictive levels that preceded both the dot-com crash (6.5%) and the Global Financial Crisis (5.25%). The Fed has transitioned to an easing posture, having initiated rate cuts in late 2024 — a policy shift that historically provides a significant tailwind for risk assets. The critical nuance is that the Fed is easing from a position of strength rather than panic, reducing rates because inflation is normalizing rather than because the economy is collapsing.",
-      "The M2 money supply, which expanded by approximately 40% during the COVID-era stimulus programs, now stands at $22.4 trillion and is growing at 4.6% year-over-year — above nominal GDP growth but well below the double-digit expansion rates of 2020-2021. Critically, the Fed's easing posture is well-timed for an AI investment supercycle. Lower rates accelerate AI infrastructure buildout — the $300B+ committed by hyperscalers to data centers, custom silicon, and energy infrastructure represents the largest private capital expenditure program in economic history, and its financing costs are directly sensitive to the rate environment. The elevated M2 liquidity base, rather than representing inflationary excess, may be necessary fuel for the largest capital reallocation in economic history — the shift from human labor to AI capital. Just as the post-WWII monetary expansion facilitated the suburban buildout and consumer economy, today's liquidity base may be financing the physical and digital infrastructure of an AI-native economy. The Fed's balance sheet, at $6.6 trillion, has contracted from its $8.8 trillion peak through quantitative tightening but remains approximately 7x its pre-2008 level.",
+      `The M2 money supply now stands at ${MS[13].cur}. Critically, the Fed's easing posture is well-timed for an AI investment supercycle. The Fed's balance sheet, at ${MS[14].cur}, has contracted from its post-pandemic peak through quantitative tightening but remains far above pre-2008 levels.`,
       "The primary risk vector within monetary policy is a potential forced pivot: if an exogenous shock required the Fed to reverse course and re-expand its balance sheet, it would signal that the post-COVID normalization has failed. Conversely, if the Fed tightens more aggressively than markets currently discount — perhaps due to re-accelerating inflation driven by fiscal expansion or supply chain disruption — it could act as the catalyst that converts elevated valuations into a correction. We score monetary policy risk at 43/100, reflecting a broadly accommodative but uncertain policy trajectory."
     ],
     "Sentiment": [
-      "Market sentiment indicators present a notably non-euphoric profile that stands in stark contrast to the mania that characterized the dot-com peak. The VIX, or implied volatility index, registers 22.4 — near its long-run average and meaningfully above the dangerously complacent 9-11 readings observed in 2017 and late 2006, periods that preceded significant market dislocations. The University of Michigan Consumer Sentiment Index remains depressed at 56.4, well below its historical average, reflecting a general public that remains cautious about economic prospects despite rising asset prices.",
+      `Market sentiment indicators present a notably non-euphoric profile that stands in stark contrast to the mania that characterized the dot-com peak. The VIX registers ${MS[15].cur} — near or above its long-run average and meaningfully above the dangerously complacent sub-12 readings that often precede more fragile setups.`,
       "The IPO market, which serves as a reliable barometer of speculative excess, remains subdued. The SPAC phenomenon that generated approximately $160 billion in proceeds during 2020-2021 has effectively collapsed, with remaining vehicles trading at significant discounts to trust value. Meme stock activity, while periodically resurgent, has diminished dramatically from its 2021 peak. Retail options speculation, as measured by small-lot call volumes, has normalized from extreme levels. These are not the hallmarks of a market gripped by speculative mania.",
       "The contrarian interpretation is significant — and, when viewed through the lens of the AI revolution, profoundly bullish. The prevailing public narrative remains one of caution, skepticism, and bearishness — precisely the conditions under which markets historically continue to advance. But the absence of euphoria takes on a deeper meaning in the context of AI: the general public does not yet understand the magnitude of what is coming. Most investors, consumers, and policymakers are still processing AI as an incremental technology improvement — a better search engine, a chatbot, an automation tool. They have not yet internalized that AI is a phase change in human civilization: a technology that replicates cognition itself, that can write software, draft legal briefs, diagnose diseases, design products, and generate scientific hypotheses. When AI begins to visibly displace entire job categories — starting with software development, customer service, content creation, and financial analysis — the public realization of its transformative power will drive a re-rating that makes today's 'elevated' valuations look cheap in hindsight. True bubble peaks are accompanied by widespread conviction that prices can only rise and mass participation by previously uninvested cohorts. We are nowhere near that point with AI — most retail investors cannot even articulate what a large language model does, let alone price its economic implications. We score sentiment risk at 45/100, reflecting moderate speculative positioning and, critically, the absence of the euphoric extremes that would signal a top — this is a market that has not yet woken up to the magnitude of the revolution underway."
     ],
     "Housing": [
-      "Residential real estate prices, as measured by the S&P Case-Shiller Home Price Index, stand at 327.5 — representing a 228% cumulative increase from the index's base year of 2000 and a 72% increase from the pre-GFC peak of approximately 190. The superficial parallel to the housing bubble of 2005-2008 is visually striking but analytically misleading. The fundamental drivers of current housing price levels differ categorically from those that generated the prior crisis.",
+      `Residential real estate prices, as measured by the S&P Case-Shiller Home Price Index, stand at ${MS[16].cur}. The superficial parallel to the housing bubble of 2005-2008 is visually striking but analytically misleading. The fundamental drivers of current housing price levels differ categorically from those that generated the prior crisis.`,
       "The 2005-2008 housing bubble was fueled by lax lending standards (average FICO scores near 700, widespread NINJA loans, adjustable-rate mortgages comprising over 30% of originations), excess supply (housing starts peaked at 2.1 million annualized), and opaque securitization that distributed risk throughout the global financial system. In 2026, lending standards remain stringent (average FICO approximately 740), over 95% of mortgages carry fixed rates (eliminating payment shock risk), and the market faces a structural supply shortage estimated at 3-4 million units. Housing price appreciation has decelerated significantly, with year-over-year gains moderating to just 1.3%.",
       "The primary risk in housing is not a credit-driven collapse but rather an affordability crisis that constrains household formation and consumer spending. With mortgage rates near 6.5% and home prices at record levels, the median household faces historically poor affordability metrics. However, this manifests as an economic drag rather than a systemic financial risk. The absence of the leveraged securitization complex that transmitted housing losses into a global credit crisis is the decisive differentiating factor. We assign housing risk a score of 40/100."
     ],
     "Global Risk": [
-      "The global macroeconomic and geopolitical landscape presents the most diffuse and least quantifiable set of risks in this assessment framework. Global debt-to-GDP has reached 308%, a level that does not directly precipitate crises but significantly constrains the fiscal capacity of governments to respond when crises do emerge. The sovereign debt dynamics of major economies — the United States at approximately 124% debt-to-GDP, Japan exceeding 260%, and several European economies above 100% — represent a structural vulnerability that amplifies the impact of any exogenous shock.",
+      `The global macroeconomic and geopolitical landscape presents the most diffuse and least quantifiable set of risks in this assessment framework. The BIS global debt proxy now stands at ${MS[17].cur}, above its long-run average of ${MS[17].avg} but still below the pandemic-era peak used in the scoring framework. That does not directly precipitate crises, but it does constrain the fiscal and balance-sheet room available when crises emerge.`,
       "Geopolitical risk remains elevated across multiple vectors: the ongoing Russia-Ukraine conflict, escalating tensions in the Taiwan Strait and South China Sea, and increasing fragmentation of global trade architecture. These risks are inherently binary and difficult to price — markets tend to either ignore them entirely or re-price them violently and discontinuously. The potential for a geopolitical shock to trigger a synchronized global de-risking event is non-trivial and represents the most plausible catalyst for a rapid market dislocation that would bypass traditional fundamental deterioration.",
       "China's economic trajectory adds an additional dimension of systemic risk. The ongoing property sector restructuring, demographic headwinds, and geopolitical decoupling from Western technology supply chains create the potential for a significant growth shock in the world's second-largest economy — with cascading effects on global commodity markets, emerging economies, and multinational corporate earnings. We assign global risk a score of 65/100, reflecting the accumulation of structural vulnerabilities that, while not immediately threatening, reduce the margin of safety for global risk assets."
     ]
@@ -1011,7 +1071,7 @@ function TabReport() {
 
   const correlationData = [
     {m1:"CAPE Ratio",m2:"Buffett Indicator",dir:"Confirming",note:"Both at extreme highs; structural overvaluation signal consistent",sig:"red"},
-    {m1:"Forward P/E",m2:"EPS Growth",dir:"Partially Offset",note:"High P/E tempered by 15.3% real earnings growth — unlike 2000",sig:"yellow"},
+    {m1:"Forward P/E",m2:"EPS Growth",dir:"Partially Offset",note:`High P/E tempered by ${MS[10].cur} earnings growth — unlike 2000`,sig:"yellow"},
     {m1:"Top 10 Concentration",m2:"Margin Debt/Cap",dir:"Diverging",note:"Concentration at records but leverage below 2000/2008 levels",sig:"yellow"},
     {m1:"Yield Curve",m2:"HY Spreads",dir:"Confirming",note:"Both signal no imminent credit stress; historically calm",sig:"green"},
     {m1:"Household Debt/Inc",m2:"Case-Shiller HPI",dir:"Diverging",note:"Housing prices near highs but household leverage well below average",sig:"green"},
@@ -1039,13 +1099,13 @@ function TabReport() {
   ];
 
   const catalysts = [
-    {category:"Earnings",trigger:"2 consecutive quarters of negative S&P 500 EPS growth",current:"15.3% growth",status:"green",watch:"Q2-Q3 2026 estimates; AI capex ROI metrics"},
+    {category:"Earnings",trigger:"2 consecutive quarters of negative S&P 500 EPS growth",current:`${MS[10].cur} growth`,status:"green",watch:"Q2-Q3 2026 estimates; AI capex ROI metrics"},
     {category:"Credit",trigger:"HY spreads > 6% or investment-grade spreads > 200bp",current:"3.2% HY",status:"green",watch:"Monthly ICE BofA HY OAS; weekly IG CDX index"},
     {category:"Monetary",trigger:"Fed reverses to rate hikes OR emergency QE restart",current:"Easing cycle",status:"green",watch:"FOMC dot plots; inflation expectations (5Y5Y breakevens)"},
     {category:"Liquidity",trigger:"Reverse repo < $100B AND bank reserves < $3T",current:"Adequate",status:"yellow",watch:"NY Fed reverse repo facility; Fed H.4.1 weekly report"},
     {category:"Geopolitical",trigger:"Military escalation in Taiwan Strait; NATO Article 5 invocation",current:"Elevated tension",status:"yellow",watch:"DoD Taiwan Strait transit reports; SIPRI conflict indicators"},
-    {category:"Valuation",trigger:"CAPE > 42 (exceeds 2000 peak) with decelerating earnings",current:"38.8",status:"yellow",watch:"Monthly Shiller data; quarterly earnings revision ratios"},
-    {category:"Leverage",trigger:"Margin debt/market cap > 2.5% (2000 level)",current:"1.85%",status:"green",watch:"Monthly FINRA margin statistics; prime broker leverage surveys"},
+    {category:"Valuation",trigger:"CAPE > 42 (exceeds 2000 peak) with decelerating earnings",current:MS[0].cur,status:"yellow",watch:"Monthly Shiller data; quarterly earnings revision ratios"},
+    {category:"Leverage",trigger:"Margin debt/market cap > 2.5% (2000 level)",current:MS[6].cur,status:"green",watch:"Monthly FINRA margin statistics; prime broker leverage surveys"},
     {category:"Housing",trigger:"Case-Shiller YoY negative for 3+ months with rising delinquencies",current:"+1.3% YoY",status:"green",watch:"Monthly Case-Shiller; weekly MBA delinquency surveys"},
     {category:"AI Disruption",trigger:"Major SaaS company reports >20% revenue decline citing AI-native competition",current:"Early signs (GitHub Copilot replacing dev tools)",status:"yellow",watch:"Quarterly earnings of Salesforce, ServiceNow, Atlassian, Adobe; AI-native tool adoption curves"},
   ];
@@ -1095,8 +1155,8 @@ function TabReport() {
             <span style={{fontSize:12,fontWeight:700,color:t.yellow}}>{OS}/100</span>
           </div>
           {prose("This report presents a comprehensive, multi-dimensional analysis of systemic bubble risk in U.S. equity markets as of March 2026. Synthesizing 20 quantitative metrics across 8 analytical categories — equity valuation, market structure, credit conditions, macroeconomic fundamentals, monetary policy, investor sentiment, housing markets, and global structural risk — we arrive at a composite risk score of " + OS + " on a 0-100 scale. This positions the current market environment firmly in the \"Elevated Caution\" zone, materially above the historical median of approximately 35-40 but decisively below the 80+ threshold that has historically preceded systemic market dislocations.")}
-          {prose("The core finding of this analysis is that the U.S. equity market in March 2026 is expensive by virtually every traditional valuation metric, but it is not in a bubble in the classical sense of that term. A bubble, properly defined, requires a fundamental disconnect between asset prices and underlying economic reality — a condition in which prices are sustained purely by speculative momentum and the expectation of further price appreciation rather than by cash flows, earnings growth, or rational discount rate assumptions. The evidence does not support this characterization. S&P 500 earnings per share are growing at 15.3% year-over-year on real 8%+ revenue expansion. The Magnificent Seven technology companies collectively generate over $400 billion in annual free cash flow. The equity risk premium, while slim at 0.6%, remains positive — a critical distinction from the dot-com peak when investors accepted negative risk premiums.")}
-          {prose("However, the absence of a bubble does not equate to the absence of risk. Valuations at current levels — CAPE at 38.8x, Buffett Indicator at 217% — provide minimal margin of safety against earnings disappointments, exogenous shocks, or shifts in monetary policy expectations. The unprecedented concentration of the S&P 500, with the top 10 constituents representing 37.5% of total market capitalization, creates fragility that traditional diversification frameworks fail to capture. Global debt-to-GDP at 308% constrains the capacity of policymakers to respond to future crises. The market is priced for perfection in an imperfect world.")}
+          {prose(`The core finding of this analysis is that the U.S. equity market in March 2026 is expensive by virtually every traditional valuation metric, but it is not in a bubble in the classical sense of that term. A bubble, properly defined, requires a fundamental disconnect between asset prices and underlying economic reality. The evidence does not support that characterization. S&P 500 earnings per share are growing at ${MS[10].cur}, and the equity risk premium, while slim at ${MS[3].cur}, remains positive — a critical distinction from the dot-com peak when investors accepted negative risk premiums.`)}
+          {prose(`However, the absence of a bubble does not equate to the absence of risk. Valuations at current levels — CAPE at ${MS[0].cur} and the Buffett Indicator at ${MS[2].cur} — provide minimal margin of safety against earnings disappointments, exogenous shocks, or shifts in monetary policy expectations. The unprecedented concentration of the S&P 500, with the top 10 constituents representing ${MS[4].cur} of total market capitalization, creates fragility that traditional diversification frameworks fail to capture. The BIS global debt proxy at ${MS[17].cur} also constrains the room policymakers have to respond to future crises.`)}
           {prose("However, this analysis must be situated within the defining variable of our era: the AI revolution. We are witnessing the onset of the most transformative technological shift in human history — a phase change comparable to the First and Second Industrial Revolutions compressed into five years. The internet connected information; artificial intelligence creates intelligence itself. This is not an incremental improvement in computing. It is a fundamental reconfiguration of how economic value is generated, captured, and distributed. Our composite score of ~" + OS + " is \"elevated\" by the standards of traditional valuation frameworks — but those frameworks were built for an industrial economy in which cognitive labor was exclusively human. If AI delivers even a fraction of its projected potential — automating knowledge work across legal, medical, financial, engineering, and creative domains — then current equity prices are not a bubble. They are early pricing of a civilizational transformation whose magnitude the market has only begun to discount.")}
           {prose("This observation does not eliminate risk — it reframes it. The real risk may not be that the market is too expensive, but that traditional valuation metrics are structurally incapable of pricing a technology that replicates cognition at near-zero marginal cost. The Magnificent Seven are not overpriced if they are building the infrastructure layer of a new civilization. Meanwhile, a $600 billion traditional software industry — companies selling packaged CRM, ERP, project management, and enterprise tools — faces existential disruption as AI enables anyone to build custom software through natural language. The creative destruction ahead may be the largest reallocation of economic value since electrification.")}
           {prose("Our base case (45% probability) anticipates AI-driven earnings expansion with moderate productivity gains, the S&P grinding higher to 5,400-6,000. We assign a 30% probability to a bull case in which the AI supercycle delivers transformative productivity gains and earnings growth accelerates to 20-25%, an 18% probability to a bear case in which AI capex disappoints and triggers a 25-35% drawdown, and a 7% probability to a systemic tail-risk event involving geopolitical disruption or AI-specific regulatory shock. The asymmetry of these outcomes — and the likelihood that AI's transformative impact is being underpriced rather than overpriced — argues for a posture of strategic conviction rather than defensive retreat, with particular emphasis on AI infrastructure positioning and active avoidance of traditional software incumbents facing displacement.")}
@@ -1204,14 +1264,14 @@ function TabReport() {
             </thead>
             <tbody>
               {[
-                {cat:"Equity Valuation",sc:78,assess:"High Risk",driver:"CAPE 38.8x, Buffett 217%",v00:"Lower (CAPE was 44.2)",v08:"Higher (CAPE was 27.5)"},
-                {cat:"Market Structure",sc:67,assess:"Elevated",driver:"Top 10 at 37.5%, record concentration",v00:"Worse (was 27%)",v08:"Worse (was 20%)"},
+                {cat:"Equity Valuation",sc:_catAvg([0,1,2,3]),assess:sigFromScore(_catAvg([0,1,2,3])) === "red" ? "High Risk" : sigFromScore(_catAvg([0,1,2,3])) === "yellow" ? "Elevated" : "Low Risk",driver:`CAPE ${MS[0].cur}, Buffett ${MS[2].cur}`,v00:`Lower (CAPE was ${MS[0].c00})`,v08:`Higher (CAPE was ${MS[0].c08})`},
+                {cat:"Market Structure",sc:_catAvg([4,5,6,18,19]),assess:sigFromScore(_catAvg([4,5,6,18,19])) === "red" ? "High Risk" : sigFromScore(_catAvg([4,5,6,18,19])) === "yellow" ? "Elevated" : "Low Risk",driver:`Top 10 at ${MS[4].cur}, leverage ${MS[6].cur}`,v00:`Worse (was ${MS[4].c00})`,v08:`Worse (was ${MS[4].c08})`},
                 {cat:"Credit & Debt",sc:32,assess:"Below Average",driver:"HH Debt/Inc 92%, YC +52bp",v00:"Similar",v08:"Much Better (was 133%)"},
-                {cat:"Macro Fundamentals",sc:15,assess:"Low Risk",driver:"15.3% EPS growth, 2.0% GDP",v00:"Much Better (EPS was -2%)",v08:"Much Better (GDP was -4.3%)"},
+                {cat:"Macro Fundamentals",sc:_catAvg([10,11]),assess:sigFromScore(_catAvg([10,11])) === "red" ? "High Risk" : sigFromScore(_catAvg([10,11])) === "yellow" ? "Elevated" : "Low Risk",driver:`${MS[10].cur} EPS growth, ${MS[11].cur} GDP`,v00:"Much Better (EPS was -2%)",v08:"Much Better (GDP was -4.3%)"},
                 {cat:"Monetary Policy",sc:43,assess:"Elevated",driver:"Fed easing from neutral",v00:"Better (was 6.5%)",v08:"Better (was 5.25%)"},
-                {cat:"Sentiment",sc:45,assess:"Moderate",driver:"VIX 22.4, no euphoria",v00:"Better (VIX was 33)",v08:"Better (VIX was 80)"},
+                {cat:"Sentiment",sc:MS[15].sc,assess:MS[15].sig === "red" ? "High Risk" : MS[15].sig === "yellow" ? "Moderate" : "Low Risk",driver:`VIX ${MS[15].cur}, no euphoria`,v00:"Better (VIX was 33)",v08:"Better (VIX was 80)"},
                 {cat:"Housing",sc:40,assess:"Below Average",driver:"Supply-driven, FICO ~740",v00:"N/A",v08:"Much Better (FICO ~700)"},
-                {cat:"Global Risk",sc:65,assess:"Elevated",driver:"Global Debt/GDP 308%",v00:"Worse (was 230%)",v08:"Comparable (was 305%)"},
+                {cat:"Global Risk",sc:MS[17].sc,assess:MS[17].sig === "red" ? "Elevated" : MS[17].sig === "yellow" ? "Moderate" : "Low Risk",driver:`BIS debt proxy ${MS[17].cur}`,v00:`Lower proxy baseline (${MS[17].c00})`,v08:`Below crisis peak (${MS[17].c08})`},
               ].map((r,i)=>(
                 <tr key={i} style={{borderBottom:`1px solid ${t.border}44`}}>
                   <td style={{padding:"8px 6px",color:t.text,fontWeight:600,fontSize:11}}>{r.cat}</td>
@@ -1382,17 +1442,17 @@ function TabReport() {
             <tbody>
               {[
                 {dim:"Primary Catalyst",v29:"Margin leverage",v00:"Tech mania / IPOs",v08:"Subprime / CDOs",v26:"TBD (AI capex?)",assess:"No clear catalyst identified",color:t.green},
-                {dim:"Earnings Quality",v29:"Cyclical / fragile",v00:"Fictional / pro-forma",v08:"Leveraged / FIRE",v26:"Real / 15.3% growth",assess:"Materially better",color:t.green},
-                {dim:"CAPE Ratio",v29:"32.6x",v00:"44.2x",v08:"27.5x",v26:"38.8x",assess:"Between 2000 and 2008",color:t.yellow},
+                {dim:"Earnings Quality",v29:"Cyclical / fragile",v00:"Fictional / pro-forma",v08:"Leveraged / FIRE",v26:`Real / ${MS[10].cur} growth`,assess:"Materially better",color:t.green},
+                {dim:"CAPE Ratio",v29:"32.6x",v00:"44.2x",v08:"27.5x",v26:`${MS[0].cur}x`,assess:"Between 2000 and 2008",color:t.yellow},
                 {dim:"Household Leverage",v29:"Moderate",v00:"Moderate (97%)",v08:"Extreme (133%)",v26:"Low (92%)",assess:"Well below average",color:t.green},
                 {dim:"Fed Policy Stance",v29:"Tightening",v00:"Tightening (6.5%)",v08:"Tightening (5.25%)",v26:"Easing (3.6%)",assess:"Actively accommodative",color:t.green},
                 {dim:"Banking System",v29:"Fragile / runs",v00:"Stable",v08:"Failed (Lehman etc.)",v26:"Strong / Basel III",assess:"Well capitalized",color:t.green},
-                {dim:"Market Concentration",v29:"Railroads/utilities",v00:"TMT (27%)",v08:"Financials",v26:"Tech (37.5%)",assess:"Worst ever — but earned",color:t.orange},
+                {dim:"Market Concentration",v29:"Railroads/utilities",v00:"TMT (27%)",v08:"Financials",v26:`Tech (${MS[4].cur})`,assess:"Worst ever — but earned",color:t.orange},
                 {dim:"Credit Spreads",v29:"Widening",v00:"Widening (8%)",v08:"Exploding (21.8%)",v26:"Compressed (3.2%)",assess:"No stress signal",color:t.green},
                 {dim:"Investor Sentiment",v29:"Euphoric",v00:"Euphoric",v08:"Complacent",v26:"Cautious / moderate",assess:"No euphoria present",color:t.green},
                 {dim:"GDP Trajectory",v29:"Peaking",v00:"Slowing (1.0%)",v08:"Contracting (-4.3%)",v26:"Steady (2.0%)",assess:"Near trend-rate growth",color:t.green},
-                {dim:"Money Supply Growth",v29:"Contracting",v00:"Moderate",v08:"Pre-QE era",v26:"$22.4T (+4.6%)",assess:"Elevated liquidity base",color:t.yellow},
-                {dim:"Global Debt/GDP",v29:"~120%",v00:"~230%",v08:"~305%",v26:"308%",assess:"Elevated but comparable to GFC",color:t.yellow},
+                {dim:"Money Supply Growth",v29:"Contracting",v00:"Moderate",v08:"Pre-QE era",v26:MS[13].cur,assess:"Elevated liquidity base",color:t.yellow},
+                {dim:"Global Debt/GDP",v29:"N/A",v00:MS[17].c00,v08:MS[17].c08,v26:MS[17].cur,assess:"BIS proxy above average but below its pandemic peak",color:t.yellow},
                 {dim:"Regulatory Framework",v29:"Minimal",v00:"Post-Sarbanes",v08:"Pre-Dodd-Frank",v26:"Basel III/IV, Dodd-Frank",assess:"Most robust ever",color:t.green},
                 {dim:"Information Speed",v29:"Newspapers/ticker",v00:"Early internet",v08:"Bloomberg/cable",v26:"Real-time/algo/social",assess:"Faster but more volatile",color:t.yellow},
                 {dim:"Transmission Mechanism",v29:"Bank runs → deflation",v00:"Wealth effect → mild recession",v08:"CDOs → banks → credit freeze",v26:"No clear mechanism",assess:"Absent — critical distinction",color:t.green},
@@ -1577,8 +1637,8 @@ function TabReport() {
         <Card style={{marginBottom:20,padding:24}}>
           {prose("After exhaustive analysis of 20 quantitative metrics spanning eight analytical categories, extensive historical comparison against the most significant market dislocations of the past century, and rigorous scenario modeling, we arrive at a definitive assessment: the U.S. equity market in March 2026 is not in a bubble. It is in the early stages of the most transformative technological revolution in human history.")}
           {prose("The AI revolution is the First and Second Industrial Revolutions compressed into five years. The steam engine mechanized physical labor over the course of a century. Electrification transformed manufacturing over decades. The internet connected information over twenty years. Artificial intelligence creates intelligence itself — and it is doing so at the exponential pace of Moore's Law rather than the linear pace of industrial adoption. This is not an iteration on prior technologies. It is a phase change in human civilization: the first technology capable of replicating, augmenting, and eventually surpassing the cognitive capabilities that have defined economic production since the Enlightenment. The implications for asset prices, corporate earnings, and economic structure are not merely significant — they are without historical precedent.")}
-          {prose("Traditional valuation metrics — the CAPE at 38.8x, the Buffett Indicator at 217%, the forward P/E at 20.9x — are backward-looking tools designed to measure an industrial economy. They compare current prices to historical earnings generated by human labor, historical GDP produced by human productivity, and historical growth rates constrained by biological limits on cognitive output. These frameworks have no mechanism to price a technology that can automate legal research, medical diagnostics, software engineering, financial analysis, content creation, and scientific discovery simultaneously, at near-zero marginal cost, and at global scale. Applying CAPE ratios developed in the 1990s to an economy undergoing an intelligence revolution is like using horse-drawn carriage metrics to evaluate the early automobile industry. The framework is not wrong — it is obsolete.")}
-          {prose("The quantitative evidence supports this reframing. S&P 500 earnings per share are growing at 15.3% — nearly double the historical average of 8% — and this growth is underpinned by genuine revenue expansion, not financial engineering. The Magnificent Seven generate over $400 billion in annual free cash flow and are investing $300B+ in AI infrastructure that will compound productivity gains across every sector of the economy. Household balance sheets are the strongest in three decades. Credit markets show no systemic stress. The banking system is well-capitalized. The Fed is easing from a position of strength. These are not the conditions of a bubble. These are the conditions of an economy at the threshold of a productivity supercycle.")}
+          {prose(`Traditional valuation metrics — the CAPE at ${MS[0].cur}, the Buffett Indicator at ${MS[2].cur}, and the forward P/E at ${MS[1].cur}x — are backward-looking tools designed to measure an industrial economy. They compare current prices to historical earnings generated by human labor, historical GDP produced by human productivity, and historical growth rates constrained by biological limits on cognitive output. These frameworks have no mechanism to price a technology that can automate legal research, medical diagnostics, software engineering, financial analysis, content creation, and scientific discovery simultaneously, at near-zero marginal cost, and at global scale.`)}
+          {prose(`The quantitative evidence supports this reframing. S&P 500 earnings per share are growing at ${MS[10].cur} — nearly double the historical average of 8% — and this growth is underpinned by genuine revenue expansion, not financial engineering. Household balance sheets are the strongest in three decades. Credit markets show no systemic stress. The banking system is well-capitalized. The Fed is easing from a position of strength. These are not the conditions of a bubble.`)}
           {prose("The real risk is not that the market is too expensive. It is that investors are not positioned aggressively enough for the disruption ahead. A $600 billion traditional software industry faces existential threat as AI enables custom software creation through natural language. Companies selling packaged CRM, ERP, project management, and enterprise tools — Salesforce, ServiceNow, Atlassian, Adobe, and hundreds of smaller SaaS vendors — face the real possibility that their entire value proposition can be replicated by AI agents at a fraction of the cost. Meanwhile, the companies building AI infrastructure — the semiconductor manufacturers, hyperscale cloud providers, data center operators, and energy suppliers — face decades of secular demand growth. The creative destruction ahead will be the largest reallocation of economic value since electrification replaced the steam economy.")}
           {prose("Our composite score of ~" + OS + " reflects a market that is expensive by the standards of the past. But we are not investing in the past. We are investing at the beginning of a transformation that will redefine the relationship between capital, labor, and productivity. The CAPE ratio may compress not through price decline but through explosive earnings growth as AI drives corporate margins from 12% toward 20%+. The Buffett Indicator may normalize not through market contraction but through GDP expansion as AI unlocks trillions in previously impossible economic output. The market concentration in mega-cap technology may intensify not as a sign of fragility but as the rational expression of winner-take-most dynamics in the most consequential platform technology ever created.")}
           {prose("Our recommendation is a posture of strategic conviction: overweight AI infrastructure aggressively, underweight traditional software incumbents facing existential disruption, and maintain the analytical discipline to distinguish between companies building the future and companies being displaced by it. The risks are real — AI capex disappointment, geopolitical disruption of the semiconductor supply chain, regulatory overreach — and they must be hedged. But the asymmetry of outcomes overwhelmingly favors positioning for the revolution rather than hiding from it.")}
@@ -1595,7 +1655,7 @@ function TabReport() {
           <div className="grid-2-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
             <div>
               <div style={{fontSize:10,fontWeight:700,color:t.text,textTransform:"uppercase",letterSpacing:1,marginBottom:6}}>Primary Data Sources</div>
-              {["Federal Reserve Economic Data (FRED)","FactSet Earnings Insight","Robert Shiller Online Data","S&P Global Market Intelligence","FINRA Margin Statistics","ICE BofA Credit Indices","CBOE Volatility Index (VIX)","S&P CoreLogic Case-Shiller","University of Michigan Surveys","IIF Global Debt Monitor"].map((s,i)=>(
+              {["Federal Reserve Economic Data (FRED)","Robert Shiller / multpl.com","Yardeni Research Morning Briefing","currentmarketvaluation.com","Slickcharts S&P 500","BIS Total Credit Dashboard","ICE BofA Credit Indices","CBOE Volatility Index (VIX)","S&P CoreLogic Case-Shiller","University of Michigan Surveys"].map((s,i)=>(
                 <div key={i} style={{fontSize:11,color:t.textMuted,padding:"3px 0",borderBottom:`1px solid ${t.border}22`}}>{s}</div>
               ))}
             </div>
@@ -1658,10 +1718,10 @@ function TabReport() {
         <div style={{textAlign:"center",padding:"24px 0 10px"}}>
           <div className="gradient-divider" style={{height:1,background:`linear-gradient(90deg, transparent, ${t.accent}, transparent)`,margin:"12px 0"}} />
           <div style={{fontSize:10,color:t.textDim,lineHeight:1.7}}>
-            <p style={{margin:"0 0 4px"}}>Lead Analyst: Dachi Gubadze | Research Date: March 18, 2026 | Composite Score: {OS}/100</p>
+            <p style={{margin:"0 0 4px"}}>Lead Analyst: Dachi Gubadze | Research Date: {formatCalendarDate(new Date())} | Composite Score: {OS}/100</p>
             <p style={{margin:"0 0 4px",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
   <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:t.green,boxShadow:`0 0 6px ${t.green}`}} />
-  Live Data: FRED API · multpl.com · currentmarketvaluation.com · FactSet · S&P Global · FINRA · ICE BofA · CBOE · Case-Shiller · IIF
+  Live Data: FRED CSV · multpl.com · currentmarketvaluation.com · Yardeni · Slickcharts · BIS
 </p>
           </div>
           <div style={{display:"inline-block",padding:"6px 16px",borderRadius:20,background:t.accentBg,border:`1px solid ${t.accent}33`}}>
@@ -1675,8 +1735,8 @@ function TabReport() {
 }
 
 /* ══════════════ MAIN APP ══════════════ */
-const TAB_COMPS = [null, TabEquity, TabMktStr, TabCredit, TabMacro, TabMoney, TabSent, TabHousing, TabGlobal, TabReport];
-const TAB_PATHS = ["/","/equity-valuation","/market-structure","/credit-debt","/macro","/monetary-policy","/sentiment","/housing","/global-risk","/report"];
+const TAB_COMPS = [null, TabEquity, TabMktStr, TabCredit, TabMacro, TabMoney, TabSent, TabHousing, TabGlobal, TabDataHealth, TabReport];
+const TAB_PATHS = ["/","/equity-valuation","/market-structure","/credit-debt","/macro","/monetary-policy","/sentiment","/housing","/global-risk","/data-health","/report"];
 const pathToTab = (p) => { const i = TAB_PATHS.indexOf(p); return i >= 0 ? i : 0; };
 
 export default function App() {
@@ -1686,8 +1746,9 @@ export default function App() {
   const headerRef = useRef(null);
   const pendingScrollTargetRef = useRef(null);
   const t = isDark ? themes.dark : themes.light;
-  const [fredData, setFredData] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [dataHealth, setDataHealth] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const getHeaderOffset = () => (headerRef.current?.getBoundingClientRect().height || 0) + 20;
   const scrollToAnchor = (anchorId, behavior = "smooth") => {
@@ -1731,115 +1792,45 @@ export default function App() {
     return () => window.removeEventListener("popstate", fn);
   }, []);
 
+  const refreshMetrics = async () => {
+    setIsRefreshing(true);
+    try {
+      const response = await fetch("/api/metrics", { cache:"no-store" });
+      const payload = await response.json();
+      if (!payload?.metrics?.length) throw new Error(payload?.error || "Metrics payload was empty");
+
+      payload.metrics.forEach(metric => {
+        const m = MS[metric.idx];
+        if (!m || !Number.isFinite(metric.value)) return;
+        m.nm = metric.name;
+        m.cur = metric.display ?? m.cur;
+        m.nv = metric.value;
+        m.asOf = metric.asOf ?? m.asOf;
+        m.freq = metric.frequency ?? m.freq;
+        m.src = metric.source ?? m.src;
+        m.srcUrl = metric.sourceUrl ?? m.srcUrl;
+        m.healthStatus = metric.status;
+        m.healthNotes = metric.notes || [];
+        m.pipeline = metric.pipeline;
+        m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
+        m.sig = sigFromScore(m.sc);
+        updateChart(metric.idx, metric.chartValue ?? metric.value);
+      });
+
+      OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
+      OS = Math.round(OS_SUM / MS.length);
+
+      setDataHealth(payload);
+      setLastUpdated(payload.checkedAt ? new Date(payload.checkedAt) : new Date());
+    } catch (error) {
+      console.warn("Metrics fetch failed:", error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   useEffect(() => {
-    const key = import.meta.env.VITE_FRED_API_KEY;
-    if (!key) return;
-    fetchAllFred(key).then(results => {
-      const gdpData = results['GDP'];
-      const gdp = gdpData ? gdpData.parsed : 31;
-
-      FRED_SERIES.forEach(s => {
-        if (s.idx < 0 || !results[s.series]) return;
-        const val = results[s.series].parsed;
-        const m = MS[s.idx];
-        m.cur = s.fmt(val);
-        m.asOf = results[s.series].date;
-        if (s.scoreNv) {
-          m.nv = s.scoreNv(val, gdp);
-        } else {
-          m.nv = val;
-        }
-        m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
-        m.sig = sigFromScore(m.sc);
-        // Update chart data point
-        // For M2 and Fed BS, use raw value (trillions), not GDP ratio
-        if (s.idx === 13 || s.idx === 14) {
-          updateChart(s.idx, val); // val is already in trillions from parse
-        } else {
-          updateChart(s.idx, m.nv);
-        }
-      });
-
-      // Compute ERP from 10Y Treasury + Forward P/E (idx 3)
-      const dgs10 = results['DGS10'];
-      if (dgs10) {
-        const treasury10y = dgs10.parsed;
-        const fwdPeVal = MS[1].nv; // Forward P/E
-        const fwdEarningsYield = (1 / fwdPeVal) * 100;
-        const erp = fwdEarningsYield - treasury10y;
-        const m = MS[3]; // ERP metric
-        m.cur = `${erp.toFixed(1)}%`;
-        m.nv = erp;
-        m.asOf = dgs10.date;
-        m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
-        m.sig = sigFromScore(m.sc);
-        updateChart(3, erp);
-      }
-
-      // Compute Capex/GDP from PNFI and GDP
-      const pnfiData = results['PNFI'];
-      if (pnfiData && gdpData) {
-        const ratioVal = (pnfiData.parsed / (gdp * 1000)) * 100;
-        const m = MS[18];
-        if (m) {
-          m.cur = ratioVal.toFixed(1) + '%';
-          m.nv = ratioVal;
-          m.asOf = pnfiData.date;
-          m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
-          m.sig = sigFromScore(m.sc);
-          updateChart(18, ratioVal);
-        }
-      }
-
-      OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
-      OS = Math.round(OS_SUM / MS.length);
-
-      setFredData(results);
-      setLastUpdated(new Date());
-    }).catch(err => console.warn('FRED fetch failed:', err));
-
-    // Also fetch scraped metrics (CAPE, Forward P/E, Buffett, Top 10, Margin Debt, EPS Growth)
-    fetch('/api/scraped-metrics').then(r => r.json()).then(data => {
-      if (!data.metrics) return;
-      const fmtMap = {
-        0: v => v.toFixed(1),                    // CAPE
-        1: v => v.toFixed(1),                    // Forward P/E
-        2: v => `${v.toFixed(0)}%`,              // Buffett
-        4: v => `${v.toFixed(1)}%`,              // Top 10
-        5: v => v >= 1000 ? `$${(v/1000).toFixed(2)}T` : `$${v.toFixed(0)}B`, // Margin Debt
-        10: v => `+${v.toFixed(1)}%`,            // EPS Growth
-        18: v => `${v.toFixed(1)}%`,             // Capex/GDP
-        19: v => `${v.toFixed(0)}%`,             // Capex/OpCF
-      };
-      Object.values(data.metrics).forEach(entry => {
-        const m = MS[entry.idx];
-        if (!m) return;
-        m.cur = fmtMap[entry.idx] ? fmtMap[entry.idx](entry.value) : String(entry.value);
-        m.nv = entry.value;
-        m.asOf = data.timestamp.split('T')[0];
-        m.sc = riskScore(m.nv, m.na, m.nc, m.dir);
-        m.sig = sigFromScore(m.sc);
-        updateChart(entry.idx, entry.value);
-      });
-
-      // Recompute ERP if we got a fresh Forward P/E and have 10Y Treasury
-      if (data.metrics.fwdPe) {
-        const dgs10 = fredData;
-        // Use DGS10 from FRED if available, otherwise use existing nv
-        const treasury10y = MS[3].na - MS[3].nv > 0 ? 4.26 : 4.26; // fallback
-        const fwdEarningsYield = (1 / MS[1].nv) * 100;
-        const erp = fwdEarningsYield - treasury10y;
-        MS[3].cur = `${erp.toFixed(1)}%`;
-        MS[3].nv = erp;
-        MS[3].sc = riskScore(MS[3].nv, MS[3].na, MS[3].nc, MS[3].dir);
-        MS[3].sig = sigFromScore(MS[3].sc);
-        updateChart(3, erp);
-      }
-
-      OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
-      OS = Math.round(OS_SUM / MS.length);
-      setLastUpdated(new Date());
-    }).catch(err => console.warn('Scraped metrics fetch failed:', err));
+    refreshMetrics();
   }, []);
 
   const goTab = (i) => {
@@ -1858,6 +1849,9 @@ export default function App() {
   };
 
   const ActiveTab = TAB_COMPS[tab];
+  const dataHealthSignal = healthToSignal(dataHealth?.summary?.status || "warn");
+  const liveSummary = dataHealth?.summary;
+  const calendarDate = formatCalendarDate(lastUpdated || new Date());
 
   return (
     <Ctx.Provider value={t}>
@@ -1870,7 +1864,7 @@ export default function App() {
               <span style={{fontSize:11,fontWeight:700,letterSpacing:2.5}}>BUBBLE RISK MONITOR</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
-              <span style={{fontSize:10,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.5}}>Mar 18, 2026</span>
+              <span style={{fontSize:10,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.5}}>{calendarDate}</span>
               <button onClick={() => setIsDark(!isDark)} style={{position:"relative",width:50,height:26,borderRadius:13,border:`1px solid ${t.border}`,cursor:"pointer",padding:0,background:isDark?"linear-gradient(135deg,#1e293b,#334155)":"linear-gradient(135deg,#dbeafe,#c7d2fe)",transition:"all 0.3s"}}>
                 <div style={{position:"absolute",top:2,left:isDark?26:2,width:20,height:20,borderRadius:"50%",background:isDark?"#fbbf24":"#4f46e5",transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}}>{isDark?"☾":"☀"}</div>
               </button>
@@ -1884,16 +1878,22 @@ export default function App() {
           </div>
           </div>
           {lastUpdated && (
-            <div style={{fontSize:9,color:t.green,textAlign:"center",padding:"3px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
-              <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:t.green,boxShadow:`0 0 6px ${t.green}`}} />
-              Live data · FRED API + Web Sources · {lastUpdated.toLocaleTimeString()}
+            <div style={{fontSize:9,color:sigColor(dataHealthSignal, t),textAlign:"center",padding:"3px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+              <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:sigColor(dataHealthSignal, t),boxShadow:`0 0 6px ${sigColor(dataHealthSignal, t)}`}} />
+              Live data · 20/20 metrics dynamic · {liveSummary ? `${liveSummary.okCount} healthy / ${liveSummary.warnCount} warn / ${liveSummary.errorCount} error` : "loading"} · {lastUpdated.toLocaleTimeString()}
             </div>
           )}
         </div>
 
         {/* Content */}
         <div className={(fade ? "" : "animate-fade-in") + " content-wrap"} style={{maxWidth:1200,margin:"0 auto",padding:"20px 20px 50px"}}>
-          {tab === 0 ? <TabDash goToMetric={goToMetric} /> : ActiveTab ? <ActiveTab /> : null}
+          {tab === 0 ? (
+            <TabDash goToMetric={goToMetric} dataHealth={dataHealth} />
+          ) : tab === 9 ? (
+            <TabDataHealth dataHealth={dataHealth} refreshMetrics={refreshMetrics} isRefreshing={isRefreshing} />
+          ) : ActiveTab ? (
+            <ActiveTab />
+          ) : null}
         </div>
 
       </div>

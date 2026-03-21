@@ -1,0 +1,36 @@
+name: Data Health
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  check-metrics:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run metric health check
+        if: github.event_name != 'schedule'
+        run: node scripts/check-metrics.mjs
+
+      - name: Run metric health check with alerts
+        if: github.event_name == 'schedule'
+        env:
+          ALERT_WEBHOOK_URL: ${{ secrets.ALERT_WEBHOOK_URL }}
+        run: node scripts/check-metrics.mjs --notify
