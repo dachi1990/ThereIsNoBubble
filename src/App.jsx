@@ -186,6 +186,18 @@ let OS_SUM = MS.reduce((a,m) => a + m.sc, 0);
 let OS = Math.round(OS_SUM / MS.length);
 
 const tabNames = ["Dashboard","Equity Valuation","Market Structure","Credit & Debt","Macro","Monetary Policy","Sentiment","Housing","Global Risk","Data Health","Report"];
+const primaryNavTabs = [
+  { idx:0, label:"Dashboard" },
+  { idx:1, label:"Equity Valuation" },
+  { idx:2, label:"Market Structure" },
+  { idx:3, label:"Credit & Debt" },
+  { idx:4, label:"Macro" },
+  { idx:5, label:"Monetary Policy" },
+  { idx:6, label:"Sentiment" },
+  { idx:7, label:"Housing" },
+  { idx:8, label:"Global Risk" },
+  { idx:10, label:"Report" },
+];
 const METRIC_SCROLL_TARGETS = [
   { tab:1, anchorId:"metric-cape" },
   { tab:1, anchorId:"metric-forward-pe" },
@@ -1916,8 +1928,8 @@ export default function App() {
           </div>
           <div className="tab-bar-outer" style={{position:"relative",maxWidth:1200,margin:"0 auto"}}>
           <div className="tab-bar-wrap" style={{padding:"0 20px",display:"flex",overflowX:"auto"}}>
-            {tabNames.map((n,i) => (
-              <button key={i} onClick={() => goTab(i)} className={"tab-btn" + (tab===i ? " active" : "")} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===i?700:500,color:tab===i?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{n}</button>
+            {primaryNavTabs.map(({ idx, label }) => (
+              <button key={idx} onClick={() => goTab(idx)} className={"tab-btn" + (tab===idx ? " active" : "")} style={{padding:"14px 20px",fontSize:14,fontWeight:tab===idx?700:500,color:tab===idx?t.accent:t.textDim,background:"none",border:"none",cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>{label}</button>
             ))}
           </div>
           </div>
@@ -1938,6 +1950,28 @@ export default function App() {
           ) : ActiveTab ? (
             <ActiveTab />
           ) : null}
+        </div>
+
+        <div style={{maxWidth:1200,margin:"0 auto",padding:"0 20px 24px"}}>
+          <div style={{borderTop:`1px solid ${t.border}`,paddingTop:10,display:"flex",justifyContent:"flex-end"}}>
+            <button
+              onClick={() => goTab(9)}
+              style={{
+                background:"none",
+                border:"none",
+                padding:0,
+                cursor:"pointer",
+                fontSize:11,
+                letterSpacing:0.8,
+                color:tab===9 ? t.accent : t.textDim,
+                textTransform:"uppercase",
+                fontWeight:tab===9 ? 700 : 500,
+                fontFamily:"inherit",
+              }}
+            >
+              Data Health
+            </button>
+          </div>
         </div>
 
       </div>
