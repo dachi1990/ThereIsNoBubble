@@ -286,6 +286,11 @@ const formatCalendarDate = value => {
   if (Number.isNaN(dt.getTime())) return String(value);
   return dt.toLocaleDateString([], { month:"short", day:"numeric", year:"numeric" });
 };
+const formatCalcNumber = value => (
+  Number.isFinite(value)
+    ? Number(value.toFixed(2)).toString()
+    : String(value)
+);
 
 function Badge({ signal }) {
   const t = useT();
@@ -448,6 +453,29 @@ function ChartCard({ title, sub, children, signal, interp, anchorId }) {
   );
 }
 
+function buildYearTicks(data, step = 5) {
+  const years = data
+    .map((row) => Number(row.y))
+    .filter((year) => Number.isFinite(year));
+  if (!years.length || years.length !== data.length) return undefined;
+
+  const firstYear = years[0];
+  const lastYear = years[years.length - 1];
+  const ticks = data
+    .filter((row) => {
+      const year = Number(row.y);
+      return year === firstYear || (year - firstYear) % step === 0;
+    })
+    .map((row) => row.y);
+
+  const lastTickYear = Number(ticks[ticks.length - 1]);
+  if (!ticks.includes(String(lastYear)) && lastYear - lastTickYear >= Math.max(2, Math.floor(step / 2))) {
+    ticks.push(String(lastYear));
+  }
+
+  return ticks;
+}
+
 function StatBox({ label, value, sub, color }) {
   const t = useT();
   return (
@@ -482,7 +510,7 @@ function Gauge({ score }) {
 }
 
 /* ══════════════ AREA CHART HELPER ══════════════ */
-function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY, unit, baseValue }) {
+function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY, unit, baseValue, xTicks }) {
   const t = useT();
   const years = data.map(d => d.y);
   const hasDotCom = years.includes("2000");
@@ -498,7 +526,7 @@ function AC({ data, color, id, yFmt, refY, refLabel, refColor, name, domainY, un
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
-        <XAxis dataKey="y" tick={{fontSize:10,fill:t.textDim}} />
+        <XAxis dataKey="y" ticks={xTicks} interval={xTicks ? 0 : undefined} tick={{fontSize:10,fill:t.textDim}} />
         <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={yFmt} domain={domainY} />
         <Tooltip content={<ChartTip />} />
         {hasDotCom && <ReferenceLine x="2000" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />}
@@ -517,6 +545,14 @@ function EpsHistoryChart({ data }) {
     ...row,
     shade: row.estimate ?? row.actual,
   }));
+  const yearTicks = series
+    .filter((row) => row.period?.endsWith("-Q1"))
+    .filter((row, idx, rows) => {
+      const year = Number(row.period.slice(0, 4));
+      const lastYear = Number(rows[rows.length - 1]?.period.slice(0, 4) || year);
+      return idx === 0 || year === lastYear || year % 4 === 0;
+    })
+    .map((row) => row.period);
   return (
     <ResponsiveContainer>
       <ComposedChart data={series}>
@@ -529,9 +565,10 @@ function EpsHistoryChart({ data }) {
         <CartesianGrid strokeDasharray="3 3" stroke={t.gridStroke} />
         <XAxis
           dataKey="period"
+          ticks={yearTicks}
+          interval={0}
           tick={{fontSize:9,fill:t.textDim}}
-          minTickGap={18}
-          tickFormatter={(value) => value?.endsWith("-Q1") ? value.slice(0, 4) : ""}
+          tickFormatter={(value) => value?.slice(0, 4)}
         />
         <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={(v) => `${v}%`} />
         <Tooltip content={<ChartTip />} />
@@ -622,8 +659,8 @@ function TabDash({ goToMetric, dataHealth }) {
                         <span style={{fontSize:11,color:t.text,flex:1,minWidth:0}}>{m.nm}</span>
                         <span style={{fontSize:10,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",whiteSpace:"nowrap"}}>
                           {m.dir === 1
-                            ? `(${m.nv}−${m.na})/(${m.nc}−${m.na})`
-                            : `(${m.na}−${m.nv})/(${m.na}−${m.nc})`}
+                            ? `(${formatCalcNumber(m.nv)}−${formatCalcNumber(m.na)})/(${formatCalcNumber(m.nc)}−${formatCalcNumber(m.na)})`
+                            : `(${formatCalcNumber(m.na)}−${formatCalcNumber(m.nv)})/(${formatCalcNumber(m.na)}−${formatCalcNumber(m.nc)})`}
                         </span>
                         <span style={{fontSize:11,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",color:sigColor(m.sig,t),minWidth:24,textAlign:"right"}}>{m.sc}</span>
                       </div>
@@ -842,7 +879,7 @@ function TabCredit() {
             <ReferenceLine x="2007" stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
             <ReferenceLine y={0} stroke={t.red} strokeWidth={2} label={{value:"Inversion",fill:t.red,fontSize:10,position:"insideTopLeft",dy:-8}} />
             <Area type="monotone" dataKey="v" fill={t.blue} fillOpacity={0.06} stroke="none" />
-            <Line type="monotone" dataKey="v" stroke={t.cyan} strokeWidth={2.5} dot={{r:3,fill:t.cyan}} name="10Y-2Y" unit="%" />
+            <Line type="monotone" dataKey="v" stroke={t.cyan} strokeWidth={2.5} dot={false} name="10Y-2Y" unit="%" />
           </ComposedChart>
         </ResponsiveContainer>
       </ChartCard>
@@ -907,7 +944,7 @@ function TabMoney() {
         <AC data={fedFundsD} color={t.green} id="ffF" name="Fed Funds" unit="%" yFmt={v => `${v}%`} refY={3.5} refLabel="Long-Run Avg" />
       </ChartCard>
       <ChartCard anchorId="metric-m2-money-supply" title="M2 / GDP (%)" sub="Chart matches the way this metric is actually scored" signal={MS[13].sig} interp={`M2 currently equals about ${MS[13].nv.toFixed(1)}% of GDP. That is still elevated versus the dot-com era, but well below the pandemic peak.`}>
-        <AC data={m2D} color={t.cyan} id="m2F" name="M2 / GDP" unit="%" yFmt={v => `${v}%`} refY={60} refLabel="Long-Run Avg" />
+        <AC data={m2D} color={t.cyan} id="m2F" name="M2 / GDP" unit="%" yFmt={v => `${v}%`} refY={60} refLabel="Long-Run Avg" xTicks={buildYearTicks(m2D, 5)} />
       </ChartCard>
       <ChartCard anchorId="metric-fed-balance-sheet" title="Fed Balance Sheet / GDP (%)" sub="Chart matches the way this metric is actually scored" signal={MS[14].sig} interp={`The Fed balance sheet currently equals about ${MS[14].nv.toFixed(1)}% of GDP. It remains far above pre-2008 levels, but it is well below the 2020-22 extreme.`}>
         <AC data={fedB} color={t.purple} id="feF" name="Fed BS / GDP" unit="%" yFmt={v => `${v}%`} refY={6} refLabel="Pre-QE Avg" />
@@ -1981,15 +2018,18 @@ export default function App() {
   const liveSummary = dataHealth?.summary;
   const calendarDate = formatCalendarDate(lastUpdated || new Date());
   const themeToggleBg = isDark
-    ? "linear-gradient(135deg,#1e293b,#334155)"
-    : "linear-gradient(135deg,#fff3d6,#fde68a)";
-  const themeToggleBorder = isDark ? t.border : "#e5c98a";
+    ? "linear-gradient(135deg,rgba(31,41,55,0.92),rgba(51,65,85,0.88))"
+    : "linear-gradient(135deg,rgba(247,241,226,0.96),rgba(244,231,188,0.9))";
+  const themeToggleBorder = isDark ? t.borderLight : "#d8c79d";
   const themeKnobBg = isDark
-    ? "linear-gradient(135deg,#fde68a,#f59e0b)"
-    : "linear-gradient(135deg,#fbbf24,#f97316)";
+    ? "linear-gradient(135deg,#f6d365,#e8a126)"
+    : "linear-gradient(135deg,#f3b547,#ed8a2f)";
   const themeKnobShadow = isDark
-    ? "0 4px 10px rgba(251,191,36,0.25)"
-    : "0 4px 10px rgba(249,115,22,0.22)";
+    ? "0 2px 6px rgba(232,161,38,0.22)"
+    : "0 2px 6px rgba(237,138,47,0.16)";
+  const themeToggleShadow = isDark
+    ? "inset 0 1px 0 rgba(255,255,255,0.05)"
+    : "inset 0 1px 0 rgba(255,255,255,0.45), 0 1px 2px rgba(201,168,76,0.08)";
 
   return (
     <Ctx.Provider value={t}>
@@ -2008,14 +2048,14 @@ export default function App() {
                 aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
                 style={{
                   position:"relative",
-                  width:50,
-                  height:26,
-                  borderRadius:13,
+                  width:44,
+                  height:24,
+                  borderRadius:12,
                   border:`1px solid ${themeToggleBorder}`,
                   cursor:"pointer",
                   padding:0,
                   background:themeToggleBg,
-                  boxShadow:isDark ? "none" : "inset 0 0 0 1px rgba(255,255,255,0.4)",
+                  boxShadow:themeToggleShadow,
                   transition:"all 0.3s"
                 }}
               >
@@ -2023,9 +2063,9 @@ export default function App() {
                   style={{
                     position:"absolute",
                     top:2,
-                    left:isDark ? 26 : 2,
-                    width:20,
-                    height:20,
+                    left:isDark ? 24 : 2,
+                    width:18,
+                    height:18,
                     borderRadius:"50%",
                     background:themeKnobBg,
                     boxShadow:themeKnobShadow,
