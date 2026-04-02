@@ -124,41 +124,52 @@ function roundValue(value, digits = 2) {
   return Math.round(value * factor) / factor;
 }
 
-function parseFredCsvRows(csv, parse) {
-  return csv
-    .trim()
-    .split(/\r?\n/)
-    .slice(1)
-    .map((line) => {
-      const separator = line.indexOf(",");
-      const date = line.slice(0, separator);
-      const raw = line.slice(separator + 1);
-      return { date, raw };
-    })
-    .filter((row) => row.date && row.raw && row.raw !== ".")
-    .map((row) => ({
-      ...row,
-      parsed: parse(row.raw),
-    }))
-    .filter((row) => Number.isFinite(row.parsed));
+function getFredApiKey() {
+  return process.env.FRED_API_KEY || process.env.VITE_FRED_API_KEY;
+}
+
+async function fetchFredJson(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), SCRAPE_TIMEOUT_MS);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error(`FRED API HTTP ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 async function fetchFredSeries(seriesId) {
-  const csv = await fetchText(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesId}`);
-  const rows = csv.trim().split(/\r?\n/).slice(1);
-
-  for (let index = rows.length - 1; index >= 0; index -= 1) {
-    const [date, raw] = rows[index].split(",");
-    if (!date || !raw || raw === ".") continue;
-    return { date, raw };
+  const apiKey = getFredApiKey();
+  if (!apiKey) throw new Error("FRED API key is not configured");
+  const data = await fetchFredJson(
+    `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${apiKey}&file_type=json&sort_order=desc&limit=10`,
+  );
+  const observations = data?.observations ?? [];
+  for (const obs of observations) {
+    if (obs.date && obs.value && obs.value !== ".") {
+      return { date: obs.date, raw: obs.value };
+    }
   }
-
   throw new Error(`FRED ${seriesId}: missing observation`);
 }
 
 async function fetchFredSeriesHistory(seriesId, parse) {
-  const csv = await fetchText(`https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesId}`);
-  return parseFredCsvRows(csv, parse);
+  const apiKey = getFredApiKey();
+  if (!apiKey) throw new Error("FRED API key is not configured");
+  const data = await fetchFredJson(
+    `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${apiKey}&file_type=json&sort_order=asc&limit=100000`,
+  );
+  const observations = data?.observations ?? [];
+  return observations
+    .filter((obs) => obs.date && obs.value && obs.value !== ".")
+    .map((obs) => ({
+      date: obs.date,
+      raw: obs.value,
+      parsed: parse(obs.value),
+    }))
+    .filter((row) => Number.isFinite(row.parsed));
 }
 
 async function fetchAllFred() {
