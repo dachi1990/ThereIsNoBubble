@@ -604,6 +604,101 @@ function parseAsOfDate(value) {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
+function startOfUtcDay(date) {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+}
+
+function addUtcDays(date, days) {
+  const next = startOfUtcDay(date);
+  next.setUTCDate(next.getUTCDate() + days);
+  return next;
+}
+
+function formatDateKey(date) {
+  return startOfUtcDay(date).toISOString().slice(0, 10);
+}
+
+function nthWeekdayOfMonthUtc(year, monthIndex, weekday, occurrence) {
+  const firstOfMonth = new Date(Date.UTC(year, monthIndex, 1));
+  const dayOffset = (weekday - firstOfMonth.getUTCDay() + 7) % 7;
+  return new Date(Date.UTC(year, monthIndex, 1 + dayOffset + ((occurrence - 1) * 7)));
+}
+
+function lastWeekdayOfMonthUtc(year, monthIndex, weekday) {
+  const lastOfMonth = new Date(Date.UTC(year, monthIndex + 1, 0));
+  const dayOffset = (lastOfMonth.getUTCDay() - weekday + 7) % 7;
+  return new Date(Date.UTC(year, monthIndex, lastOfMonth.getUTCDate() - dayOffset));
+}
+
+function getObservedFixedHolidayUtc(year, monthIndex, dayOfMonth) {
+  const holiday = new Date(Date.UTC(year, monthIndex, dayOfMonth));
+  const weekday = holiday.getUTCDay();
+  if (weekday === 6) return addUtcDays(holiday, -1);
+  if (weekday === 0) return addUtcDays(holiday, 1);
+  return holiday;
+}
+
+function calculateEasterSundayUtc(year) {
+  const century = Math.floor(year / 100);
+  const yearOfCentury = year % 100;
+  const leapCorrection = Math.floor(century / 4);
+  const secularMoonShift = Math.floor((century + 8) / 25);
+  const secularCorrection = Math.floor((century - secularMoonShift + 1) / 3);
+  const epact = (19 * (year % 19) + century - leapCorrection - secularCorrection + 15) % 30;
+  const yearLeapCycles = Math.floor(yearOfCentury / 4);
+  const weekdayShift = (32 + (2 * (century % 4)) + (2 * yearLeapCycles) - epact - (yearOfCentury % 4)) % 7;
+  const paschalOffset = Math.floor((year % 19 + (11 * epact) + (22 * weekdayShift)) / 451);
+  const month = Math.floor((epact + weekdayShift - (7 * paschalOffset) + 114) / 31);
+  const day = ((epact + weekdayShift - (7 * paschalOffset) + 114) % 31) + 1;
+  return new Date(Date.UTC(year, month - 1, day));
+}
+
+const MARKET_HOLIDAY_CACHE = new Map();
+
+function getUsMarketHolidays(year) {
+  if (!MARKET_HOLIDAY_CACHE.has(year)) {
+    const easterSunday = calculateEasterSundayUtc(year);
+    const holidays = new Set([
+      formatDateKey(getObservedFixedHolidayUtc(year, 0, 1)),
+      formatDateKey(nthWeekdayOfMonthUtc(year, 0, 1, 3)),
+      formatDateKey(nthWeekdayOfMonthUtc(year, 1, 1, 3)),
+      formatDateKey(addUtcDays(easterSunday, -2)),
+      formatDateKey(lastWeekdayOfMonthUtc(year, 4, 1)),
+      formatDateKey(getObservedFixedHolidayUtc(year, 5, 19)),
+      formatDateKey(getObservedFixedHolidayUtc(year, 6, 4)),
+      formatDateKey(nthWeekdayOfMonthUtc(year, 8, 1, 1)),
+      formatDateKey(nthWeekdayOfMonthUtc(year, 10, 4, 4)),
+      formatDateKey(getObservedFixedHolidayUtc(year, 11, 25)),
+    ]);
+    MARKET_HOLIDAY_CACHE.set(year, holidays);
+  }
+
+  return MARKET_HOLIDAY_CACHE.get(year);
+}
+
+function isUsMarketBusinessDay(date) {
+  const normalized = startOfUtcDay(date);
+  const weekday = normalized.getUTCDay();
+  if (weekday === 0 || weekday === 6) return false;
+
+  const dateKey = formatDateKey(normalized);
+  const year = normalized.getUTCFullYear();
+  return ![year - 1, year, year + 1].some((candidateYear) => getUsMarketHolidays(candidateYear).has(dateKey));
+}
+
+export function countMissingUsMarketBusinessDays(asOfDate, checkedAt) {
+  let cursor = addUtcDays(asOfDate, 1);
+  const end = startOfUtcDay(checkedAt);
+  let businessDays = 0;
+
+  while (cursor < end) {
+    if (isUsMarketBusinessDay(cursor)) businessDays += 1;
+    cursor = addUtcDays(cursor, 1);
+  }
+
+  return businessDays;
+}
+
 function assessMetric(metric, checkedAt) {
   const notes = [...metric.notes];
   let status = "ok";
@@ -634,8 +729,12 @@ function assessMetric(metric, checkedAt) {
   const parsedAsOf = parseAsOfDate(metric.asOf);
   const freshnessHours = FRESHNESS_HOURS[metric.freshness];
   if (parsedAsOf && freshnessHours) {
+    // Daily market series often publish one business day behind the wall clock.
+    const isDailyMetricWithinGrace =
+      metric.freshness === "daily" &&
+      countMissingUsMarketBusinessDays(parsedAsOf, checkedAt) <= 1;
     const ageHours = (checkedAt.getTime() - parsedAsOf.getTime()) / (1000 * 60 * 60);
-    if (ageHours > freshnessHours && status !== "error") {
+    if (!isDailyMetricWithinGrace && ageHours > freshnessHours && status !== "error") {
       status = "warn";
       notes.push(`Data is stale for the expected ${metric.frequency} cadence.`);
     }
