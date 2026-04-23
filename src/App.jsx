@@ -570,7 +570,7 @@ function EpsHistoryChart({ data }) {
           tick={{fontSize:9,fill:t.textDim}}
           tickFormatter={(value) => value?.slice(0, 4)}
         />
-        <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={(v) => `${v}%`} />
+        <YAxis tick={{fontSize:10,fill:t.textDim}} tickFormatter={(v) => `${v}%`} domain={[-100, 200]} allowDataOverflow={true} />
         <Tooltip content={<ChartTip />} />
         <ReferenceLine x="2000-Q1" stroke={t.orange} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"Tech Bubble",fill:t.orange,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
         <ReferenceLine x="2008-Q1" stroke={t.red} strokeDasharray="4 4" strokeOpacity={0.6} label={{value:"GFC",fill:t.red,fontSize:9,fontWeight:600,position:"insideTopRight",dy:4}} />
@@ -914,7 +914,7 @@ function TabMacro() {
         <h3 style={{margin:"0 0 6px",fontSize:14,fontWeight:700,color:t.green}}>Assessment: Fundamentally Sound</h3>
         <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>EPS is growing {MS[10].cur} while real GDP is running at {MS[11].cur}. In 2000 earnings fell; in 2008 the economy contracted. Today, reality still supports prices better than it did in the major historical bubbles.</p>
       </Card>
-      <ChartCard anchorId="metric-eps-growth" title="S&P 500 Earnings Growth (1997–2026)" sub="Historical quarterly growth with the latest consensus estimate when available" signal={MS[10].sig} interp={`Consensus earnings growth is currently ${MS[10].cur}. The longer history now shows clearly that today still looks much stronger than the 2001-02 and 2008-09 earnings collapses.`}>
+      <ChartCard anchorId="metric-eps-growth" title="S&P 500 Earnings Growth (1997–2026)" sub="Historical quarterly growth with the latest consensus estimate when available · Y-axis clipped at +200% so the 2009-10 recovery base effect doesn't flatten the rest of the series" signal={MS[10].sig} interp={`Consensus earnings growth is currently ${MS[10].cur}. The longer history now shows clearly that today still looks much stronger than the 2001-02 and 2008-09 earnings collapses. (Note: the 2009-10 spike reaching off-chart is a base effect — Q1 2009 earnings collapsed near zero, so YoY growth off that base printed ~800%.)`}>
         <EpsHistoryChart data={epsQ} />
       </ChartCard>
       <ChartCard anchorId="metric-real-gdp-growth" title="Real GDP Growth (YoY)" signal={MS[11].sig} interp={`GDP growth at ${MS[11].cur} is close enough to trend that this still looks expensive rather than terminal. Unlike 2008, the economy is still expanding.`}>
