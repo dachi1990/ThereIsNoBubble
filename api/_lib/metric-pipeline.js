@@ -19,13 +19,25 @@ const FRESHNESS_HOURS = {
   annual: 24 * 550,
 };
 
+const INTERNAL_MARGIN_DEBT_ID = "marginDebtRaw";
+const NASDAQ_FORWARD_PE_SOURCE_URL = "https://trendonify.com/united-states/stock-market/nasdaq-100/forward-pe-ratio";
+const NASDAQ_FORWARD_PE_SNAPSHOT = {
+  value: 21.04,
+  display: "21.0x",
+  chartValue: 21.04,
+  asOf: "2026-04-07",
+  source: "Trendonify monthly history",
+  sourceUrl: NASDAQ_FORWARD_PE_SOURCE_URL,
+  frequency: "monthly snapshot",
+};
+
 export const METRIC_REGISTRY = [
   { id: "cape", idx: 0, name: "Shiller CAPE Ratio", pipeline: "scrape", source: "Multpl / Shiller", sourceUrl: "https://www.multpl.com/shiller-pe", frequency: "daily", min: 5, max: 80, freshness: "daily" },
   { id: "forwardPe", idx: 1, name: "Forward P/E", pipeline: "scrape", source: "Yardeni Research Morning Briefing", sourceUrl: "https://archive.yardeni.com/morning-briefing-2026/", frequency: "weekly", min: 5, max: 40, freshness: "weekly" },
   { id: "buffett", idx: 2, name: "Buffett Indicator", pipeline: "scrape", source: "currentmarketvaluation.com", sourceUrl: "https://www.currentmarketvaluation.com/models/buffett-indicator.php", frequency: "daily", min: 20, max: 350, freshness: "daily" },
   { id: "erp", idx: 3, name: "Equity Risk Premium (Fwd EY - 10Y)", pipeline: "derived", source: "Derived from Forward P/E and 10Y Treasury", sourceUrl: "https://www.multpl.com/10-year-treasury-rate", frequency: "daily", min: -10, max: 15, freshness: "daily" },
   { id: "top10Concentration", idx: 4, name: "Top 10 Concentration", pipeline: "scrape", source: "Slickcharts S&P 500", sourceUrl: "https://www.slickcharts.com/sp500", frequency: "daily", min: 0, max: 60, freshness: "daily" },
-  { id: "marginDebt", idx: 5, name: "FINRA Margin Debt", pipeline: "scrape", source: "currentmarketvaluation.com", sourceUrl: "https://www.currentmarketvaluation.com/models/margin-debt.php", frequency: "monthly", min: 0, max: 5000, freshness: "monthly" },
+  { id: "nasdaqForwardPe", idx: 5, name: "Nasdaq-100 Forward P/E", pipeline: "static", source: "Trendonify monthly history", sourceUrl: NASDAQ_FORWARD_PE_SOURCE_URL, frequency: "monthly snapshot", min: 5, max: 80 },
   { id: "marginDebtToMarketCap", idx: 6, name: "Margin Debt / Mkt Cap", pipeline: "derived", source: "Derived from Margin Debt, Buffett Indicator, and FRED GDP", sourceUrl: "https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics", frequency: "monthly", min: 0, max: 10, freshness: "monthly" },
   { id: "yieldCurve", idx: 7, name: "Yield Curve (10Y-2Y)", pipeline: "fred", source: "FRED T10Y2Y", sourceUrl: "https://fred.stlouisfed.org/series/T10Y2Y", frequency: "daily", min: -5, max: 5, freshness: "daily" },
   { id: "hySpread", idx: 8, name: "HY Credit Spread", pipeline: "fred", source: "FRED BAMLH0A0HYM2", sourceUrl: "https://fred.stlouisfed.org/series/BAMLH0A0HYM2", frequency: "daily", min: 0, max: 30, freshness: "daily" },
@@ -60,7 +72,7 @@ const FRED_SERIES = {
   corporateCashFlow: { series: "CNCF", parse: (value) => parseFloat(value) },
 };
 
-const SCRAPED_IDS = new Set(["cape", "forwardPe", "buffett", "top10Concentration", "marginDebt", "epsGrowth"]);
+const SCRAPED_IDS = new Set(["cape", "forwardPe", "buffett", "top10Concentration", "epsGrowth"]);
 
 function makeMetricState(spec) {
   return {
@@ -501,7 +513,7 @@ export async function fetchScrapedMetricValues() {
       run: async () => slickchartsPromise,
     },
     {
-      id: "marginDebt",
+      id: INTERNAL_MARGIN_DEBT_ID,
       run: async () => {
         const html = await fetchText("https://www.currentmarketvaluation.com/models/margin-debt.php");
         const billions = extractFirstNumber(html, [/margin debt of \$([\d,.]+)B/i, /margin debt.*?\$([\d,.]+)\s*billion/i]);
@@ -775,6 +787,11 @@ export async function collectMetricsData() {
   const metricStates = METRIC_REGISTRY.map(makeMetricState);
   const byId = Object.fromEntries(metricStates.map((metric) => [metric.id, metric]));
 
+  applyMetricValue(byId.nasdaqForwardPe, {
+    ...NASDAQ_FORWARD_PE_SNAPSHOT,
+    checkedAt: formatIsoDate(checkedAt),
+  });
+
   let fredResults = {};
   let fredError = null;
   try {
@@ -883,7 +900,7 @@ export async function collectMetricsData() {
 
   const { results: scrapedResults, errors: scrapeErrors, checkedAt: scrapeCheckedAt } = await fetchScrapedMetricValues();
   for (const [metricId, payload] of Object.entries(scrapedResults)) {
-    applyMetricValue(byId[metricId], payload);
+    if (byId[metricId]) applyMetricValue(byId[metricId], payload);
   }
 
   for (const metricId of SCRAPED_IDS) {
@@ -910,18 +927,22 @@ export async function collectMetricsData() {
     byId.erp.notes.push("Could not derive ERP because Forward P/E or 10Y Treasury data is missing.");
   }
 
-  if (!fredError && Number.isFinite(byId.marginDebt.value) && Number.isFinite(byId.buffett.value)) {
+  if (!fredError && Number.isFinite(scrapedResults[INTERNAL_MARGIN_DEBT_ID]?.value) && Number.isFinite(byId.buffett.value)) {
     const marketCapBillions = fredResults.gdp.parsed * 1000 * (byId.buffett.value / 100);
-    const marginRatio = (byId.marginDebt.value / marketCapBillions) * 100;
+    const marginRatio = (scrapedResults[INTERNAL_MARGIN_DEBT_ID].value / marketCapBillions) * 100;
     applyMetricValue(byId.marginDebtToMarketCap, {
       value: marginRatio,
       display: `${marginRatio.toFixed(2)}%`,
-      asOf: byId.marginDebt.asOf,
+      asOf: scrapedResults[INTERNAL_MARGIN_DEBT_ID].asOf,
       checkedAt: formatIsoDate(checkedAt),
-      dependencies: ["FINRA Margin Debt", "Buffett Indicator", "FRED GDP"],
+      dependencies: ["FINRA Margin Debt (internal)", "Buffett Indicator", "FRED GDP"],
     });
   } else {
-    byId.marginDebtToMarketCap.notes.push("Could not derive Margin Debt / Market Cap because one or more inputs are missing.");
+    byId.marginDebtToMarketCap.notes.push(
+      scrapeErrors[INTERNAL_MARGIN_DEBT_ID]
+        ? `Could not derive Margin Debt / Market Cap because the internal FINRA margin debt input failed: ${scrapeErrors[INTERNAL_MARGIN_DEBT_ID]}.`
+        : "Could not derive Margin Debt / Market Cap because one or more inputs are missing.",
+    );
   }
 
   try {
