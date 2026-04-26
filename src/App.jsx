@@ -398,6 +398,32 @@ const METRIC_SCROLL_TARGETS = [
   { tab:2, anchorId:"metric-capex-operating-cash-flow" },
 ];
 const SCORECARD_METRIC_ORDER = [0, 5, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+const SHARE_CHART_BY_ANCHOR_ID = {
+  "metric-cape": { slug:"shiller-cape", title:"Shiller CAPE Ratio", description:"CAPE remains historically stretched." },
+  "metric-nasdaq-forward-pe": { slug:"nasdaq-forward-pe", title:"Nasdaq-100 Forward P/E", description:"Nasdaq-100 forward P/E sits below its trailing 10-year average." },
+  "metric-forward-pe": { slug:"forward-pe", title:"Forward P/E", description:"Forward multiples are elevated but below the dot-com peak." },
+  "metric-buffett": { slug:"buffett-indicator", title:"Buffett Indicator", description:"Market cap relative to GDP remains historically extreme." },
+  "metric-erp": { slug:"equity-risk-premium", title:"Equity Risk Premium", description:"Investors are being paid little extra return for equity risk." },
+  "metric-top-10-concentration": { slug:"top-10-concentration", title:"Top 10 Concentration", description:"The S&P 500 remains historically concentrated." },
+  "metric-margin-debt-market-cap": { slug:"margin-debt-market-cap", title:"Margin Debt / Market Cap", description:"Leverage looks less extreme when scaled against market size." },
+  "metric-capex-gdp": { slug:"capex-gdp", title:"Capex / GDP", description:"AI capex is lifting investment intensity." },
+  "metric-capex-operating-cash-flow": { slug:"capex-operating-cash-flow", title:"Capex / Operating Cash Flow", description:"Capex intensity remains below average on this broad proxy." },
+  "metric-yield-curve": { slug:"yield-curve", title:"Yield Curve", description:"The Treasury curve has re-steepened." },
+  "metric-hy-credit-spread": { slug:"hy-credit-spread", title:"HY Credit Spread", description:"Credit spreads are calm and below average." },
+  "metric-household-debt-income": { slug:"household-debt-income", title:"Household Debt / Income", description:"Household leverage is far healthier than 2008." },
+  "metric-eps-growth": { slug:"eps-growth", title:"S&P 500 EPS Growth", description:"Earnings growth remains materially better than prior bubbles." },
+  "metric-real-gdp-growth": { slug:"real-gdp-growth", title:"Real GDP Growth", description:"The real economy is still expanding." },
+  "metric-fed-funds-rate": { slug:"fed-funds-rate", title:"Fed Funds Rate", description:"Policy is restrictive but below prior tightening peaks." },
+  "metric-m2-money-supply": { slug:"m2-money-supply", title:"M2 Money Supply", description:"The liquidity base remains full after COVID-era expansion." },
+  "metric-fed-balance-sheet": { slug:"fed-balance-sheet", title:"Fed Balance Sheet", description:"The Fed balance sheet is shrinking but still large." },
+  "metric-vix": { slug:"vix", title:"VIX", description:"Volatility is not at euphorically calm lows." },
+  "metric-case-shiller": { slug:"case-shiller-hpi", title:"Case-Shiller HPI", description:"Housing is expensive but more supply-driven than credit-driven." },
+  "metric-global-debt-gdp": { slug:"global-debt-gdp", title:"Global Debt / GDP", description:"Global leverage limits policy room when shocks arrive." },
+};
+const SHARE_CHART_BY_SLUG = Object.fromEntries(
+  Object.entries(SHARE_CHART_BY_ANCHOR_ID).map(([anchorId, chart]) => [chart.slug, { ...chart, anchorId }]),
+);
+const getShareChartByAnchorId = (anchorId) => SHARE_CHART_BY_ANCHOR_ID[anchorId] || null;
 
 const buildLocalNasdaqMetric = (checkedAt) => ({
   id: "nasdaqForwardPe",
@@ -632,6 +658,38 @@ function ChartTip({ active, payload, label }) {
 
 function ChartCard({ title, sub, children, signal, interp, anchorId }) {
   const t = useT();
+  const [shareState, setShareState] = useState("idle");
+  const shareChart = anchorId ? getShareChartByAnchorId(anchorId) : null;
+  const shareUrl = shareChart && typeof window !== "undefined"
+    ? `${window.location.origin}/share/${shareChart.slug}`
+    : "";
+  const copyShareUrl = async () => {
+    if (!shareUrl) return;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: shareChart.title, text: shareChart.description, url: shareUrl });
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+      } else {
+        const input = document.createElement("textarea");
+        input.value = shareUrl;
+        input.setAttribute("readonly", "");
+        input.style.position = "fixed";
+        input.style.opacity = "0";
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+      }
+      setShareState("copied");
+      window.setTimeout(() => setShareState("idle"), 1800);
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+      setShareState("error");
+      window.setTimeout(() => setShareState("idle"), 1800);
+    }
+  };
+
   return (
     <section id={anchorId} style={{margin:0,scrollMarginTop:140}}>
     <Card style={{marginBottom:20}}>
@@ -640,7 +698,30 @@ function ChartCard({ title, sub, children, signal, interp, anchorId }) {
           <h3 style={{margin:0,fontSize:15,fontWeight:700,color:t.text}}>{title}</h3>
           {sub && <p style={{margin:"3px 0 0",fontSize:12,color:t.textMuted}}>{sub}</p>}
         </div>
-        {signal && <Badge signal={signal} />}
+        <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",justifyContent:"flex-end"}}>
+          {shareChart && (
+            <button
+              onClick={copyShareUrl}
+              title="Share this chart"
+              style={{
+                border:`1px solid ${t.border}`,
+                background:t.bgCardAlt,
+                color:shareState === "error" ? t.red : t.textMuted,
+                borderRadius:999,
+                padding:"4px 10px",
+                fontSize:10,
+                fontWeight:700,
+                letterSpacing:0.8,
+                textTransform:"uppercase",
+                cursor:"pointer",
+                fontFamily:"inherit",
+              }}
+            >
+              {shareState === "copied" ? "Copied" : shareState === "error" ? "Failed" : "Share"}
+            </button>
+          )}
+          {signal && <Badge signal={signal} />}
+        </div>
       </div>
       <div style={{height:260}}>{children}</div>
       {interp && (
@@ -2088,13 +2169,54 @@ function TabReport() {
 const TAB_COMPS = [null, TabEquity, TabMktStr, TabCredit, TabMacro, TabMoney, TabSent, TabHousing, TabGlobal, TabDataHealth, TabReport];
 const TAB_PATHS = ["/","/equity-valuation","/market-structure","/credit-debt","/macro","/monetary-policy","/sentiment","/housing","/global-risk","/data-health","/report"];
 const pathToTab = (p) => { const i = TAB_PATHS.indexOf(p); return i >= 0 ? i : 0; };
+const getHashAnchorId = () => {
+  if (typeof window === "undefined" || !window.location.hash) return "";
+  try {
+    return decodeURIComponent(window.location.hash.slice(1));
+  } catch {
+    return window.location.hash.slice(1);
+  }
+};
+const getAnchorTarget = (anchorId) => METRIC_SCROLL_TARGETS.find((target) => target.anchorId === anchorId) || null;
+const getShareRouteTarget = () => {
+  if (typeof window === "undefined") return null;
+  const match = window.location.pathname.match(/^\/share\/([^/]+)\/?$/);
+  if (!match) return null;
+
+  let slug = match[1];
+  try {
+    slug = decodeURIComponent(slug);
+  } catch {
+    // Keep the raw slug if the browser gives us a malformed escape sequence.
+  }
+
+  const chart = SHARE_CHART_BY_SLUG[slug];
+  if (!chart) return null;
+
+  const target = getAnchorTarget(chart.anchorId);
+  return target ? { ...target, anchorId: chart.anchorId } : null;
+};
+const getInitialTab = () => {
+  const shareTarget = getShareRouteTarget();
+  if (shareTarget) return shareTarget.tab;
+
+  const hashTarget = getAnchorTarget(getHashAnchorId());
+  return hashTarget?.tab ?? pathToTab(window.location.pathname);
+};
+const getInitialScrollTarget = () => {
+  const shareTarget = getShareRouteTarget();
+  if (shareTarget) return { anchorId: shareTarget.anchorId, behavior:"auto" };
+
+  const anchorId = getHashAnchorId();
+  return getAnchorTarget(anchorId) ? { anchorId, behavior:"auto" } : null;
+};
 
 export default function App() {
-  const [tab, setTab] = useState(() => pathToTab(window.location.pathname));
+  const [tab, setTab] = useState(getInitialTab);
   const [isDark, setIsDark] = useState(false);
   const [fade, setFade] = useState(false);
   const headerRef = useRef(null);
-  const pendingScrollTargetRef = useRef(null);
+  const pendingScrollTargetRef = useRef(getInitialScrollTarget());
   const t = isDark ? themes.dark : themes.light;
   const [lastUpdated, setLastUpdated] = useState(null);
   const [dataHealth, setDataHealth] = useState(null);
@@ -2114,33 +2236,66 @@ export default function App() {
   useEffect(() => {
     let rafA = 0;
     let rafB = 0;
+    const timers = [];
 
     if (!pendingScrollTargetRef.current) {
       window.scrollTo({ top:0, behavior:"auto" });
       return undefined;
     }
 
+    const target = pendingScrollTargetRef.current;
+    pendingScrollTargetRef.current = null;
+    const retryScroll = (behavior = "auto") => {
+      if (target?.anchorId) scrollToAnchor(target.anchorId, behavior);
+    };
+
     rafA = window.requestAnimationFrame(() => {
       rafB = window.requestAnimationFrame(() => {
-        const target = pendingScrollTargetRef.current;
-        pendingScrollTargetRef.current = null;
-        if (target?.anchorId) scrollToAnchor(target.anchorId, target.behavior);
+        retryScroll(target.behavior);
       });
+    });
+    // Recharts measures responsive containers after mount, which can push anchors down.
+    [150, 450, 900].forEach((delay) => {
+      timers.push(window.setTimeout(() => retryScroll(), delay));
     });
 
     return () => {
       window.cancelAnimationFrame(rafA);
       window.cancelAnimationFrame(rafB);
+      timers.forEach((timer) => window.clearTimeout(timer));
     };
   }, [tab]);
-  useEffect(() => { if (TAB_PATHS[tab] !== window.location.pathname) window.history.pushState(null, "", TAB_PATHS[tab]); }, [tab]);
   useEffect(() => {
-    const fn = () => {
-      pendingScrollTargetRef.current = null;
-      setTab(pathToTab(window.location.pathname));
+    const shareTarget = getShareRouteTarget();
+    const anchorId = getHashAnchorId();
+    const hashTarget = shareTarget || getAnchorTarget(anchorId);
+    const activeAnchorId = shareTarget?.anchorId || anchorId;
+    const hashSuffix = hashTarget?.tab === tab ? `#${encodeURIComponent(activeAnchorId)}` : "";
+    const desired = `${TAB_PATHS[tab]}${hashSuffix}`;
+    if (`${window.location.pathname}${window.location.hash}` !== desired) {
+      window.history.pushState(null, "", desired);
+    }
+  }, [tab]);
+  useEffect(() => {
+    const routeToLocation = () => {
+      const shareTarget = getShareRouteTarget();
+      if (shareTarget) {
+        pendingScrollTargetRef.current = { anchorId: shareTarget.anchorId, behavior:"auto" };
+        setTab(shareTarget.tab);
+        return;
+      }
+
+      const anchorId = getHashAnchorId();
+      const hashTarget = getAnchorTarget(anchorId);
+      pendingScrollTargetRef.current = hashTarget ? { anchorId, behavior:"auto" } : null;
+      setTab(hashTarget?.tab ?? pathToTab(window.location.pathname));
     };
-    window.addEventListener("popstate", fn);
-    return () => window.removeEventListener("popstate", fn);
+    window.addEventListener("popstate", routeToLocation);
+    window.addEventListener("hashchange", routeToLocation);
+    return () => {
+      window.removeEventListener("popstate", routeToLocation);
+      window.removeEventListener("hashchange", routeToLocation);
+    };
   }, []);
 
   const refreshMetrics = async () => {
@@ -2225,16 +2380,20 @@ export default function App() {
 
   const goTab = (i) => {
     pendingScrollTargetRef.current = null;
+    if (TAB_PATHS[i]) window.history.pushState(null, "", TAB_PATHS[i]);
     setTab(i);
   };
   const goToMetric = (metricIdx) => {
     const target = METRIC_SCROLL_TARGETS[metricIdx];
     if (!target) return;
+    const url = `${TAB_PATHS[target.tab]}#${encodeURIComponent(target.anchorId)}`;
     if (target.tab === tab) {
+      window.history.pushState(null, "", url);
       scrollToAnchor(target.anchorId);
       return;
     }
     pendingScrollTargetRef.current = { anchorId: target.anchorId, behavior:"smooth" };
+    window.history.pushState(null, "", url);
     setTab(target.tab);
   };
 
