@@ -660,19 +660,18 @@ function ChartCard({ title, sub, children, signal, interp, anchorId }) {
   const t = useT();
   const [shareState, setShareState] = useState("idle");
   const shareChart = anchorId ? getShareChartByAnchorId(anchorId) : null;
-  const shareUrl = shareChart && typeof window !== "undefined"
-    ? `${window.location.origin}/share/${shareChart.slug}`
+  const anchorTarget = anchorId ? getAnchorTarget(anchorId) : null;
+  const chartUrl = shareChart && anchorTarget && typeof window !== "undefined"
+    ? `${window.location.origin}${TAB_PATHS[anchorTarget.tab]}#${encodeURIComponent(anchorId)}`
     : "";
   const copyShareUrl = async () => {
-    if (!shareUrl) return;
+    if (!chartUrl) return;
     try {
-      if (navigator.share) {
-        await navigator.share({ title: shareChart.title, text: shareChart.description, url: shareUrl });
-      } else if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(shareUrl);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(chartUrl);
       } else {
         const input = document.createElement("textarea");
-        input.value = shareUrl;
+        input.value = chartUrl;
         input.setAttribute("readonly", "");
         input.style.position = "fixed";
         input.style.opacity = "0";
@@ -684,7 +683,6 @@ function ChartCard({ title, sub, children, signal, interp, anchorId }) {
       setShareState("copied");
       window.setTimeout(() => setShareState("idle"), 1800);
     } catch (error) {
-      if (error?.name === "AbortError") return;
       setShareState("error");
       window.setTimeout(() => setShareState("idle"), 1800);
     }
@@ -702,22 +700,38 @@ function ChartCard({ title, sub, children, signal, interp, anchorId }) {
           {shareChart && (
             <button
               onClick={copyShareUrl}
-              title="Share this chart"
+              aria-label={shareState === "copied" ? "Chart link copied" : "Copy direct chart link"}
+              title={shareState === "copied" ? "Copied direct chart link" : "Copy direct chart link"}
               style={{
                 border:`1px solid ${t.border}`,
                 background:t.bgCardAlt,
-                color:shareState === "error" ? t.red : t.textMuted,
+                color:shareState === "copied" ? t.green : shareState === "error" ? t.red : t.textMuted,
                 borderRadius:999,
-                padding:"4px 10px",
-                fontSize:10,
-                fontWeight:700,
-                letterSpacing:0.8,
-                textTransform:"uppercase",
+                width:30,
+                height:30,
+                padding:0,
+                display:"inline-flex",
+                alignItems:"center",
+                justifyContent:"center",
                 cursor:"pointer",
                 fontFamily:"inherit",
+                transition:"color 0.2s,border-color 0.2s,background 0.2s",
               }}
             >
-              {shareState === "copied" ? "Copied" : shareState === "error" ? "Failed" : "Share"}
+              {shareState === "copied" ? (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              ) : shareState === "error" ? (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 8v5m0 4h.01M10.3 4.3 2.8 17.1A2 2 0 0 0 4.5 20h15a2 2 0 0 0 1.7-2.9L13.7 4.3a2 2 0 0 0-3.4 0Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              ) : (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
             </button>
           )}
           {signal && <Badge signal={signal} />}
