@@ -1,6 +1,7 @@
 import { getShareChartBySlug } from "../src/chartShareRegistry.js";
 
 const SITE_NAME = "There Is No Bubble";
+const SOCIAL_CRAWLER_RE = /(facebookexternalhit|facebot|twitterbot|linkedinbot|slackbot|discordbot|telegrambot|whatsapp|pinterest|redditbot|skypeuripreview|embedly|quora link preview|vkshare)/i;
 
 const escapeHtml = (value) => String(value)
   .replaceAll("&", "&amp;")
@@ -20,6 +21,8 @@ const getSlug = (req) => {
   return url.searchParams.get("slug") || "";
 };
 
+const isSocialCrawler = (req) => SOCIAL_CRAWLER_RE.test(req.headers["user-agent"] || "");
+
 export default function handler(req, res) {
   const slug = getSlug(req);
   const chart = getShareChartBySlug(slug);
@@ -37,6 +40,13 @@ export default function handler(req, res) {
   const title = `${chart.title} | ${SITE_NAME}`;
   const description = `${chart.stat} - ${chart.comparison}. ${chart.description}`;
   const imageAlt = `${chart.title} chart preview from ${SITE_NAME}`;
+
+  if (!isSocialCrawler(req)) {
+    res.setHeader("Location", targetUrl);
+    res.setHeader("Cache-Control", "s-maxage=300, stale-while-revalidate=3600");
+    res.status(302).send(`Redirecting to ${targetUrl}`);
+    return;
+  }
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate=86400");
@@ -64,6 +74,7 @@ export default function handler(req, res) {
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
     <meta name="twitter:image:alt" content="${escapeHtml(imageAlt)}" />
+    <meta http-equiv="refresh" content="0; url=${escapeHtml(targetUrl)}" />
     <script>
       window.location.replace(${JSON.stringify(targetUrl)});
     </script>
