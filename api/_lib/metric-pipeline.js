@@ -3,6 +3,7 @@ import AdmZip from "adm-zip";
 const SCRAPE_TIMEOUT_MS = 8000;
 const BIS_TOTAL_CREDIT_ZIP_URL = "https://data.bis.org/static/bulk/WS_TC_csv_col.zip";
 const BIS_TOTAL_CREDIT_TOPIC_URL = "https://data.bis.org/topics/TOTAL_CREDIT/tables-and-dashboards";
+const FINRA_MARGIN_STATISTICS_URL = "https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics";
 const BIS_PROXY_SERIES_PREFIX = "Q,Quarterly,5A,All reporting economies,C,Non financial sector,A,All sectors,M,Market value,770,Percentage of GDP,A,Adjusted for breaks,0,Units,367,Per cent,All reporting countries (aggregate) - Credit to Non financial sector from All sectors at Market value - Percentage of GDP - Adjusted for breaks,Q:5A:C:A:M:770:A,";
 const BIS_HEADER_SPLIT_TOKEN = "TITLE_TS,Series,";
 
@@ -35,7 +36,7 @@ export const METRIC_REGISTRY = [
   { id: "cape", idx: 0, name: "Shiller CAPE Ratio", pipeline: "scrape", source: "Multpl / Shiller", sourceUrl: "https://www.multpl.com/shiller-pe", frequency: "daily", min: 5, max: 80, freshness: "daily" },
   { id: "forwardPe", idx: 1, name: "Forward P/E", pipeline: "scrape", source: "Yardeni Research Morning Briefing", sourceUrl: "https://archive.yardeni.com/morning-briefing-2026/", frequency: "weekly", min: 5, max: 40, freshness: "weekly" },
   { id: "buffett", idx: 2, name: "Buffett Indicator", pipeline: "scrape", source: "currentmarketvaluation.com", sourceUrl: "https://www.currentmarketvaluation.com/models/buffett-indicator.php", frequency: "daily", min: 20, max: 350, freshness: "daily" },
-  { id: "erp", idx: 3, name: "Equity Risk Premium (Fwd EY - 10Y)", pipeline: "derived", source: "Derived from Forward P/E and 10Y Treasury", sourceUrl: "https://www.multpl.com/10-year-treasury-rate", frequency: "daily", min: -10, max: 15, freshness: "daily" },
+  { id: "erp", idx: 3, name: "Equity Risk Premium (Fwd EY - 10Y)", pipeline: "derived", source: "Derived from Forward P/E and 10Y Treasury", sourceUrl: "https://fred.stlouisfed.org/series/DGS10", frequency: "daily / weekly inputs", min: -10, max: 15, freshness: "weekly" },
   { id: "top10Concentration", idx: 4, name: "Top 10 Concentration", pipeline: "scrape", source: "Slickcharts S&P 500", sourceUrl: "https://www.slickcharts.com/sp500", frequency: "daily", min: 0, max: 60, freshness: "daily" },
   { id: "nasdaqForwardPe", idx: 5, name: "Nasdaq-100 Forward P/E", pipeline: "static", source: "Trendonify monthly history", sourceUrl: NASDAQ_FORWARD_PE_SOURCE_URL, frequency: "monthly snapshot", min: 5, max: 80 },
   { id: "marginDebtToMarketCap", idx: 6, name: "Margin Debt / Mkt Cap", pipeline: "derived", source: "Derived from Margin Debt, Buffett Indicator, and FRED GDP", sourceUrl: "https://www.finra.org/rules-guidance/key-topics/margin-accounts/margin-statistics", frequency: "monthly", min: 0, max: 10, freshness: "monthly" },
@@ -134,6 +135,36 @@ function extractFirstNumber(html, patterns) {
 function roundValue(value, digits = 2) {
   const factor = 10 ** digits;
   return Math.round(value * factor) / factor;
+}
+
+const MONTH_INDEX = new Map([
+  ["Jan", 0], ["January", 0],
+  ["Feb", 1], ["February", 1],
+  ["Mar", 2], ["March", 2],
+  ["Apr", 3], ["April", 3],
+  ["May", 4],
+  ["Jun", 5], ["June", 5],
+  ["Jul", 6], ["July", 6],
+  ["Aug", 7], ["August", 7],
+  ["Sep", 8], ["Sept", 8], ["September", 8],
+  ["Oct", 9], ["October", 9],
+  ["Nov", 10], ["November", 10],
+  ["Dec", 11], ["December", 11],
+]);
+
+function parseMonthYearToDate(monthName, twoDigitYear) {
+  const monthIndex = MONTH_INDEX.get(monthName);
+  const year = 2000 + Number(twoDigitYear);
+  if (monthIndex == null || !Number.isFinite(year)) return null;
+  return new Date(Date.UTC(year, monthIndex + 1, 0)).toISOString().slice(0, 10);
+}
+
+function parseMonthDayToDate(monthName, day, year) {
+  const monthIndex = MONTH_INDEX.get(monthName);
+  const parsedYear = Number(year);
+  const parsedDay = Number(day);
+  if (monthIndex == null || !Number.isFinite(parsedYear) || !Number.isFinite(parsedDay)) return null;
+  return new Date(Date.UTC(parsedYear, monthIndex, parsedDay)).toISOString().slice(0, 10);
 }
 
 function getFredApiKey() {
@@ -384,10 +415,25 @@ function extractMetricFromYardeni(html, patterns) {
     const matches = [...html.matchAll(pattern)];
     if (!matches.length) continue;
     const parsed = parseFloat(matches[0][1]);
-    if (Number.isFinite(parsed)) return parsed;
+    if (Number.isFinite(parsed)) {
+      return {
+        value: parsed,
+        index: matches[0].index ?? 0,
+      };
+    }
   }
 
   return null;
+}
+
+function extractYardeniEntryDate(html, matchIndex) {
+  const beforeMatch = html.slice(0, matchIndex);
+  const yearMatch = [...beforeMatch.matchAll(/class="x-accordion-toggle"[^>]*>(\w+)\s+(20\d{2})<\/a>/g)].pop();
+  const fallbackYear = yearMatch?.[2] || new Date().getUTCFullYear();
+  const headingMatches = [...beforeMatch.matchAll(/<h5[^>]*>[\s\S]*?([A-Z][a-z]+)\s+(\d{1,2})[\s\S]*?<\/h5>/g)];
+  const latestHeading = headingMatches[headingMatches.length - 1];
+  if (!latestHeading) return null;
+  return parseMonthDayToDate(latestHeading[1], latestHeading[2], fallbackYear);
 }
 
 async function fetchYardeniSnapshot() {
@@ -410,22 +456,22 @@ async function fetchYardeniSnapshot() {
 
   return {
     checkedAt,
-    forwardPe: Number.isFinite(forwardPe)
+    forwardPe: Number.isFinite(forwardPe?.value)
       ? buildMetricPayload({
-          value: forwardPe,
-          display: forwardPe.toFixed(1),
-          asOf: checkedAt.slice(0, 10),
+          value: forwardPe.value,
+          display: forwardPe.value.toFixed(1),
+          asOf: extractYardeniEntryDate(normalized, forwardPe.index) || checkedAt.slice(0, 10),
           checkedAt,
           source: "Yardeni Research Morning Briefing",
           sourceUrl: "https://archive.yardeni.com/morning-briefing-2026/",
           frequency: "weekly",
         })
       : null,
-    epsGrowth: Number.isFinite(epsGrowth)
+    epsGrowth: Number.isFinite(epsGrowth?.value)
       ? buildMetricPayload({
-          value: epsGrowth,
-          display: `${epsGrowth >= 0 ? "+" : ""}${epsGrowth.toFixed(1)}%`,
-          asOf: checkedAt.slice(0, 10),
+          value: epsGrowth.value,
+          display: `${epsGrowth.value >= 0 ? "+" : ""}${epsGrowth.value.toFixed(1)}%`,
+          asOf: extractYardeniEntryDate(normalized, epsGrowth.index) || checkedAt.slice(0, 10),
           checkedAt,
           source: "Yardeni Research Morning Briefing",
           sourceUrl: "https://archive.yardeni.com/morning-briefing-2026/",
@@ -515,18 +561,20 @@ export async function fetchScrapedMetricValues() {
     {
       id: INTERNAL_MARGIN_DEBT_ID,
       run: async () => {
-        const html = await fetchText("https://www.currentmarketvaluation.com/models/margin-debt.php");
-        const billions = extractFirstNumber(html, [/margin debt of \$([\d,.]+)B/i, /margin debt.*?\$([\d,.]+)\s*billion/i]);
-        const trillions = extractFirstNumber(html, [/margin debt.*?\$([\d,.]+)\s*trillion/i]);
-        const value = Number.isFinite(trillions) ? trillions * 1000 : billions;
+        const html = await fetchText(FINRA_MARGIN_STATISTICS_URL);
+        const normalized = normalizeScrapeText(html);
+        const match = normalized.match(/<tr><td>([A-Z][a-z]{2})-(\d{2})<\/td><td>([\d,]+)<\/td><td>[\d,]+<\/td><td>[\d,]+<\/td><\/tr>/);
+        const value = match?.[3] ? Number(match[3].replace(/,/g, "")) : null;
         if (!Number.isFinite(value)) throw new Error("Parser failed for marginDebt");
+        const billions = value / 1000;
+        const asOf = match ? parseMonthYearToDate(match[1], match[2]) : null;
         return buildMetricPayload({
-          value,
-          display: value >= 1000 ? `$${(value / 1000).toFixed(2)}T` : `$${value.toFixed(0)}B`,
-          asOf: checkedAt.slice(0, 10),
+          value: billions,
+          display: billions >= 1000 ? `$${(billions / 1000).toFixed(2)}T` : `$${billions.toFixed(0)}B`,
+          asOf: asOf || checkedAt.slice(0, 10),
           checkedAt,
-          source: "currentmarketvaluation.com",
-          sourceUrl: "https://www.currentmarketvaluation.com/models/margin-debt.php",
+          source: "FINRA Margin Statistics",
+          sourceUrl: FINRA_MARGIN_STATISTICS_URL,
           frequency: "monthly",
         });
       },
@@ -916,10 +964,11 @@ export async function collectMetricsData() {
   if (!fredError && Number.isFinite(byId.forwardPe.value) && Number.isFinite(fredResults.treasury10y.parsed)) {
     const earningsYield = (1 / byId.forwardPe.value) * 100;
     const erpValue = earningsYield - fredResults.treasury10y.parsed;
+    const dependencyDates = [byId.forwardPe.asOf, fredResults.treasury10y.date].filter(Boolean).sort();
     applyMetricValue(byId.erp, {
       value: erpValue,
       display: `${erpValue.toFixed(1)}%`,
-      asOf: fredResults.treasury10y.date,
+      asOf: dependencyDates[0] || fredResults.treasury10y.date,
       checkedAt: formatIsoDate(checkedAt),
       dependencies: ["Forward P/E", "FRED DGS10"],
     });
@@ -935,7 +984,7 @@ export async function collectMetricsData() {
       display: `${marginRatio.toFixed(2)}%`,
       asOf: scrapedResults[INTERNAL_MARGIN_DEBT_ID].asOf,
       checkedAt: formatIsoDate(checkedAt),
-      dependencies: ["FINRA Margin Debt (internal)", "Buffett Indicator", "FRED GDP"],
+      dependencies: ["FINRA Margin Debt", "Buffett Indicator", "FRED GDP"],
     });
   } else {
     byId.marginDebtToMarketCap.notes.push(
