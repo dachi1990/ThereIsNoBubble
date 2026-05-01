@@ -962,7 +962,11 @@ function TabDash({ goToMetric, dataHealth }) {
   const liveSignal = healthToSignal(dataHealth?.summary?.status || "ok");
   const greens = MS.filter(m => m.sig === "green");
   const reds = MS.filter(m => m.sig === "red");
-  const bestSignals = [...greens].sort((a, b) => a.sc - b.sc || a.nm.localeCompare(b.nm)).slice(0, 3);
+  const sortedGreenSignals = [...greens].sort((a, b) => a.sc - b.sc || a.nm.localeCompare(b.nm));
+  const bestSignals = [
+    MS[5],
+    ...sortedGreenSignals.filter(m => m !== MS[5]),
+  ].slice(0, 4);
   const keyRisks = [...reds].sort((a, b) => b.sc - a.sc || a.nm.localeCompare(b.nm)).slice(0, 3);
   const radarD = [
     {s:"Equity", sc: Math.round([0,1,2,3,5].reduce((a,i) => a + MS[i].sc, 0) / 5)},
@@ -1075,7 +1079,7 @@ function TabDash({ goToMetric, dataHealth }) {
         <Card style={{padding:16}}>
           <div style={{fontSize:10,color:t.green,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,marginBottom:8}}>Strongest Bull Signals</div>
           {bestSignals.map((m,i) => (
-            <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:i < 2 ? `1px solid ${t.border}` : "none"}}>
+            <div key={m.nm} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:i < bestSignals.length - 1 ? `1px solid ${t.border}` : "none"}}>
               <span style={{fontSize:12,color:t.text}}>{m.nm}</span>
               <span style={{fontSize:12,fontWeight:700,color:t.green,fontFamily:"'JetBrains Mono',monospace"}}>{m.cur}</span>
             </div>
