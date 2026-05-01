@@ -495,6 +495,67 @@ function MoonIcon({ color = "#0f172a" }) {
   );
 }
 
+function MobileNavIcon({ icon }) {
+  const common = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2.15,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+  };
+  const paths = {
+    home: (
+      <>
+        <path d="M3.5 10.5 12 3.5l8.5 7" {...common} />
+        <path d="M5.5 10v10h13V10" {...common} />
+        <path d="M9.5 20v-5h5v5" {...common} />
+      </>
+    ),
+    equity: (
+      <>
+        <path d="M4 19h16" {...common} />
+        <path d="M5 16.5 9 11l4 3 5.5-8" {...common} />
+        <path d="M16 6h2.5v2.5" {...common} />
+      </>
+    ),
+    market: (
+      <>
+        <path d="M5 6.5h14" {...common} />
+        <path d="M5 12h14" {...common} />
+        <path d="M5 17.5h14" {...common} />
+        <path d="M8 4.5v15" {...common} />
+        <path d="M16 4.5v15" {...common} />
+      </>
+    ),
+    credit: (
+      <>
+        <path d="M12 3.5 19 6v5.4c0 4.2-2.6 7.5-7 9.1-4.4-1.6-7-4.9-7-9.1V6l7-2.5Z" {...common} />
+        <path d="m8.8 12 2.1 2.1 4.3-5" {...common} />
+      </>
+    ),
+    macro: (
+      <>
+        <path d="M5 19V9.5" {...common} />
+        <path d="M12 19V5" {...common} />
+        <path d="M19 19v-7" {...common} />
+        <path d="M3.5 19.5h17" {...common} />
+      </>
+    ),
+    sentiment: (
+      <>
+        <path d="M4 14c2.1-4 4.1 4 6.2 0s4.1-4 6.3 0c.8 1.5 1.6 1.9 3.5.3" {...common} />
+        <path d="M4 8.5c2.1-2.4 4.2 2.4 6.2 0s4.1-2.4 6.3 0c.9 1 1.9 1.2 3.1.2" {...common} />
+      </>
+    ),
+  };
+
+  return (
+    <svg className="mobile-nav-icon" viewBox="0 0 24 24" aria-hidden="true">
+      {paths[icon] || paths.home}
+    </svg>
+  );
+}
+
 /* ══════════════ SMALL COMPONENTS ══════════════ */
 const sigColor = (s, t) => s === "green" ? t.green : s === "yellow" ? t.yellow : t.red;
 const sigBg = (s, t) => s === "green" ? t.greenBg : s === "yellow" ? t.yellowBg : t.redBg;
@@ -639,9 +700,9 @@ function Explainer({ title, info, calc }) {
   );
 }
 
-function Card({ children, style }) {
+function Card({ children, style, className = "" }) {
   const t = useT();
-  return <div className="card-hover mobile-pad" style={{background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:16,padding:20,boxShadow:t.cardShadow,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",...style}}>{children}</div>;
+  return <div className={["card-hover", "mobile-pad", className].filter(Boolean).join(" ")} style={{background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:16,padding:20,boxShadow:t.cardShadow,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",...style}}>{children}</div>;
 }
 
 function ChartTip({ active, payload, label }) {
@@ -689,7 +750,7 @@ function ChartCard({ title, sub, children, signal, interp, anchorId }) {
   };
 
   return (
-    <section id={anchorId} style={{margin:0,scrollMarginTop:140}}>
+    <section id={anchorId} className="chart-section" style={{margin:0,scrollMarginTop:140}}>
     <Card style={{marginBottom:20}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14,flexWrap:"wrap",gap:8}}>
         <div>
@@ -737,7 +798,7 @@ function ChartCard({ title, sub, children, signal, interp, anchorId }) {
           {signal && <Badge signal={signal} />}
         </div>
       </div>
-      <div style={{height:260}}>{children}</div>
+      <div className="chart-viewport" style={{height:260}}>{children}</div>
       {interp && (
         <div style={{marginTop:14,padding:"12px 16px",background:t.bgCardAlt,borderRadius:10}}>
           <p style={{margin:0,fontSize:13,lineHeight:1.65,color:t.textMuted}}>{interp}</p>
@@ -916,8 +977,8 @@ function TabDash({ goToMetric, dataHealth }) {
 
   return (
     <div>
-      <div style={{textAlign:"center",padding:"28px 0 20px"}}>
-        <div style={{fontSize:10,color:t.accent,letterSpacing:4,textTransform:"uppercase",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+      <div className="dashboard-hero" style={{textAlign:"center",padding:"28px 0 20px"}}>
+        <div className="live-kicker" style={{fontSize:10,color:t.accent,letterSpacing:4,textTransform:"uppercase",fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
   <span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:sigColor(liveSignal, t),boxShadow:`0 0 8px ${sigColor(liveSignal, t)}`,animation:"pulse-live 2s ease-in-out infinite"}} />
   Live Multi-Factor Analysis
 </div>
@@ -925,8 +986,22 @@ function TabDash({ goToMetric, dataHealth }) {
         <p className="main-subtitle" style={{color:t.textMuted,fontSize:13,maxWidth:700,margin:"0 auto",letterSpacing:0.3}}>20 indicators compared against the Dot-Com Bubble (2000) and Global Financial Crisis (2008).</p>
       </div>
 
-      <Card style={{marginBottom:16}}>
-        <div className="grid-dash-main" style={{display:"grid",gridTemplateColumns:"1fr 2fr 1fr",gap:16,alignItems:"center"}}>
+      <div className="mobile-snapshot-row" style={{display:"none"}}>
+        {[
+          {l:"Score",c:OS,s:"yellow"},
+          {l:"Healthy",c:greens.length,s:"green"},
+          {l:"Caution",c:MS.filter(m=>m.sig==="yellow").length,s:"yellow"},
+          {l:"Elevated",c:reds.length,s:"red"},
+        ].map(x => (
+          <div key={x.l} style={{background:t.bgCard,border:`1px solid ${sigBd(x.s,t)}`,borderRadius:14,padding:"10px 8px",boxShadow:t.cardShadow}}>
+            <div style={{fontSize:9,color:t.textDim,textTransform:"uppercase",letterSpacing:1.2,fontWeight:700}}>{x.l}</div>
+            <div style={{fontSize:22,lineHeight:1,fontWeight:800,color:sigColor(x.s,t),fontFamily:"'JetBrains Mono',monospace",marginTop:5}}>{x.c}</div>
+          </div>
+        ))}
+      </div>
+
+      <Card className="dashboard-summary-card" style={{marginBottom:16}}>
+        <div className="grid-dash-main dashboard-summary-grid" style={{display:"grid",gridTemplateColumns:"1fr 2fr 1fr",gap:16,alignItems:"center"}}>
           <div style={{textAlign:"center",position:"relative"}}>
             <div style={{fontSize:10,color:t.textDim,textTransform:"uppercase",letterSpacing:2,fontWeight:600,marginBottom:4,display:"flex",alignItems:"center",justifyContent:"center",gap:4}}>
               Composite Risk
@@ -1022,9 +1097,9 @@ function TabDash({ goToMetric, dataHealth }) {
         <p style={{margin:0,fontSize:13,lineHeight:1.7,color:t.textMuted}}>Valuations (CAPE {MS[0].cur}, Buffett {MS[2].cur}) are extreme, but household balance sheets remain healthy ({MS[9].cur} vs {MS[9].c08} in 2008) and the Nasdaq-100 forward P/E sits at {MS[5].cur} versus a trailing 10Y norm of {MS[5].avg}. ERP remains positive at {MS[3].cur} versus {MS[3].c00} around the dot-com peak. Expensive, concentrated, and still fundamentally supported.</p>
       </Card>
 
-      <Card>
+      <Card className="scorecard-card">
         <h3 style={{margin:"0 0 14px",fontSize:15,fontWeight:700,color:t.text}}>Complete Scorecard — 20 Metrics</h3>
-        <div className="table-responsive" style={{overflowX:"auto"}}>
+        <div className="table-responsive scorecard-table-wrap" style={{overflowX:"auto"}}>
           <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
             <thead>
               <tr style={{borderBottom:`2px solid ${t.border}`}}>
@@ -1054,6 +1129,45 @@ function TabDash({ goToMetric, dataHealth }) {
               })}
             </tbody>
           </table>
+        </div>
+        <div className="scorecard-mobile-list" style={{display:"none"}}>
+          {SCORECARD_METRIC_ORDER.map((metricIndex) => {
+            const m = MS[metricIndex];
+            return (
+              <button
+                key={metricIndex}
+                onClick={() => goToMetric(metricIndex)}
+                className="scorecard-mobile-row"
+                style={{
+                  width:"100%",
+                  border:`1px solid ${t.border}`,
+                  background:t.bgCardAlt,
+                  color:t.text,
+                  borderRadius:12,
+                  padding:"12px",
+                  textAlign:"left",
+                  display:"grid",
+                  gridTemplateColumns:"1fr auto",
+                  gap:10,
+                  alignItems:"center",
+                  fontFamily:"inherit",
+                  cursor:"pointer",
+                }}
+              >
+                <span style={{minWidth:0}}>
+                  <span style={{display:"block",fontSize:12,fontWeight:750,lineHeight:1.25,color:t.text}}>{m.nm}</span>
+                  <span style={{display:"block",fontSize:10,color:t.textDim,marginTop:5}}>
+                    {m.c00 !== "N/A†" ? `2000 ${m.c00} · ` : ""}Avg {m.avg}
+                  </span>
+                  <span style={{display:"block",marginTop:9,width:"100%"}}><RiskBar score={m.sc} /></span>
+                </span>
+                <span style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6}}>
+                  <span style={{fontSize:14,fontWeight:800,color:sigColor(m.sig,t),fontFamily:"'JetBrains Mono',monospace",whiteSpace:"nowrap"}}>{m.cur}</span>
+                  <Badge signal={m.sig} />
+                </span>
+              </button>
+            );
+          })}
         </div>
         <div style={{marginTop:8,fontSize:11,color:t.textDim,fontStyle:"italic"}}>Click any row to jump to its detailed analysis →</div>
         <div style={{marginTop:6,fontSize:10,color:t.textDim}}>Data dates vary by metric. Click info icons for details.</div>
@@ -2236,6 +2350,7 @@ export default function App() {
   const [dataHealth, setDataHealth] = useState(null);
   const [dataHealthError, setDataHealthError] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const getHeaderOffset = () => (headerRef.current?.getBoundingClientRect().height || 0) + 20;
   const scrollToAnchor = (anchorId, behavior = "smooth") => {
@@ -2391,10 +2506,19 @@ export default function App() {
   useEffect(() => {
     refreshMetrics();
   }, []);
+  useEffect(() => {
+    if (!mobileMenuOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileMenuOpen]);
 
   const goTab = (i) => {
     pendingScrollTargetRef.current = null;
     if (TAB_PATHS[i]) window.history.pushState(null, "", TAB_PATHS[i]);
+    setMobileMenuOpen(false);
     setTab(i);
   };
   const goToMetric = (metricIdx) => {
@@ -2428,6 +2552,33 @@ export default function App() {
   const themeToggleShadow = isDark
     ? "inset 0 1px 0 rgba(255,255,255,0.05)"
     : "inset 0 1px 0 rgba(255,255,255,0.45), 0 1px 2px rgba(201,168,76,0.08)";
+  const mobileNavItems = [
+    { idx:0, label:"Home", icon:"home" },
+    { idx:1, label:"Equity", icon:"equity" },
+    { idx:2, label:"Market", icon:"market" },
+    { idx:3, label:"Credit", icon:"credit" },
+    { idx:4, label:"Macro", icon:"macro" },
+  ];
+  const mobileNavStyle = {
+    "--mobile-nav-bg": t.bgCard,
+    "--mobile-nav-border": t.border,
+    "--mobile-nav-active-bg": t.bgCardAlt,
+    "--mobile-nav-text": t.textDim,
+    "--mobile-nav-active": t.accent,
+    "--mobile-nav-shadow": t.shadow,
+    "--mobile-nav-count": mobileNavItems.length,
+  };
+  const mobileMenuStyle = {
+    "--mobile-menu-bg": t.bg,
+    "--mobile-menu-card": t.bgCard,
+    "--mobile-menu-card-alt": t.bgCardAlt,
+    "--mobile-menu-border": t.border,
+    "--mobile-menu-text": t.text,
+    "--mobile-menu-muted": t.textDim,
+    "--mobile-menu-active": t.accent,
+    "--mobile-menu-active-bg": t.accentBg,
+    "--mobile-menu-shadow": t.shadow,
+  };
 
   return (
     <Ctx.Provider value={t}>
@@ -2435,12 +2586,28 @@ export default function App() {
         {/* Header */}
         <div ref={headerRef} className="header-glass" style={{"--header-bg":t.bg,borderBottom:`1px solid ${t.border}`,background:t.headerBg,position:"sticky",top:0,zIndex:50}}>
           <div className="header-inner" style={{maxWidth:1200,margin:"0 auto",padding:"10px 20px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <div className="app-brand" style={{display:"flex",alignItems:"center",gap:10}}>
               <div style={{width:6,height:6,borderRadius:"50%",background:t.text,boxShadow:`0 0 12px ${t.text}22`}} />
-              <span style={{fontSize:11,fontWeight:700,letterSpacing:2.5}}>BUBBLE RISK MONITOR</span>
+              <span className="brand-label" style={{fontSize:11,fontWeight:700,letterSpacing:2.5}}>BUBBLE RISK MONITOR</span>
             </div>
             <div style={{display:"flex",alignItems:"center",gap:14}}>
-              <span style={{fontSize:10,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.5}}>{calendarDate}</span>
+              <span className="header-date" style={{fontSize:10,color:t.textDim,fontFamily:"'JetBrains Mono',monospace",letterSpacing:0.5}}>{calendarDate}</span>
+              <button
+                className="mobile-menu-button"
+                onClick={() => setMobileMenuOpen(true)}
+                aria-label="Open navigation menu"
+                type="button"
+                style={{
+                  border:`1px solid ${t.border}`,
+                  background:t.bgCardAlt,
+                  color:t.text,
+                  boxShadow:themeToggleShadow,
+                }}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
               <button
                 onClick={() => setIsDark(!isDark)}
                 aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
@@ -2486,11 +2653,54 @@ export default function App() {
           </div>
           </div>
           {lastUpdated && (
-            <div style={{fontSize:9,color:sigColor(dataHealthSignal, t),textAlign:"center",padding:"3px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+            <div className="backend-status-strip" style={{fontSize:9,color:sigColor(dataHealthSignal, t),textAlign:"center",padding:"3px 0",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
               <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:sigColor(dataHealthSignal, t),boxShadow:`0 0 6px ${sigColor(dataHealthSignal, t)}`}} />
               Backend data · 19 live feeds + 1 curated series · {liveSummary ? `${liveSummary.okCount} healthy / ${liveSummary.warnCount} warn / ${liveSummary.errorCount} error` : "loading"} · {lastUpdated.toLocaleTimeString()}
             </div>
           )}
+        </div>
+
+        <div
+          className={"mobile-menu-backdrop" + (mobileMenuOpen ? " open" : "")}
+          aria-hidden={!mobileMenuOpen}
+          onClick={() => setMobileMenuOpen(false)}
+          style={mobileMenuStyle}
+        >
+          <div
+            className="mobile-menu-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="mobile-menu-top">
+              <div>
+                <div className="mobile-menu-kicker">Research Sections</div>
+                <div className="mobile-menu-title">Navigate</div>
+              </div>
+              <button
+                className="mobile-menu-close"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close navigation menu"
+                type="button"
+              >
+                ×
+              </button>
+            </div>
+            <div className="mobile-menu-grid">
+              {primaryNavTabs.map(({ idx, label }) => (
+                <button
+                  key={idx}
+                  onClick={() => goTab(idx)}
+                  className={tab === idx ? "active" : ""}
+                  type="button"
+                >
+                  <span>{label}</span>
+                  <span>{idx === 0 ? "Overview" : idx === 10 ? "Deep dive" : `${MS.filter((m) => m.tab === idx).length || ""} metrics`}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Content */}
@@ -2504,7 +2714,25 @@ export default function App() {
           ) : null}
         </div>
 
-        <div style={{maxWidth:1200,margin:"0 auto",padding:"0 20px 24px"}}>
+        <nav className="mobile-bottom-nav" aria-label="Mobile primary navigation" style={mobileNavStyle}>
+          {mobileNavItems.map((item) => {
+            const active = tab === item.idx;
+            return (
+              <button
+                key={item.idx}
+                onClick={() => goTab(item.idx)}
+                className={active ? "active" : ""}
+                type="button"
+                aria-current={active ? "page" : undefined}
+              >
+                <MobileNavIcon icon={item.icon} />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="footer-health-link" style={{maxWidth:1200,margin:"0 auto",padding:"0 20px 24px"}}>
           <div style={{borderTop:`1px solid ${t.border}`,paddingTop:10,display:"flex",justifyContent:"flex-end"}}>
             <button
               onClick={() => goTab(9)}

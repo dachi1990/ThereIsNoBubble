@@ -2,11 +2,15 @@
   "name": "There Is No Bubble",
   "short_name": "No Bubble",
   "description": "Bubble Risk Monitor across 20 market and macro indicators.",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "scope": "/",
+  "id": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
   "background_color": "#f7f4ee",
   "theme_color": "#1a2744",
+  "categories": ["finance", "business", "productivity"],
   "icons": [
     {
       "src": "/icon-192.png",
