@@ -965,8 +965,8 @@ function TabDash({ goToMetric, dataHealth }) {
   const sortedGreenSignals = [...greens].sort((a, b) => a.sc - b.sc || a.nm.localeCompare(b.nm));
   const bestSignals = [
     MS[5],
-    ...sortedGreenSignals.filter(m => m !== MS[5]),
-  ].slice(0, 4);
+    ...sortedGreenSignals.filter(m => m !== MS[5] && m !== MS[9]),
+  ].slice(0, 3);
   const keyRisks = [...reds].sort((a, b) => b.sc - a.sc || a.nm.localeCompare(b.nm)).slice(0, 3);
   const radarD = [
     {s:"Equity", sc: Math.round([0,1,2,3,5].reduce((a,i) => a + MS[i].sc, 0) / 5)},

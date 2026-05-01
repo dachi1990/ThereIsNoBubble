@@ -8,6 +8,7 @@
 - 11 views: Dashboard, 8 research categories, Data Health, and Report
 - Live refresh from a shared Vercel function pipeline
 - Per-metric source, as-of date, and cadence metadata in the interface
+- Mobile-first PWA shell with install metadata, app-shell caching, bottom navigation, and full-section hamburger navigation
 - A Data Health tab for parser status, freshness, and source monitoring
 - Scheduled GitHub Actions health checks every 6 hours with optional webhook alerts
 
@@ -28,7 +29,7 @@
 │   ├── data-health.js            # Operational health endpoint
 │   ├── metrics.js                # Main live metrics payload
 │   └── scraped-metrics.js        # Scraped-metric summary payload
-├── public/                       # Favicons and OG assets
+├── public/                       # Favicons, OG assets, web manifest, service worker
 ├── scripts/
 │   └── check-metrics.mjs         # Local/scheduled health-check runner
 ├── src/
@@ -88,3 +89,10 @@ The live app uses these endpoints:
 - `/api/scraped-metrics` — scraped-metric subset for external checks
 
 Monitoring is defined in `.github/workflows/data-health.yml`. It runs on push, on manual dispatch, and every 6 hours on schedule.
+
+## Mobile / PWA
+
+- `public/site.webmanifest` defines the installable PWA metadata and app icons.
+- `public/sw.js` caches the app shell while leaving `/api/*` requests network-first so live metrics stay fresh.
+- On mobile, the bottom navigation focuses on the core reader paths: Home, Equity, Market, Credit, and Macro.
+- The hamburger menu exposes the full research map: Dashboard, all 8 category tabs, and Report. Data Health remains available by direct route/footer on desktop, but is intentionally kept out of mobile reader navigation.
