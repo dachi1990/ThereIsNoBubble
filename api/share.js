@@ -1,6 +1,7 @@
 import { getShareChartBySlug } from "../src/chartShareRegistry.js";
 
 const SITE_NAME = "There Is No Bubble";
+const SOCIAL_IMAGE_VERSION = "20260505-fontconfig";
 const SOCIAL_CRAWLER_RE = /(facebookexternalhit|facebot|twitterbot|linkedinbot|slackbot|discordbot|telegrambot|whatsapp|pinterest|redditbot|skypeuripreview|embedly|quora link preview|vkshare)/i;
 
 const escapeHtml = (value) => String(value)
@@ -36,7 +37,7 @@ export default function handler(req, res) {
   const origin = getOrigin(req);
   const shareUrl = `${origin}/share/${encodeURIComponent(chart.slug)}`;
   const targetUrl = `${origin}${chart.tabPath}#${encodeURIComponent(chart.anchorId)}`;
-  const imageUrl = `${origin}/api/og-chart?slug=${encodeURIComponent(chart.slug)}`;
+  const imageUrl = `${origin}/api/og-chart?slug=${encodeURIComponent(chart.slug)}&v=${SOCIAL_IMAGE_VERSION}`;
   const title = `${chart.title} | ${SITE_NAME}`;
   const description = `${chart.stat} - ${chart.comparison}. ${chart.description}`;
   const imageAlt = `${chart.title} chart preview from ${SITE_NAME}`;

@@ -1,5 +1,5 @@
-import sharp from "sharp";
 import { getShareChartBySlug } from "../src/chartShareRegistry.js";
+import { configureOgFonts } from "./_lib/og-fonts.js";
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -55,12 +55,12 @@ const renderSvg = (chart) => {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
   <rect width="${WIDTH}" height="${HEIGHT}" fill="#f7f4ee"/>
   <rect x="42" y="38" width="1116" height="554" rx="32" fill="#ffffff" stroke="#ddd9d0" stroke-width="2"/>
-  <text x="84" y="94" fill="#8b877e" font-size="22" font-family="Arial, sans-serif" font-weight="700" letter-spacing="4">${escapeXml(chart.category.toUpperCase())}</text>
-  <text x="84" y="154" fill="#1a1916" font-size="54" font-family="Georgia, serif">${escapeXml(chart.title)}</text>
-  <text x="86" y="198" fill="#555249" font-size="26" font-family="Arial, sans-serif">${escapeXml(chart.subtitle)}</text>
+  <text x="84" y="94" fill="#8b877e" font-size="22" font-family="Outfit, sans-serif" font-weight="700" letter-spacing="4">${escapeXml(chart.category.toUpperCase())}</text>
+  <text x="84" y="154" fill="#1a1916" font-size="54" font-family="Instrument Serif, serif">${escapeXml(chart.title)}</text>
+  <text x="86" y="198" fill="#555249" font-size="26" font-family="Outfit, sans-serif">${escapeXml(chart.subtitle)}</text>
   <rect x="930" y="82" width="172" height="44" rx="22" fill="${color}18" stroke="${color}" stroke-width="2"/>
   <circle cx="958" cy="104" r="7" fill="${color}"/>
-  <text x="976" y="112" fill="${color}" font-size="18" font-family="Arial, sans-serif" font-weight="800" letter-spacing="3">${formatSignal(chart.signal)}</text>
+  <text x="976" y="112" fill="${color}" font-size="18" font-family="Outfit, sans-serif" font-weight="800" letter-spacing="3">${formatSignal(chart.signal)}</text>
   <line x1="84" y1="250" x2="1116" y2="250" stroke="#e8e4db" stroke-width="2" stroke-dasharray="7 10"/>
   <line x1="84" y1="375" x2="1116" y2="375" stroke="#e8e4db" stroke-width="2" stroke-dasharray="7 10"/>
   <line x1="84" y1="500" x2="1116" y2="500" stroke="#ddd9d0" stroke-width="2"/>
@@ -68,8 +68,8 @@ const renderSvg = (chart) => {
   <polyline points="${polyline}" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
   <circle cx="${points[points.length - 1][0]}" cy="${points[points.length - 1][1]}" r="12" fill="#1a2744" stroke="#ffffff" stroke-width="5"/>
   <rect x="84" y="516" width="1032" height="1" fill="#ddd9d0"/>
-  <text x="84" y="566" fill="#1a1916" font-size="36" font-family="Arial, sans-serif" font-weight="800">${escapeXml(label)}</text>
-  <text x="1000" y="566" fill="#8b877e" font-size="18" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">thereisnobubble.com</text>
+  <text x="84" y="566" fill="#1a1916" font-size="36" font-family="Outfit, sans-serif" font-weight="800">${escapeXml(label)}</text>
+  <text x="1000" y="566" fill="#8b877e" font-size="18" font-family="Outfit, sans-serif" font-weight="700" text-anchor="end">thereisnobubble.com</text>
 </svg>`;
 };
 
@@ -84,6 +84,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    configureOgFonts();
+    const { default: sharp } = await import("sharp");
     const svg = renderSvg(chart);
     const png = await sharp(Buffer.from(svg)).png().toBuffer();
     res.setHeader("Content-Type", "image/png");

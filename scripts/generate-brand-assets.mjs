@@ -1,10 +1,12 @@
 import { writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import sharp from "sharp";
 import { renderHomeOgSvg } from "../api/_lib/og-home-image.js";
+import { configureOgFonts } from "../api/_lib/og-fonts.js";
 import { DEFAULT_COMPOSITE_SCORE } from "../api/_lib/composite-score.js";
 
 const OUT = new URL("../public/", import.meta.url);
+configureOgFonts();
+const { default: sharp } = await import("sharp");
 const outPath = (name) => fileURLToPath(new URL(name, OUT));
 const colors = {
   paper: "#f7f4ee",

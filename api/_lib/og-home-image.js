@@ -101,9 +101,9 @@ export function renderHomeOgSvg({ score = 41 } = {}) {
 
   <g transform="translate(86 78)">
     <circle cx="0" cy="-4" r="6.5" fill="${colors.red}"/>
-    <text x="24" y="3" fill="${colors.dim}" font-size="17" font-family="Arial, sans-serif" font-weight="800" letter-spacing="5">THEREISNOBUBBLE.COM</text>
-    <text x="0" y="92" fill="${colors.ink}" font-size="78" font-family="Georgia, 'Times New Roman', serif" font-weight="400">Bubble Risk Monitor</text>
-    <text x="2" y="132" fill="${colors.muted}" font-size="27" font-family="Arial, sans-serif" font-weight="600">A live market dashboard for the AI cycle.</text>
+    <text x="24" y="3" fill="${colors.dim}" font-size="17" font-family="Outfit, sans-serif" font-weight="800" letter-spacing="5">THEREISNOBUBBLE.COM</text>
+    <text x="0" y="92" fill="${colors.ink}" font-size="78" font-family="Instrument Serif, serif" font-weight="400">Bubble Risk Monitor</text>
+    <text x="2" y="132" fill="${colors.muted}" font-size="27" font-family="Outfit, sans-serif" font-weight="600">A live market dashboard for the AI cycle.</text>
   </g>
 
   <g filter="url(#softShadow)">
@@ -119,13 +119,13 @@ export function renderHomeOgSvg({ score = 41 } = {}) {
     <path d="${line}" fill="none" stroke="url(#riskLine)" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" filter="url(#lineGlow)"/>
 
     <circle cx="${dotCom[0]}" cy="${dotCom[1]}" r="11" fill="${colors.red}" stroke="${colors.card}" stroke-width="5"/>
-    <text x="${dotCom[0]}" y="${dotCom[1] - 28}" text-anchor="middle" fill="${colors.red}" font-size="17" font-family="Arial, sans-serif" font-weight="800" letter-spacing="2">2000</text>
+    <text x="${dotCom[0]}" y="${dotCom[1] - 28}" text-anchor="middle" fill="${colors.red}" font-size="17" font-family="Outfit, sans-serif" font-weight="800" letter-spacing="2">2000</text>
 
     <circle cx="${gfc[0]}" cy="${gfc[1]}" r="11" fill="${colors.red}" stroke="${colors.card}" stroke-width="5"/>
-    <text x="${gfc[0]}" y="${gfc[1] - 28}" text-anchor="middle" fill="${colors.red}" font-size="17" font-family="Arial, sans-serif" font-weight="800" letter-spacing="2">2008</text>
+    <text x="${gfc[0]}" y="${gfc[1] - 28}" text-anchor="middle" fill="${colors.red}" font-size="17" font-family="Outfit, sans-serif" font-weight="800" letter-spacing="2">2008</text>
 
     <circle cx="${current[0]}" cy="${current[1]}" r="16" fill="${colors.navy}" stroke="${colors.card}" stroke-width="6"/>
-    <text x="${current[0] - 14}" y="${current[1] - 40}" text-anchor="end" fill="${colors.navy}" font-size="20" font-family="Arial, sans-serif" font-weight="800" letter-spacing="2">NOW</text>
+    <text x="${current[0] - 14}" y="${current[1] - 40}" text-anchor="end" fill="${colors.navy}" font-size="20" font-family="Outfit, sans-serif" font-weight="800" letter-spacing="2">NOW</text>
   </g>
 </svg>`;
 }

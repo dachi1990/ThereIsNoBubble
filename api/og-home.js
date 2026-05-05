@@ -1,6 +1,6 @@
-import sharp from "sharp";
 import { collectMetricsData } from "./_lib/metric-pipeline.js";
 import { calculateCompositeScore, DEFAULT_COMPOSITE_SCORE } from "./_lib/composite-score.js";
+import { configureOgFonts } from "./_lib/og-fonts.js";
 import { renderHomeOgSvg } from "./_lib/og-home-image.js";
 
 const SCORE_TIMEOUT_MS = 3500;
@@ -25,6 +25,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    configureOgFonts();
+    const { default: sharp } = await import("sharp");
     const svg = renderHomeOgSvg({ score });
     const png = await sharp(Buffer.from(svg)).png().toBuffer();
     res.setHeader("Content-Type", "image/png");

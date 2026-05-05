@@ -1,4 +1,12 @@
 {
+  "functions": {
+    "api/og-home.js": {
+      "includeFiles": "api/_lib/fonts/**"
+    },
+    "api/og-chart.js": {
+      "includeFiles": "api/_lib/fonts/**"
+    }
+  },
   "rewrites": [
     { "source": "/share/:slug", "destination": "/api/share?slug=:slug" },
     { "source": "/((?!api/|assets/|src/|@vite/|@react-refresh|node_modules/).*)", "destination": "/index.html" }
